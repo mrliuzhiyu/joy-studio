@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>归并排序可视化</title>
+    <style>
+        :root {
+            --bg: #12121f;
+            --surface: #1a1a2e;
+            --surface2: #22223a;
+            --border: #2e2e4a;
+            --text: #d8d8e8;
+            --text2: #a0a0bb;
+            --orange: #ff8c38;
+            --orange-glow: #ff6d00;
+            --green: #4caf84;
+            --green-bg: #1a3a2a;
+            --blue: #5b9bd5;
+            --blue-bg: #1a2a3a;
+            --element-bg: #2a2a44;
+            --element-border: #3d3d60;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --transition: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+
+        /* 顶部控制栏 */
+        .top-controls {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+        .top-controls .input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 auto;
+            min-width: 200px;
+        }
+        .top-controls label {
+            font-size: 0.85rem;
+            color: var(--text2);
+            white-space: nowrap;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .top-controls input[type="text"] {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text);
+            font-size: 0.95rem;
+            letter-spacing: 0.4px;
+            transition: var(--transition);
+            outline: none;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+        }
+        .top-controls input[type="text"]:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.12);
+        }
+        .btn {
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            transition: var(--transition);
+            white-space: nowrap;
+            outline: none;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+            box-shadow: 0 2px 10px rgba(91, 155, 213, 0.25);
+        }
+        .btn-primary:hover {
+            background: #4a8cc5;
+            box-shadow: 0 4px 16px rgba(91, 155, 213, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+            transition: 0.1s ease;
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border-color: var(--border);
+        }
+        .btn-outline:hover {
+            background: var(--surface2);
+            border-color: #555;
+        }
+        .btn-outline:active {
+            background: #2a2a40;
+            transform: scale(0.97);
+            transition: 0.1s ease;
+        }
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+        .btn-xs {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+        }
+        .btn-active {
+            background: var(--orange) !important;
+            border-color: var(--orange) !important;
+            color: #fff !important;
+            box-shadow: 0 2px 12px rgba(255, 140, 56, 0.3) !important;
+        }
+        .speed-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+        .speed-group label {
+            font-size: 0.8rem;
+            color: var(--text2);
+            white-space: nowrap;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .speed-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            cursor: pointer;
+            accent-color: var(--orange);
+        }
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--orange);
+            cursor: pointer;
+            border: 2px solid #fff3;
+            box-shadow: 0 2px 8px rgba(255, 140, 56, 0.35);
+            transition: var(--transition);
+        }
+        .speed-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 14px rgba(255, 140, 56, 0.5);
+        }
+        .speed-label-min,
+        .speed-label-max {
+            font-size: 0.7rem;
+            color: var(--text2);
+        }
+
+        /* 可视化区域 */
+        .viz-container {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 20px 16px;
+            flex: 1 1 auto;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+            position: relative;
+            scrollbar-width: thin;
+            scrollbar-color: #3a3a55 transparent;
+        }
+        .viz-container::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        .viz-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .viz-container::-webkit-scrollbar-thumb {
+            background: #3a3a55;
+            border-radius: 3px;
+        }
+        .viz-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            flex: 1;
+            justify-content: center;
+            min-width: fit-content;
+            padding: 8px 4px;
+        }
+        .tree-level {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+            justify-content: center;
+            min-height: 52px;
+            position: relative;
+            padding: 0 20px;
+        }
+        .tree-node {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--element-border);
+            background: var(--element-bg);
+            transition: all 0.3s ease;
+            position: relative;
+            flex-shrink: 0;
+            min-width: 44px;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .tree-node.node-hidden {
+            opacity: 0;
+            pointer-events: none;
+            border-style: dashed;
+            border-color: transparent;
+            background: transparent;
+            box-shadow: none;
+            min-width: 30px;
+            padding: 8px 4px;
+        }
+        .tree-node.node-split {
+            border-color: #5b7ea0;
+            background: var(--blue-bg);
+            border-style: solid;
+        }
+        .tree-node.node-merging {
+            border-color: var(--orange);
+            background: #2a2218;
+            animation: pulse-merge 1.2s ease-in-out infinite;
+        }
+        .tree-node.node-done {
+            border-color: var(--green);
+            background: var(--green-bg);
+            box-shadow: 0 0 16px rgba(76, 175, 132, 0.18);
+        }
+        @keyframes pulse-merge {
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(255, 140, 56, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 22px rgba(255, 140, 56, 0.45);
+            }
+        }
+        .element-cell {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: #353550;
+            color: #d0d0e8;
+            flex-shrink: 0;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+            position: relative;
+        }
+        .element-cell.cell-compare {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange-glow);
+            box-shadow: 0 0 16px rgba(255, 140, 56, 0.55);
+            animation: bounce-compare 0.5s ease-in-out infinite alternate;
+            z-index: 3;
+            transform: scale(1.08);
+        }
+        @keyframes bounce-compare {
+            0% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1.14);
+            }
+        }
+        .element-cell.cell-placed {
+            background: var(--green);
+            color: #fff;
+            border-color: #3d9a60;
+            box-shadow: 0 0 10px rgba(76, 175, 132, 0.4);
+            animation: pop-in 0.35s ease-out;
+        }
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.3;
+            }
+            60% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .element-cell.cell-ghost {
+            opacity: 0.25;
+            background: #2a2a38;
+            border-style: dashed;
+            border-color: #3a3a50;
+            color: transparent;
+        }
+        .element-cell.cell-empty-slot {
+            background: transparent;
+            border: 2px dashed #3a3a50;
+            color: transparent;
+            opacity: 0.5;
+        }
+
+        /* 底部控制 */
+        .bottom-controls {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .step-indicator {
+            font-size: 0.85rem;
+            color: var(--text2);
+            margin: 0 8px;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+        .step-indicator span {
+            color: var(--text);
+            font-weight: 700;
+        }
+        .phase-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .phase-split {
+            background: #1a3050;
+            color: #7db8e8;
+        }
+        .phase-merge {
+            background: #3a2810;
+            color: #ffb74d;
+        }
+        .phase-done {
+            background: #1a3a2a;
+            color: #6ecb8a;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+            .main-container {
+                gap: 10px;
+            }
+            .top-controls {
+                padding: 12px 14px;
+                gap: 8px;
+            }
+            .top-controls input[type="text"] {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+                min-width: 100px;
+            }
+            .btn {
+                padding: 8px 13px;
+                font-size: 0.8rem;
+            }
+            .btn-sm {
+                padding: 6px 10px;
+                font-size: 0.72rem;
+            }
+            .btn-xs {
+                padding: 4px 8px;
+                font-size: 0.68rem;
+            }
+            .element-cell {
+                width: 30px;
+                height: 30px;
+                font-size: 0.72rem;
+                border-radius: 4px;
+            }
+            .tree-node {
+                padding: 5px 7px;
+                gap: 2px;
+                border-radius: 5px;
+            }
+            .tree-level {
+                gap: 5px;
+                padding: 0 8px;
+            }
+            .viz-container {
+                padding: 12px 8px;
+                min-height: 300px;
+            }
+            .viz-inner {
+                gap: 10px;
+            }
+            .speed-slider {
+                width: 70px;
+            }
+        }
+        @media (max-width: 380px) {
+            .element-cell {
+                width: 24px;
+                height: 24px;
+                font-size: 0.65rem;
+                border-radius: 3px;
+            }
+            .tree-node {
+                padding: 3px 4px;
+                gap: 1px;
+                border-radius: 3px;
+                border-width: 1.5px;
+            }
+            .tree-level {
+                gap: 3px;
+                padding: 0 4px;
+            }
+            .btn {
+                padding: 6px 9px;
+                font-size: 0.7rem;
+            }
+            .top-controls {
+                padding: 10px;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 顶部控制 -->
+        <div class="top-controls">
+            <div class="input-group">
+                <label for="arrInput">📊 数组</label>
+                <input type="text" id="arrInput" value="38,27,43,3,9,82,10" placeholder="逗号分隔数字">
+            </div>
+            <button class="btn btn-primary" id="btnStartReset" title="开始/重置">▶ 开始</button>
+            <div class="speed-group">
+                <span class="speed-label-min">🐢 慢</span>
+                <input type="range" class="speed-slider" id="speedSlider" min="1" max="10" value="5" title="播放速度">
+                <span class="speed-label-max">快 🐇</span>
+            </div>
+        </div>
+
+        <!-- 可视化区域 -->
+        <div class="viz-container" id="vizContainer">
+            <div class="viz-inner" id="vizInner"></div>
+        </div>
+
+        <!-- 底部控制 -->
+        <div class="bottom-controls" id="bottomControls">
+            <button class="btn btn-outline btn-sm" id="btnPrev" title="上一步">⏮ 上一步</button>
+            <button class="btn btn-outline btn-sm" id="btnNext" title="下一步">下一步 ⏭</button>
+            <button class="btn btn-outline btn-sm" id="btnAutoPlay" title="自动播放">▶ 自动播放</button>
+            <button class="btn btn-outline btn-sm" id="btnPause" title="暂停" disabled>⏸ 暂停</button>
+            <span class="step-indicator" id="stepIndicator">步骤 <span>0</span> / <span>0</span></span>
+            <span class="phase-badge phase-split" id="phaseBadge">就绪</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // DOM 引用
+            const arrInput = document.getElementById('arrInput');
+            const btnStartReset = document.getElementById('btnStartReset');
+            const speedSlider = document.getElementById('speedSlider');
+            const vizInner = document.getElementById('vizInner');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnAutoPlay = document.getElementById('btnAutoPlay');
+            const btnPause = document.getElementById('btnPause');
+            const stepIndicator = document.getElementById('stepIndicator');
+            const phaseBadge = document.getElementById('phaseBadge');
+            const vizContainer = document.getElementById('vizContainer');
+
+            // 状态
+            let allSnapshots = [];
+            let currentStepIndex = -1;
+            let autoPlayTimer = null;
+            let isPlaying = false;
+            let treeMeta = null; // { levels, nodeMap, maxDepth }
+
+            // 解析输入
+            function parseInput() {
+                const raw = arrInput.value.trim();
+                if (!raw) return [];
+                const parts = raw.split(/[,，\s]+/);
+                const nums = [];
+                for (const p of parts) {
+                    const n = parseFloat(p);
+                    if (isNaN(n)) throw new Error('无效数字: ' + p);
+                    nums.push(Math.round(n * 100) / 100);
+                }
+                if (nums.length < 2) throw new Error('至少需要2个元素');
+                if (nums.length > 31) throw new Error('最多支持31个元素');
+                return nums;
+            }
+
+            // 构建树元数据
+            function buildTreeMeta(arr) {
+                const n = arr.length;
+                const nodeMap = {};
+                const levels = {};
+                let maxDepth = 0;
+
+                function build(start, end, depth) {
+                    const id = start + '-' + end;
+                    if (depth > maxDepth) maxDepth = depth;
+                    if (!levels[depth]) levels[depth] = [];
+                    const node = {
+                        id,
+                        start,
+                        end,
+                        depth,
+                        values: arr.slice(start, end + 1),
+                        children: [],
+                        parentId: null,
+                    };
+                    levels[depth].push(node);
+                    nodeMap[id] = node;
+                    if (start < end) {
+                        const mid = Math.floor((start + end) / 2);
+                        const leftChild = build(start, mid, depth + 1);
+                        const rightChild = build(mid + 1, end, depth + 1);
+                        node.children = [leftChild.id, rightChild.id];
+                        leftChild.parentId = id;
+                        rightChild.parentId = id;
+                    }
+                    return node;
+                }
+                build(0, n - 1, 0);
+                // 按depth排序levels中的节点（按start排序）
+                for (const d in levels) {
+                    levels[d].sort((a, b) => a.start - b.start);
+                }
+                return { levels, nodeMap, maxDepth, rootId: '0-' + (n - 1) };
+            }
+
+            // 模拟归并排序，生成快照
+            function simulateMergeSort(arr, meta) {
+                const snapshots = [];
+                const nodeStates = {}; // id -> state
+
+                // 初始化所有节点状态
+                for (const id in meta.nodeMap) {
+                    const node = meta.nodeMap[id];
+                    nodeStates[id] = {
+                        visible: false,
+                        status: 'hidden', // 'hidden' | 'split' | 'merging' | 'done'
+                        values: [...node.values],
+                        mergeResult: [],
+                        compareLeftIdx: null,
+                        compareRightIdx: null,
+                        leftRemaining: null, // 左子节点剩余元素索引列表
+                        rightRemaining: null,
+                        mergedFromChildren: false,
+                    };
+                }
+
+                function takeSnapshot(description, phase, activeNodeId) {
+                    const snap = {
+                        description,
+                        phase, // 'split' | 'merge' | 'done'
+                        activeNodeId,
+                        nodeStates: {},
+                    };
+                    for (const id in nodeStates) {
+                        snap.nodeStates[id] = { ...nodeStates[id],
+                            values: [...nodeStates[id].values],
+                            mergeResult: [...nodeStates[id].mergeResult],
+                            leftRemaining: nodeStates[id].leftRemaining ? [...nodeStates[id].leftRemaining] :
+                            null,
+                            rightRemaining: nodeStates[id].rightRemaining ? [...nodeStates[id].rightRemaining] :
+                            null,
+                        };
+                    }
+                    snapshots.push(snap);
+                }
+
+                function mergeSortRec(start, end, depth) {
+                    const id = start + '-' + end;
+                    const node = meta.nodeMap[id];
+
+                    // 使当前节点可见
+                    nodeStates[id].visible = true;
+                    nodeStates[id].status = 'split';
+                    takeSnapshot('分裂: [' + node.values.join(', ') + ']', 'split', id);
+
+                    if (start >= end) {
+                        // 叶子节点，直接完成
+                        nodeStates[id].status = 'done';
+                        nodeStates[id].mergeResult = [...node.values];
+                        takeSnapshot('叶子节点完成: [' + node.values.join(', ') + ']', 'merge', id);
+                        return [...node.values];
+                    }
+
+                    const mid = Math.floor((start + end) / 2);
+                    const leftId = start + '-' + mid;
+                    const rightId = (mid + 1) + '-' + end;
+
+                    // 递归左
+                    const leftSorted = mergeSortRec(start, mid, depth + 1);
+                    // 递归右
+                    const rightSorted = mergeSortRec(mid + 1, end, depth + 1);
+
+                    // 开始合并
+                    nodeStates[id].status = 'merging';
+                    nodeStates[id].mergeResult = [];
+                    nodeStates[id].leftRemaining = [...leftSorted];
+                    nodeStates[id].rightRemaining = [...rightSorted];
+                    takeSnapshot('开始合并: 左[' + leftSorted.join(',') + '] 右[' + rightSorted.join(',') + ']',
+                        'merge', id);
+
+                    let li = 0;
+                    let ri = 0;
+                    const merged = [];
+
+                    while (li < leftSorted.length && ri < rightSorted.length) {
+                        // 比较
+                        nodeStates[id].compareLeftIdx = li;
+                        nodeStates[id].compareRightIdx = ri;
+                        takeSnapshot('比较: ' + leftSorted[li] + ' vs ' + rightSorted[ri], 'merge', id);
+
+                        if (leftSorted[li] <= rightSorted[ri]) {
+                            merged.push(leftSorted[li]);
+                            nodeStates[id].mergeResult = [...merged];
+                            nodeStates[id].leftRemaining = leftSorted.slice(li + 1);
+                            nodeStates[id].rightRemaining = rightSorted.slice(ri);
+                            nodeStates[id].compareLeftIdx = null;
+                            nodeStates[id].compareRightIdx = ri;
+                            takeSnapshot('选择左边: ' + leftSorted[li], 'merge', id);
+                            li++;
+                        } else {
+                            merged.push(rightSorted[ri]);
+                            nodeStates[id].mergeResult = [...merged];
+                            nodeStates[id].leftRemaining = leftSorted.slice(li);
+                            nodeStates[id].rightRemaining = rightSorted.slice(ri + 1);
+                            nodeStates[id].compareLeftIdx = li;
+                            nodeStates[id].compareRightIdx = null;
+                            takeSnapshot('选择右边: ' + rightSorted[ri], 'merge', id);
+                            ri++;
+                        }
+                    }
+
+                    while (li < leftSorted.length) {
+                        merged.push(leftSorted[li]);
+                        nodeStates[id].mergeResult = [...merged];
+                        nodeStates[id].leftRemaining = leftSorted.slice(li + 1);
+                        nodeStates[id].rightRemaining = rightSorted.slice(ri);
+                        nodeStates[id].compareLeftIdx = null;
+                        nodeStates[id].compareRightIdx = null;
+                        takeSnapshot('剩余左边: ' + leftSorted[li], 'merge', id);
+                        li++;
+                    }
+
+                    while (ri < rightSorted.length) {
+                        merged.push(rightSorted[ri]);
+                        nodeStates[id].mergeResult = [...merged];
+                        nodeStates[id].leftRemaining = leftSorted.slice(li);
+                        nodeStates[id].rightRemaining = rightSorted.slice(ri + 1);
+                        nodeStates[id].compareLeftIdx = null;
+                        nodeStates[id].compareRightIdx = null;
+                        takeSnapshot('剩余右边: ' + rightSorted[ri], 'merge', id);
+                        ri++;
+                    }
+
+                    nodeStates[id].status = 'done';
+                    nodeStates[id].mergeResult = [...merged];
+                    nodeStates[id].values = [...merged];
+                    nodeStates[id].compareLeftIdx = null;
+                    nodeStates[id].compareRightIdx = null;
+                    nodeStates[id].leftRemaining = null;
+                    nodeStates[id].rightRemaining = null;
+                    nodeStates[id].mergedFromChildren = true;
+                    takeSnapshot('合并完成: [' + merged.join(', ') + ']', 'merge', id);
+
+                    return merged;
+                }
+
+                mergeSortRec(0, arr.length - 1, 0);
+                takeSnapshot('✅ 排序完成!', 'done', meta.rootId);
+
+                return snapshots;
+            }
+
+            // 渲染快照
+            function renderSnapshot(snapIndex) {
+                if (snapIndex < 0 || snapIndex >= allSnapshots.length) return;
+                const snap = allSnapshots[snapIndex];
+                const meta = treeMeta;
+                vizInner.innerHTML = '';
+
+                // 为每个层级创建行
+                for (let d = 0; d <= meta.maxDepth; d++) {
+                    const levelNodes = meta.levels[d] || [];
+                    const row = document.createElement('div');
+                    row.className = 'tree-level';
+                    row.setAttribute('data-depth', d);
+
+                    // 计算总跨度用于flex-basis
+                    const totalSpan = (meta.nodeMap[meta.rootId]?.end || 0) - (meta.nodeMap[meta.rootId]
+                        ?.start || 0) + 1;
+
+                    for (const node of levelNodes) {
+                        const ns = snap.nodeStates[node.id];
+                        const nodeDiv = document.createElement('div');
+                        nodeDiv.className = 'tree-node';
+
+                        if (!ns || !ns.visible) {
+                            nodeDiv.classList.add('node-hidden');
+                            // 占位
+                            const span = node.end - node.start + 1;
+                            const flexBasis = (span / totalSpan) * 100;
+                            nodeDiv.style.flexBasis = flexBasis + '%';
+                            nodeDiv.style.flexGrow = '0';
+                            nodeDiv.style.flexShrink = '1';
+                            nodeDiv.innerHTML = '';
+                            row.appendChild(nodeDiv);
+                            continue;
+                        }
+
+                        const span = node.end - node.start + 1;
+                        const flexBasis = (span / totalSpan) * 100;
+                        nodeDiv.style.flexBasis = flexBasis + '%';
+                        nodeDiv.style.flexGrow = '0';
+                        nodeDiv.style.flexShrink = '1';
+
+                        // 状态样式
+                        if (ns.status === 'split') nodeDiv.classList.add('node-split');
+                        if (ns.status === 'merging') nodeDiv.classList.add('node-merging');
+                        if (ns.status === 'done') nodeDiv.classList.add('node-done');
+
+                        // 决定显示哪些元素
+                        let displayValues = [];
+                        let cellStatuses = []; // 'normal' | 'compare' | 'placed' | 'ghost' | 'empty-slot'
+
+                        if (ns.status === 'merging') {
+                            // 显示合并结果 + 空槽位
+                            const totalSlots = node.end - node.start + 1;
+                            for (let i = 0; i < totalSlots; i++) {
+                                if (i < ns.mergeResult.length) {
+                                    displayValues.push(ns.mergeResult[i]);
+                                    // 最新放置的（最后一个）有pop-in动画
+                                    if (i === ns.mergeResult.length - 1 && ns.mergeResult.length > 0 &&
+                                        (ns.compareLeftIdx === null && ns.compareRightIdx === null ||
+                                            (ns.leftRemaining !== null && ns.rightRemaining !== null))
+                                    ) {
+                                        cellStatuses.push('placed');
+                                    } else {
+                                        cellStatuses.push('placed-no-anim');
+                                    }
+                                } else {
+                                    displayValues.push(null);
+                                    cellStatuses.push('empty-slot');
+                                }
+                            }
+                            // 如果还有compare状态，标记对应位置的元素
+                            if (ns.compareLeftIdx !== null && ns.leftRemaining !== null && ns.leftRemaining
+                                .length > 0) {
+                                // 左子节点正在比较的元素在子节点显示，不在这里
+                            }
+                        } else if (ns.status === 'done' && ns.mergedFromChildren) {
+                            displayValues = [...ns.values];
+                            cellStatuses = displayValues.map(() => 'placed-no-anim');
+                        } else if (ns.status === 'done' && !ns.mergedFromChildren) {
+                            // 叶子节点完成
+                            displayValues = [...ns.values];
+                            cellStatuses = displayValues.map(() => 'placed-no-anim');
+                        } else {
+                            // split状态，显示原始值
+                            displayValues = [...ns.values];
+                            cellStatuses = displayValues.map(() => 'normal');
+                        }
+
+                        // 对于merging状态，还需要显示子节点的剩余元素提示
+                        // 在节点下方显示小的子节点信息
+                        for (let i = 0; i < displayValues.length; i++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'element-cell';
+                            if (displayValues[i] !== null && displayValues[i] !== undefined) {
+                                cell.textContent = displayValues[i];
+                            }
+                            const cs = cellStatuses[i] || 'normal';
+                            if (cs === 'compare') cell.classList.add('cell-compare');
+                            if (cs === 'placed') cell.classList.add('cell-placed');
+                            if (cs === 'ghost') cell.classList.add('cell-ghost');
+                            if (cs === 'empty-slot') cell.classList.add('cell-empty-slot');
+                            if (cs === 'placed-no-anim') {
+                                cell.style.background = '#4caf84';
+                                cell.style.color = '#fff';
+                                cell.style.borderColor = '#3d9a60';
+                                cell.style.boxShadow = '0 0 8px rgba(76,175,132,0.3)';
+                            }
+                            nodeDiv.appendChild(cell);
+                        }
+
+                        row.appendChild(nodeDiv);
+                    }
+                    vizInner.appendChild(row);
+                }
+
+                // 如果处于merging阶段，在活跃节点的子节点行中添加比较高亮
+                if (snap.phase === 'merge' && snap.activeNodeId && snap.nodeStates[snap.activeNodeId]?.status ===
+                    'merging') {
+                    const activeNs = snap.nodeStates[snap.activeNodeId];
+                    const activeNode = meta.nodeMap[snap.activeNodeId];
+                    if (activeNode && activeNode.children.length === 2) {
+                        const leftChildId = activeNode.children[0];
+                        const rightChildId = activeNode.children[1];
+                        const leftNs = snap.nodeStates[leftChildId];
+                        const rightNs = snap.nodeStates[rightChildId];
+
+                        // 找到子节点所在的层级行并更新其中的元素
+                        const allRows = vizInner.querySelectorAll('.tree-level');
+                        for (const row of allRows) {
+                            const depth = parseInt(row.getAttribute('data-depth'));
+                            if (depth === activeNode.depth + 1) {
+                                const nodeDivs = row.querySelectorAll('.tree-node');
+                                for (const nd of nodeDivs) {
+                                    // 通过data属性识别节点
+                                    const cells = nd.querySelectorAll('.element-cell');
+                                    // 检查是否是左子节点
+                                    if (leftNs && leftNs.visible && cells.length > 0) {
+                                        const leftRemaining = activeNs.leftRemaining || [];
+                                        const leftCompareIdx = activeNs.compareLeftIdx;
+                                        // 找到左子节点对应的div
+                                        const leftNodeMeta = meta.nodeMap[leftChildId];
+                                        if (leftNodeMeta && nd.textContent.includes(String(leftNodeMeta.values[
+                                                0]))) {
+                                            updateChildCells(nd, leftRemaining, leftCompareIdx, leftNodeMeta.values
+                                                .length);
+                                        }
+                                    }
+                                    if (rightNs && rightNs.visible && cells.length > 0) {
+                                        const rightRemaining = activeNs.rightRemaining || [];
+                                        const rightCompareIdx = activeNs.compareRightIdx;
+                                        const rightNodeMeta = meta.nodeMap[rightChildId];
+                                        if (rightNodeMeta) {
+                                            updateChildCells(nd, rightRemaining, rightCompareIdx, rightNodeMeta.values
+                                                .length);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // 更新步骤指示器和阶段徽章
+                const totalSteps = allSnapshots.length;
+                stepIndicator.innerHTML = '步骤 <span>' + (snapIndex + 1) + '</span> / <span>' + totalSteps +
+                '</span>';
+                if (snap.phase === 'split') {
+                    phaseBadge.textContent = '分裂阶段';
+                    phaseBadge.className = 'phase-badge phase-split';
+                } else if (snap.phase === 'merge') {
+                    phaseBadge.textContent = '合并阶段';
+                    phaseBadge.className = 'phase-badge phase-merge';
+                } else {
+                    phaseBadge.textContent = '完成';
+                    phaseBadge.className = 'phase-badge phase-done';
+                }
+
+                // 滚动到相关区域
+                if (snap.activeNodeId && snap.phase === 'merge') {
+                    const activeNode = meta.nodeMap[snap.activeNodeId];
+                    if (activeNode) {
+                        const targetDepth = activeNode.depth;
+                        const rows = vizInner.querySelectorAll('.tree-level');
+                        for (const row of rows) {
+                            if (parseInt(row.getAttribute('data-depth')) === targetDepth) {
+                                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            function updateChildCells(nodeDiv, remaining, compareIdx, originalLength) {
+                const cells = nodeDiv.querySelectorAll('.element-cell');
+                if (cells.length === 0) return;
+                // 清除所有cells的状态
+                cells.forEach(c => {
+                    c.classList.remove('cell-compare', 'cell-ghost', 'cell-placed');
+                    c.style.background = '';
+                    c.style.color = '';
+                    c.style.borderColor = '';
+                    c.style.boxShadow = '';
+                    c.style.opacity = '';
+                });
+                // remaining中的元素在cells中显示
+                const remainingSet = new Set(remaining);
+                for (let i = 0; i < cells.length; i++) {
+                    const cellVal = parseFloat(cells[i].textContent);
+                    if (isNaN(cellVal)) continue;
+                    if (!remainingSet.has(cellVal)) {
+                        cells[i].classList.add('cell-ghost');
+                    }
+                    if (compareIdx !== null && compareIdx < remaining.length && remaining[compareIdx] === cellVal) {
+                        cells[i].classList.add('cell-compare');
+                        cells[i].classList.remove('cell-ghost');
+                    }
+                }
+            }
+
+            // 导航
+            function goToStep(index) {
+                if (index < 0) index = 0;
+                if (index >= allSnapshots.length) index = allSnapshots.length - 1;
+                currentStepIndex = index;
+                renderSnapshot(currentStepIndex);
+                updateButtonStates();
+            }
+
+            function updateButtonStates() {
+                btnPrev.disabled = currentStepIndex <= 0;
+                btnNext.disabled = currentStepIndex >= allSnapshots.length - 1;
+                if (currentStepIndex >= allSnapshots.length - 1 && isPlaying) {
+                    pauseAutoPlay();
+                }
+            }
+
+            function startAutoPlay() {
+                if (isPlaying) return;
+                if (currentStepIndex >= allSnapshots.length - 1) {
+                    currentStepIndex = -1;
+                }
+                isPlaying = true;
+                btnAutoPlay.classList.add('btn-active');
+                btnPause.disabled = false;
+                btnAutoPlay.textContent = '⏯ 播放中';
+                advanceAutoPlay();
+            }
+
+            function pauseAutoPlay() {
+                isPlaying = false;
+                if (autoPlayTimer) clearTimeout(autoPlayTimer);
+                autoPlayTimer = null;
+                btnAutoPlay.classList.remove('btn-active');
+                btnPause.disabled = true;
+                btnAutoPlay.textContent = '▶ 自动播放';
+            }
+
+            function advanceAutoPlay() {
+                if (!isPlaying) return;
+                if (currentStepIndex >= allSnapshots.length - 1) {
+                    pauseAutoPlay();
+                    return;
+                }
+                goToStep(currentStepIndex + 1);
+                const speed = speedSlider.value;
+                const delay = 1500 - (speed - 1) * 140; // 1500ms(慢) 到 240ms(快)
+                autoPlayTimer = setTimeout(advanceAutoPlay, Math.max(180, delay));
+            }
+
+            function getSpeedDelay() {
+                const speed = speedSlider.value;
+                return 1500 - (speed - 1) * 140;
+            }
+
+            // 初始化/重置
+            function initialize() {
+                pauseAutoPlay();
+                let arr;
+                try {
+                    arr = parseInput();
+                } catch (e) {
+                    alert('输入错误: ' + e.message + '\n请使用逗号分隔的数字，例如: 38,27,43,3,9,82,10');
+                    return;
+                }
+                if (arr.length < 2) {
+                    alert('至少需要2个元素');
+                    return;
+                }
+                treeMeta = buildTreeMeta(arr);
+                allSnapshots = simulateMergeSort(arr, treeMeta);
+                currentStepIndex = -1;
+                goToStep(0);
+                btnStartReset.textContent = '🔄 重置';
+                btnPrev.disabled = true;
+                btnNext.disabled = false;
+                updateButtonStates();
+                // 滚动到顶部
+                vizContainer.scrollTop = 0;
+            }
+
+            // 事件绑定
+            btnStartReset.addEventListener('click', () => {
+                pauseAutoPlay();
+                initialize();
+            });
+
+            btnPrev.addEventListener('click', () => {
+                pauseAutoPlay();
+                if (currentStepIndex > 0) {
+                    goToStep(currentStepIndex - 1);
+                }
+            });
+
+            btnNext.addEventListener('click', () => {
+                pauseAutoPlay();
+                if (currentStepIndex < allSnapshots.length - 1) {
+                    goToStep(currentStepIndex + 1);
+                }
+            });
+
+            btnAutoPlay.addEventListener('click', () => {
+                if (isPlaying) {
+                    pauseAutoPlay();
+                } else {
+                    startAutoPlay();
+                }
+            });
+
+            btnPause.addEventListener('click', () => {
+                pauseAutoPlay();
+            });
+
+            speedSlider.addEventListener('input', () => {
+                if (isPlaying) {
+                    pauseAutoPlay();
+                    startAutoPlay();
+                }
+            });
+
+            // 键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    pauseAutoPlay();
+                    if (currentStepIndex > 0) goToStep(currentStepIndex - 1);
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    pauseAutoPlay();
+                    if (currentStepIndex < allSnapshots.length - 1) goToStep(currentStepIndex + 1);
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    if (isPlaying) {
+                        pauseAutoPlay();
+                    } else {
+                        startAutoPlay();
+                    }
+                } else if (e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    pauseAutoPlay();
+                    initialize();
+                }
+            });
+
+            // 初始加载
+            initialize();
+
+            // 窗口大小变化时重新渲染
+            let resizeDebounce;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeDebounce);
+                resizeDebounce = setTimeout(() => {
+                    if (currentStepIndex >= 0 && currentStepIndex < allSnapshots.length) {
+                        renderSnapshot(currentStepIndex);
+                    }
+                }, 200);
+            });
+
+            console.log('✅ 归并排序可视化已就绪');
+            console.log('   ⌨ 快捷键: ←→ 导航步骤 | 空格 播放/暂停 | R 重置');
+            console.log('   📊 总步骤数:', allSnapshots.length);
+        })();
+    </script>
+</body>
+</html>

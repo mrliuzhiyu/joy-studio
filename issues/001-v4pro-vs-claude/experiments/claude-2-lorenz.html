@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>洛伦兹吸引子 · Claude</title>
+<style>
+:root { color-scheme: dark; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0a0a0f;
+  color: #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+#panel {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  background: rgba(18,18,26,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  color: #9ca3af;
+  line-height: 1.85;
+  pointer-events: none;
+  user-select: none;
+  min-width: 180px;
+  z-index: 10;
+}
+#panel .title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #e5e7eb;
+  font-family: inherit;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+#panel .title::before {
+  content:'';
+  width: 8px; height: 8px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #ec4899);
+  box-shadow: 0 0 8px rgba(168,85,247,.6);
+}
+#panel .row { display: flex; justify-content: space-between; gap: 16px; }
+#panel .k { color: #6b7280; }
+#panel .v { color: #d4d4d8; }
+#controls {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  background: rgba(18,18,26,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 6px;
+  border-radius: 10px;
+}
+#controls button {
+  background: transparent;
+  border: 0;
+  color: #d4d4d8;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: all .15s;
+  font-family: inherit;
+}
+#controls button:hover { background: rgba(255,255,255,0.06); color: #e5e7eb; }
+#controls button.on { background: rgba(168,85,247,0.15); color: #c084fc; }
+#hint {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  font-size: 10.5px;
+  color: #4b5563;
+  font-family: "SF Mono", Menlo, monospace;
+  z-index: 10;
+  user-select: none;
+}
+canvas { display: block; width: 100vw; height: 100vh; cursor: grab; }
+canvas:active { cursor: grabbing; }
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <div class="title">Lorenz Attractor</div>
+  <div class="row"><span class="k">σ / ρ / β</span><span class="v">10 / 28 / 2.667</span></div>
+  <div class="row"><span class="k">points</span><span class="v" id="pts">0 / 15000</span></div>
+  <div class="row"><span class="k">yaw / pitch</span><span class="v" id="ang">0.0° / 17.2°</span></div>
+  <div class="row"><span class="k">zoom</span><span class="v" id="zm">11.0</span></div>
+  <div class="row"><span class="k">fps</span><span class="v" id="fps">—</span></div>
+</div>
+
+<div id="controls">
+  <button id="btn-rot" class="on">自动旋转</button>
+  <button id="btn-reset">重置视角</button>
+  <button id="btn-respawn">重新开始</button>
+</div>
+
+<div id="hint">拖拽旋转 · 滚轮缩放</div>
+
+<canvas id="c"></canvas>
+
+<script>
+(function(){
+  const SIGMA = 10, RHO = 28, BETA = 8/3, DT = 0.005, N = 15000;
+  const cvs = document.getElementById('c');
+  const ctx = cvs.getContext('2d');
+  const $pts = document.getElementById('pts');
+  const $ang = document.getElementById('ang');
+  const $zm  = document.getElementById('zm');
+  const $fps = document.getElementById('fps');
+  const btnRot = document.getElementById('btn-rot');
+  const btnReset = document.getElementById('btn-reset');
+  const btnResp = document.getElementById('btn-respawn');
+
+  // 预计算轨迹点
+  let pts = new Float32Array(N * 3);
+  function compute() {
+    let x = 0.1, y = 0, z = 0;
+    for (let i = 0; i < N; i++) {
+      pts[i*3] = x; pts[i*3+1] = y; pts[i*3+2] = z;
+      // RK4
+      const d1 = [SIGMA*(y-x), x*(RHO-z)-y, x*y - BETA*z];
+      const x2 = x + d1[0]*DT/2, y2 = y + d1[1]*DT/2, z2 = z + d1[2]*DT/2;
+      const d2 = [SIGMA*(y2-x2), x2*(RHO-z2)-y2, x2*y2 - BETA*z2];
+      const x3 = x + d2[0]*DT/2, y3 = y + d2[1]*DT/2, z3 = z + d2[2]*DT/2;
+      const d3 = [SIGMA*(y3-x3), x3*(RHO-z3)-y3, x3*y3 - BETA*z3];
+      const x4 = x + d3[0]*DT, y4 = y + d3[1]*DT, z4 = z + d3[2]*DT;
+      const d4 = [SIGMA*(y4-x4), x4*(RHO-z4)-y4, x4*y4 - BETA*z4];
+      x += DT * (d1[0] + 2*d2[0] + 2*d3[0] + d4[0]) / 6;
+      y += DT * (d1[1] + 2*d2[1] + 2*d3[1] + d4[1]) / 6;
+      z += DT * (d1[2] + 2*d2[2] + 2*d3[2] + d4[2]) / 6;
+    }
+  }
+  compute();
+
+  // 视角
+  let yaw = 0, pitch = 0.3, zoom = 11;
+  let autoRotate = true;
+  let rendered = 0;
+
+  // 色表：预生成每个点的 rgb
+  const colors = new Uint8ClampedArray(N * 3);
+  function lerp(a,b,k){ return a + (b-a)*k; }
+  for (let i = 0; i < N; i++) {
+    const t = i / (N-1);
+    let r,g,b;
+    if (t < 0.5) {
+      const k = t * 2;
+      r = lerp(59, 168, k); g = lerp(130, 85, k); b = lerp(246, 247, k);
+    } else {
+      const k = (t - 0.5) * 2;
+      r = lerp(168, 236, k); g = lerp(85, 72, k); b = lerp(247, 153, k);
+    }
+    colors[i*3] = r|0; colors[i*3+1] = g|0; colors[i*3+2] = b|0;
+  }
+
+  // 尺寸
+  let W, H, cx, cy, dpr;
+  function fit() {
+    dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    cvs.width = W * dpr;
+    cvs.height = H * dpr;
+    cvs.style.width = W + 'px';
+    cvs.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = W / 2; cy = H / 2;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  // FPS 采样
+  let lastT = performance.now();
+  let fpsSmooth = 60;
+
+  function draw() {
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, W, H);
+
+    if (rendered < N) rendered = Math.min(N, rendered + 120);
+    if (autoRotate) yaw += 0.0025;
+
+    const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
+    const cosP = Math.cos(pitch), sinP = Math.sin(pitch);
+
+    // 中心对齐：吸引子 z 约在 [0, 50]，减掉 25；x,y 在 [-20,20] 范围
+    const cz = 25;
+
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+    ctx.shadowBlur = 6;
+
+    // 按颜色段批量绘制（减少 strokeStyle 变更次数）
+    let prevR = -1, prevG = -1, prevB = -1;
+    let prevX = 0, prevY = 0;
+    ctx.beginPath();
+
+    for (let i = 0; i < rendered; i++) {
+      const x = pts[i*3];
+      const y = pts[i*3+1];
+      const z = pts[i*3+2] - cz;
+      // yaw around Y: x' = x cosY - z sinY ; z' = x sinY + z cosY
+      const x1 = x * cosY - z * sinY;
+      const z1 = x * sinY + z * cosY;
+      // pitch around X: y' = y cosP - z' sinP
+      const y2 = y * cosP - z1 * sinP;
+      const px = cx + x1 * zoom;
+      const py = cy - y2 * zoom;
+
+      const r = colors[i*3], g = colors[i*3+1], b = colors[i*3+2];
+
+      if (i === 0) {
+        prevX = px; prevY = py;
+        prevR = r; prevG = g; prevB = b;
+        continue;
+      }
+
+      if (r !== prevR || g !== prevG || b !== prevB) {
+        ctx.strokeStyle = `rgb(${prevR},${prevG},${prevB})`;
+        ctx.shadowColor = ctx.strokeStyle;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+      }
+
+      ctx.lineTo(px, py);
+      prevX = px; prevY = py;
+      prevR = r; prevG = g; prevB = b;
+    }
+    if (rendered > 1) {
+      ctx.strokeStyle = `rgb(${prevR},${prevG},${prevB})`;
+      ctx.shadowColor = ctx.strokeStyle;
+      ctx.stroke();
+    }
+
+    // 更新 HUD
+    $pts.textContent = `${rendered} / ${N}`;
+    $ang.textContent = `${(yaw * 180 / Math.PI % 360).toFixed(1)}° / ${(pitch * 180 / Math.PI).toFixed(1)}°`;
+    $zm.textContent = zoom.toFixed(1);
+  }
+
+  function loop(t) {
+    const dt = t - lastT;
+    if (dt > 0) fpsSmooth = fpsSmooth * 0.9 + (1000 / dt) * 0.1;
+    lastT = t;
+    $fps.textContent = fpsSmooth.toFixed(0);
+    draw();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // 交互：拖拽
+  let dragging = false;
+  let lastX = 0, lastY = 0;
+  function onDown(x, y) {
+    dragging = true; lastX = x; lastY = y;
+    autoRotate = false; btnRot.classList.remove('on');
+  }
+  function onMove(x, y) {
+    if (!dragging) return;
+    const dx = x - lastX;
+    const dy = y - lastY;
+    yaw -= dx * 0.006;
+    pitch -= dy * 0.006;
+    pitch = Math.max(-Math.PI/2 + 0.01, Math.min(Math.PI/2 - 0.01, pitch));
+    lastX = x; lastY = y;
+  }
+  function onUp() { dragging = false; }
+
+  cvs.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+  window.addEventListener('mouseup', onUp);
+
+  cvs.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) { onDown(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+  }, { passive: false });
+  cvs.addEventListener('touchmove', e => {
+    if (e.touches.length === 1) { onMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+  }, { passive: false });
+  cvs.addEventListener('touchend', onUp);
+
+  cvs.addEventListener('wheel', e => {
+    e.preventDefault();
+    zoom *= Math.exp(-e.deltaY * 0.001);
+    zoom = Math.max(2, Math.min(40, zoom));
+  }, { passive: false });
+
+  btnRot.addEventListener('click', () => {
+    autoRotate = !autoRotate;
+    btnRot.classList.toggle('on', autoRotate);
+  });
+  btnReset.addEventListener('click', () => {
+    yaw = 0; pitch = 0.3; zoom = 11;
+  });
+  btnResp.addEventListener('click', () => {
+    rendered = 0;
+    compute();
+  });
+})();
+</script>
+
+</body>
+</html>

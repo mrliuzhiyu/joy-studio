@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>刚发布的 DeepSeek V4-Pro，已经长出了自己的审美</title>
+</head>
+<body style="margin:0;background:#f2f2f2;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei UI','Microsoft YaHei',Arial,sans-serif;">
+
+<!-- 复制按钮（浮在右上角，不会进入复制内容） -->
+<button id="copy-btn" onclick="copyWxArticle()" style="position:fixed;top:20px;right:20px;padding:10px 20px;background:#111;color:white;border:0;border-radius:999px;cursor:pointer;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15);z-index:999;transition:all .2s;">复制正文（无白边）</button>
+
+<article id="wx-body" style="max-width:677px;margin:0 auto;background:white;padding:40px 24px 60px;">
+
+<!-- ==================== 标题区 ==================== -->
+<h1 style="margin:0 8px 16px;font-size:24px;line-height:1.5;letter-spacing:0.578px;color:rgb(0,0,0);font-weight:700;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;letter-spacing:0.5px;">刚发布的 DeepSeek V4-Pro，已经长出了自己的审美</span></h1>
+
+<p style="margin:0 8px 40px;font-size:13px;line-height:1.75em;letter-spacing:0.5px;color:rgb(136,136,136);"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;">2026 年 4 月 24 日 · DeepSeek V4-Pro 发布当日实测</span></p>
+
+<!-- ==================== 导语 ==================== -->
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">今天，DeepSeek 发布了 V4 预览版，同时开源。没有发布会。一条微信公众号消息、一次 API 文档刷新，V4 就这么上线了——这是他们一贯的作派。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">三件事值得记一下。一是 <strong>1M（一百万字）上下文从今天起成为 DeepSeek 所有官方服务的标配</strong>——把一整本两百页的书一次性塞给它，它还记得住头尾。二是 V4 一口气给出两个版本：旗舰 V4-Pro 和快速版 V4-Flash。三是定价——V4-Pro 输入 <strong>¥24 / 百万 token</strong>，V4-Flash <strong>仅 ¥2</strong>——相当于 Claude Opus 的 1/20 到 1/50。官方还顺带说 V4-Pro 使用体验优于 Sonnet 4.5、接近 Opus 4.6 非思考模式，给出了一个有坐标的参照。</p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">那到底多接近？官方引用的 SWE-bench Verified 跑分，V4-Pro 80.6% 对比 Claude Opus 4.6 的 80.8%。差 0.2 个百分点。Codeforces Elo 3206 分，追上 GPT-5.4。但跑分是跑分，真正拿到手里做事是另一回事。所以我做了最朴素的一件事——找一个公认的世界顶级选手，Claude Opus 4.7，给两边出同样的题，看谁答得更好。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">题是三道差异很大的前端真题：一道考算法，一道考数学，一道考审美。要求一样——做出一个可以直接用浏览器打开的网页。两边独立作答，不互相看对方的答案。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">结果比我以为的要有意思。</span></p>
+
+<!-- ==================== 要点速览 ==================== -->
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">要点速览：</span></strong></p>
+
+<section style="border-left:2px solid rgb(220,220,220);padding:4px 0 4px 14px;margin:0 8px 32px;">
+<p style="margin:0 0 8px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· V4-Pro 三道题全部完成、都能跑，但每道题要等大约 7 分钟</span></p>
+<p style="margin:0 0 8px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· 它生成的页面平均是 Claude 的三倍多体量，设计细节更丰富</span></p>
+<p style="margin:0 0 8px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· 内部思考稿占输出总量近一半，买单时要把这部分算进去</span></p>
+<p style="margin:0 0 8px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· 两家的审美取向明显不同：一个冷色硅谷风，一个暖色咖啡店风</span></p>
+<p style="margin:0 0 8px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· 我自己踩过的一个坑，在 max_tokens 这个参数上，得改过来</span></p>
+<p style="margin:0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· 定价 V4-Pro ¥24、V4-Flash ¥2（每百万 token），约为 Claude Opus 的 1/20 到 1/50</span></p>
+</section>
+
+<!-- ==================== 01 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">01</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">V4-Pro 是个什么模型</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">跳过市场稿话术，只讲事实。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">先把硬参数放这里：V4-Pro 总参数 1.6 万亿，每次激活 490 亿；V4-Flash 总参数 2840 亿，激活 130 亿。两个版本都采用 MoE 架构，都支持 1M 上下文，都同时开源（MIT 协议）。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">还有一件顺带要交代的：V4 是全球首个 100% 基于华为昇腾 + CANN 框架适配的万亿参数大模型。换句话说，不依赖 NVIDIA CUDA 也能跑得起来。这对日常调 API 没有直接影响，但对国内 AI 的底层供应链意味着不小。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">V4 系列默认带思考模式和非思考模式双开关。思考模式下它会先在看不见的地方写一大段思考稿，把问题拆开、分步推导、自我检查，然后才动笔。这套机制跟 OpenAI 的 o1、DeepSeek 自己的 R1 一脉相承——V4 的新意是把思考放进了一个原本用作常规对话的模型里，拿掉思考就是普通聊天 AI，开启思考就是推理型。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这解释了它两个突出的特征。回答慢——不是打字慢，是在你看不到的地方先写提纲，一道中等复杂度的题可能要花 7 到 8 分钟才出结果。回答稳——尤其是数学、算法、代码一类需要逻辑推演的任务，做得比直接问直接答的模型更稳。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">顺带一个迁移预警：旧接口的两个模型名 deepseek-chat 和 deepseek-reasoner 将在 2026 年 7 月 24 日停用，三个月后这两个名字分别指向 V4-Flash 的非思考和思考模式。如果你手头有旧代码，时间到之前改一下调用就行。</span></p>
+
+<!-- V4 跑分对比表 -->
+<p style="margin:28px 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">V4-Pro 官方跑分 vs 顶级选手（来自 DeepSeek 公告与第三方评测）：</span></p>
+
+<table style="width:calc(100% - 16px);border-collapse:collapse;margin:0 8px 32px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14.5px;letter-spacing:0.5px;color:rgb(34,34,34);">
+<tr>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">测试项</th>
+<th style="text-align:right;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">V4-Pro</th>
+<th style="text-align:right;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">对标</th>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">SWE-bench Verified（代码 Agent）</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">80.6%</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">Claude Opus 4.6 · 80.8%</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">Codeforces Elo（竞赛编程）</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">3206 分</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">GPT-5.4 · 持平</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">Terminal-Bench 2.0（命令行 Agent）</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">67.9%</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">GPT-5.4 · 持平</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">AIME 2026（数学推理）</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">99.4%</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">——</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;">SimpleQA-Verified（世界知识）</td>
+<td style="text-align:right;padding:10px 8px;color:rgb(85,85,85);">57.9%</td>
+<td style="text-align:right;padding:10px 8px;color:rgb(85,85,85);">过往开源 · ~30%</td>
+</tr>
+</table>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14.5px;letter-spacing:0.5px;color:rgb(150,150,150);">数据来自 DeepSeek V4 预览版官方公告；部分数字为官方自测，尚待第三方独立复现。</span></p>
+
+<p style="margin:0 8px 16px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>但这是官方口径。</strong>发布 T+0 大多数独立榜单还来不及跑 V4——LiveCodeBench、Aider Polyglot、ArtifactsBench、Artificial Analysis Index 全部未收录。能稳稳引用的第三方数据只有两个：</span></p>
+
+<table style="width:calc(100% - 16px);border-collapse:collapse;margin:0 8px 28px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14.5px;letter-spacing:0.5px;color:rgb(34,34,34);">
+<tr>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">第三方数据点</th>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">V4-Pro 位置</th>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">头部是谁</th>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">HLE · Humanity's Last Exam（llm-stats）</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">0.482 · 第 14</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">Opus 4.7 · 0.547 / GPT-5.5 · 0.572</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;">LMArena 盲投（Coding / Overall）</td>
+<td style="padding:10px 8px;">Coding 第 10 / Overall 第 20</td>
+<td style="padding:10px 8px;color:rgb(85,85,85);">Opus 4.7 thinking / Gemini 3.1 Pro</td>
+</tr>
+</table>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">两项第三方数据都指向同一结论：<strong>V4-Pro 属于准一线但未到头部</strong>。HLE 落后 Opus 4.7 约 12%，Arena 盲投 Coding 第 10 说明用户实际体感还没进第一梯队。顺带一个 HN 用户点出 SWE-bench Verified 这个榜本身已有污染嫌疑，官方 80.6% 的含金量要打折看。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">几个真实用户的第一手体感，比跑分更直观：</span></p>
+
+<section style="border-left:2px solid rgb(220,220,220);padding:4px 0 4px 14px;margin:0 8px 32px;">
+<p style="margin:0 0 10px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· Simon Willison 在博客里用画 SVG 鹈鹕骑自行车测两个版本。结论是 <strong>Flash 的 SVG 反而比 Pro 更连贯</strong>，他强调真正的亮点是价格。</span></p>
+<p style="margin:0 0 10px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· HN 用户 hodgehog11 用硕博级概率与统计新题测 V4-Pro，迭代追问证明的能力非常惊艳，<strong>数学推理超过 Claude、首轮追平 GPT-5</strong>。</span></p>
+<p style="margin:0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(85,85,85);">· V2EX 有人让 V4-Pro 做 CSS+JS 动效天气卡片，实测太简陋，同题 Gemini 3.1 明显更好——<strong>前端 artifact 的实际观感与官方 LiveCodeBench 93.5 的光鲜不匹配</strong>。</span></p>
+</section>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我的三题实测印证后面这条——前端复杂题（洛伦兹 / 番茄钟）它做得厚实但不精。真正的第三方复核窗口要等下周，Artificial Analysis 的 Intelligence Index 综合分数目前还标着 Unknown，是最值得追踪的那个数字。</span></p>
+
+<!-- ==================== 02 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">02</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">归并排序 · 把分治画成动画</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">归并排序是计算机专业大一就学的经典算法，像把一副打乱的扑克牌反复对半分堆，再两两合并回去。要求做成能一步步看的动画：每次比较高亮哪两个数、合并出来的新数组是什么样，外加上一步、下一步、自动播放、暂停四个按钮。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">题目对两家而言都不算难，更多是看动画有没有做得让人一看就懂。</span></p>
+
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:0.5px;color:rgb(85,85,85);">Claude · ≈ 2 分钟 · 12.3 KB</span></strong></p>
+<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 12px;letter-spacing:0.5px;">[ 此处插入截图 · claude-1-mergesort.html ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">深色底黄色光，像是程序员的调试工具。开局先把整棵递归树的骨架画出来，每走一步只是把对应节点高亮、把被比较的数字挑出来。节奏稳，代码干净。</span></p>
+
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:0.5px;color:rgb(85,85,85);">V4-Pro · ≈ 6.9 分钟 · 45.7 KB</span></strong></p>
+<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 12px;letter-spacing:0.5px;">[ 此处插入截图 · deepseek-1-mergesort.html ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">深紫底加橙绿蓝三色分区，更像面向用户的产品页面。没有一开始把树画出来，而是边演算边让节点一层一层长出来，视觉上更有进行中的感觉。代码用了 30 多个颜色配置变量，像是先搭了一整套设计系统再去写功能。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">功能上两边都达标。视觉上 V4-Pro 更像成品——不像是 demo，更像可以直接放进 App 的那种完整度。但 Claude 写的代码是 12 KB，V4-Pro 写出来的是 46 KB，差不多四倍。这个差异会在后面两道题里反复出现。</span></p>
+
+<!-- ==================== 03 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">03</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">洛伦兹吸引子 · 画一只混沌蝴蝶</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这题的正式名字叫洛伦兹吸引子。1963 年一位气象学家在研究天气模型时，偶然发现一组方程会画出一只永远自我缠绕、永不重复的蝴蝶形状——后来它成了混沌理论最有名的图形。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">题目要求：用数值方法把 15000 个点的运动轨迹一个一个算出来，用蓝到洋红的渐变色画出轨迹；支持鼠标拖拽旋转 3D 视角、滚轮缩放、显示实时帧率。这道题核心考的是会不会做严谨的数学，公式错一个系数，画出来就不是蝴蝶，是一团乱麻。</span></p>
+
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:0.5px;color:rgb(85,85,85);">Claude · ≈ 1 分 30 秒 · 9.4 KB</span></strong></p>
+<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 12px;letter-spacing:0.5px;">[ 此处插入截图 · claude-2-lorenz.html ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">黑底蓝紫洋红渐变，实时帧率显示在左上一个半透明小卡片里。鼠标拖拽能顺滑旋转蝴蝶的角度，放大缩小也有自然的阻尼感。</span></p>
+
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:0.5px;color:rgb(85,85,85);">V4-Pro · ≈ 7.8 分钟 · 32.9 KB</span></strong></p>
+<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 12px;letter-spacing:0.5px;">[ 此处插入截图 · deepseek-2-lorenz.html ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">也是黑底紫色，配色几乎和 Claude 撞了。实时帧率放在屏幕顶部中央的长条胶囊里。效果上两份看起来非常像——数学是对的，视觉是对的。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这里出现了本次最有意思的小细节。两个完全独立的 AI，在题目没有强制指定颜色的前提下，都选了同一个深色背景加紫色 accent。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这不是偶然。洛伦兹吸引子配深色背景和紫色轨迹是网上流传最广的经典画法，两家 AI 都学到了同一个默认审美——大模型不只是会写代码，它们也在训练过程中慢慢形成了某种肌肉记忆式的设计习惯。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">V4-Pro 本题在思考上花了很多力气，大约 8000 字的内部推导，把数学公式、旋转矩阵、性能取舍都想了一遍，然后才开始写代码。</span></p>
+
+<!-- ==================== 04 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">04</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">番茄钟 · 审美自由发挥</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前两题都是有标准答案的——做得对不对，肉眼可验。这一题专门留一个没有标准答案的。25 分钟专注加 5 分钟休息的番茄钟，要有进度圈、任务列表、深浅主题切换。功能一模一样，但设计要克制、留白充足这句话怎么解读完全看模型自己。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这才是真正考审美的一题，也是本次差异最大的一题。</span></p>
+
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:0.5px;color:rgb(85,85,85);">Claude · ≈ 2 分 30 秒 · 13.6 KB</span></strong></p>
+<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 12px;letter-spacing:0.5px;">[ 此处插入截图 · claude-3-pomodoro.html 浅深主题 ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">白底、纯灰文字、工作态朱红、休息态翠绿、大号细体数字 64 像素。像是从 Notion 或 Linear 里抠出来的一页——高效冷静，留白很多。</span></p>
+
+<p style="margin:0 8px 8px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:0.5px;color:rgb(85,85,85);">V4-Pro · ≈ 7.7 分钟 · 40.5 KB</span></strong></p>
+<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 12px;letter-spacing:0.5px;">[ 此处插入截图 · deepseek-3-pomodoro.html 浅深主题 ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">米白底、深咖啡色文字、工作态砖红、休息态墨绿。像是从一家独立咖啡馆或文艺独立 App 里抠出来的——温暖、安静、有人情味。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">同一道做个番茄钟的要求，两个 AI 做出了截然相反的视觉气质。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Claude 的版本像是给硅谷产品经理用的工具，干净、冷、效率优先。V4-Pro 的版本像是给需要安静专注的人用的陪伴，温暖、柔、节奏慢。两个都好看。但它们对专注这件事的理解方向，完全不同。</span></p>
+
+<!-- ==================== 05 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">05</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">数字摆出来</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">三道题的实测数据，所有数字都是真实调用 V4-Pro 官方 API 取回来的。</span></p>
+
+<table style="width:calc(100% - 16px);border-collapse:collapse;margin:0 8px 32px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);">
+<tr>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">题目</th>
+<th style="text-align:center;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">Claude</th>
+<th style="text-align:center;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">V4-Pro</th>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">归并排序</td>
+<td style="text-align:center;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ 2 分钟 · 12 KB</td>
+<td style="text-align:center;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ 6.9 分钟 · 46 KB</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">洛伦兹吸引子</td>
+<td style="text-align:center;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ 1.5 分钟 · 9 KB</td>
+<td style="text-align:center;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ 7.8 分钟 · 33 KB</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">番茄钟</td>
+<td style="text-align:center;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ 2.5 分钟 · 14 KB</td>
+<td style="text-align:center;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ 7.7 分钟 · 41 KB</td>
+</tr>
+<tr>
+<td style="padding:12px 8px;font-weight:700;">合计</td>
+<td style="text-align:center;padding:12px 8px;font-weight:700;">35 KB · ≈ 6 分钟</td>
+<td style="text-align:center;padding:12px 8px;font-weight:700;">119 KB · 22 分钟</td>
+</tr>
+</table>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">还有一个隐藏指标。V4-Pro 每次回答，官方 API 会告诉你两个数：这次总共输出了多少字，其中有多少字是内部思考稿。三道题合起来，总输出 48544 字，其中思考稿占 23181 字，比例是 47.7%。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">也就是说，你用 V4-Pro 每付 2 块钱，有将近 1 块是买在你看不见的那段内部思考上。这不是 bug，推理型 AI 的思考稿本身就是正常计费的一部分。但普通用户很少意识到这件事。</span></p>
+
+<!-- ==================== Meta 实验 · 让它给本文排版 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">06</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">一次 Meta 实测 · 让它给本文自己排版</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前面讲了 V4-Pro 的审美倾向。我想再往前推一步——把本文完整的 markdown 喂给 V4-Pro，让它用<strong>自己的审美</strong>输出一份公众号排版 HTML。同一篇文章，两种模型两种手法。这是一次 meta 实验，但信息量不小。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">prompt 很克制：单文件 HTML、inline style、不用 style 块、其余全部自由发挥。耗时 5.8 分钟，产出 16 KB 可运行 HTML。</span></p>
+
+<!-- 截图占位 1：V4-Pro 单独 -->
+<div style="background:#f5f3ef;padding:72px 20px;text-align:center;color:#9b8e7e;font-size:13px;margin:0 8px 10px;letter-spacing:0.5px;border:1px solid #e5dfd5;">[ 此处插入截图 · 打开 exp-v4pro-layout-clean.html 全屏截图 ]</div>
+<p style="margin:0 8px 28px;line-height:1.75em;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">↑ V4-Pro 自主排版的样子</span></p>
+
+<p style="margin:0 8px 20px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>它怎么选的？</strong>我数了一下它用到的色值：</span></p>
+
+<table style="width:calc(100% - 16px);border-collapse:collapse;margin:0 8px 28px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14.5px;letter-spacing:0.5px;color:rgb(34,34,34);">
+<tr>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">角色</th>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">V4-Pro 选的色值</th>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">观感</th>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">主背景</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);font-family:'SF Mono',Consolas,monospace;">#f5f3ef / #f8f5ef</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">米白、偏暖</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">主文字</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);font-family:'SF Mono',Consolas,monospace;">#3d3226 / #2c2416</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">深咖啡色</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">分隔线</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);font-family:'SF Mono',Consolas,monospace;">#e5dfd5 / #e8e3da</td>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">暖灰</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;">强调色</td>
+<td style="padding:10px 8px;font-family:'SF Mono',Consolas,monospace;">#b85c38</td>
+<td style="padding:10px 8px;color:rgb(85,85,85);">砖红色</td>
+</tr>
+</table>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">对照之前 V4-Pro 做番茄钟时选的色板——米白 <code style="background:#f5f5f5;padding:1px 5px;border-radius:3px;font-size:13px;">#f7f5f2</code>、深啡文字 <code style="background:#f5f5f5;padding:1px 5px;border-radius:3px;font-size:13px;">#2c2416</code>、砖红强调 <code style="background:#f5f5f5;padding:1px 5px;border-radius:3px;font-size:13px;">#d94e3c</code>——几乎原班人马。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>它不是换一题就换一套审美，是每次都从记忆里调出这套调色板</strong>。番茄钟、公众号排版——两个目标完全不同的任务，它的视觉直觉是同一个。这比跑分数字更能说明模型有自己的性格这件事。</span></p>
+
+<!-- 截图占位 2：并排对比 -->
+<div style="background:#fafafa;padding:64px 20px;text-align:center;color:#999;font-size:13px;margin:0 8px 10px;letter-spacing:0.5px;border:1px solid #eee;">[ 此处插入并排对比截图 · 打开 screenshot-helper.html 截图两栏 ]</div>
+<p style="margin:0 8px 28px;line-height:1.75em;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">↑ 左 Claude 阅览室黑白极简 · 右 V4-Pro 咖啡店暖色；同一篇文章，两种审美 DNA</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>一个小插曲。</strong>我 prompt 里明确写只输出完整 HTML，不要任何说明文字。V4-Pro 回给我的开头是：<em>"以下是您需要的 DeepSeek V4‑Pro 发布文章排版 HTML 源码……"</em>——前面跟了一段中文说明，然后才是用 ```html ``` 包裹的代码。它**没完全遵守 prompt 的格式约束**。Claude 同类 prompt 下几乎不会这样。这是另一个值得记的差异：指令遵循精度上还有距离。</span></p>
+
+<!-- ==================== 06 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">07</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">几个不那么直接的观察</span></strong></p>
+
+<p style="margin:0 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:17px;letter-spacing:0.5px;color:rgb(0,0,0);">一、V4-Pro 不是 Claude 的平替，是另一种工作模式。</span></strong></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Claude 是你身边的同事，你说一句它接一句。V4-Pro 是外面那家下单后去吃午饭、回来就有成品的工作室——你给它一个需求，关上电脑去开个会，回来时它已经把整套页面设计、配色系统、交互细节、深色模式全部做完了。这两种模式没有好坏，看你在什么阶段。需要一行一行打磨，找 Claude。需要一次性拿出一个完整的东西，V4-Pro 的慢反而是优势。跑分层面也支持这个结论：SWE-bench Verified 上 V4-Pro 80.6%、Claude Opus 4.6 80.8%——差 0.2 个百分点，不是差一档。</span></p>
+
+<p style="margin:0 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:17px;letter-spacing:0.5px;color:rgb(0,0,0);">二、V4-Pro 有一种把设计想全的习惯。</span></strong></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">三道题，V4-Pro 的代码平均是 Claude 的 3.4 倍。这听起来像是缺点，但仔细看它多出来的内容，大部分是一整套完整的设计配置——30 到 50 个颜色变量、深浅模式切换、动画时长统一、按钮悬停状态。这对一个会写代码但没什么设计感的人很友好，模型把产品级页面该有的设计细节都帮你补齐了。反过来，对自己有很强审美主张的人，V4-Pro 这套全套打包反而是负担——你得先把它做的 50 个颜色变量删到 5 个，才能往上叠自己的。</span></p>
+
+<p style="margin:0 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:17px;letter-spacing:0.5px;color:rgb(0,0,0);">三、AI 已经有了自己的审美倾向，而且各家不一样。</span></strong></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二题两家的配色撞脸，说明对于经典题目大模型已经形成了共享的视觉习惯——类似于建筑系学生都会先画帕拉第奥。但第三题没有标准答案，两家做出了完全不同的气质：Claude 的冷色硅谷工具风，V4-Pro 的暖色咖啡店文艺风。这不是某个具体参数的差异，是模型在训练过程中慢慢长出来的默认美学——甚至可以说是模型的性格。下次你让 AI 帮你做设计，记住一件事：你不是在用一个中立的工具，你是在借一种性格。换模型就是换性格。</span></p>
+
+<p style="margin:0 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:17px;letter-spacing:0.5px;color:rgb(0,0,0);">四、慢真的是问题吗？</span></strong></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">7 到 8 分钟出一个答案，在随手问 AI 一个事的场景里确实慢。但如果你提前写好 5 个需求、睡前全部提交，第二天早上起床就能看到 5 份完整作品摆在桌上——同一晚上你把一周的零散思路都落地了。这种批量、异步的工作方式，是推理型 AI 天然适合的节奏。不适合跟 AI 聊天，适合当 AI 是夜班同事。顺带一提，DeepSeek API 的夜间价（23:00–07:00）是白天的一半，这个工作模式的成本会进一步降下去。</span></p>
+
+<p style="margin:0 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:17px;letter-spacing:0.5px;color:rgb(0,0,0);">五、我自己踩过的一个坑。</span></strong></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我第一次调 V4-Pro 的时候，API 里有一个叫 max_tokens 的参数，直译是输出上限。按直觉我设了一个足够大的数，8192。然后第一次、第二次、第三次请求都返回空白。<code style="background:#f5f5f5;padding:1px 6px;border-radius:3px;font-size:14.5px;font-family:'SF Mono',Consolas,monospace;">finish_reason: length</code>——被截断。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">看了一眼 usage 字段我就明白了：那 8192 token 全花在 reasoning_content（思考稿）里了，真正要回给我的内容额度剩零。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">正确姿势有两个：一是干脆不设 max_tokens，让服务器挑更大的默认值；二是明确走非思考模式发起调用。官方文档把这事放在思考强度参数 reasoning_effort 的说明里（仅接受 high 和 max 两档），max_tokens 的陷阱没单独强调。我那天白烧了几刀 API 额度。</span></p></span></p>
+
+<!-- ==================== 07 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">08</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">到底值不值得用</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">先把定价这张图摆清楚，再说值不值得。V4 给了两个选项，价差一个量级；和海外顶级闭源比是两个量级。</span></p>
+
+<!-- 定价对照表 -->
+<table style="width:calc(100% - 16px);border-collapse:collapse;margin:0 8px 28px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14.5px;letter-spacing:0.5px;color:rgb(34,34,34);">
+<tr>
+<th style="text-align:left;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">模型</th>
+<th style="text-align:right;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">输入价 / 百万 tok</th>
+<th style="text-align:right;padding:10px 8px;border-bottom:2px solid rgb(0,0,0);font-weight:700;">相对 V4-Flash</th>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);font-weight:700;">V4-Flash</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">¥2</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">1 ×</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);font-weight:700;">V4-Pro</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">¥24</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">12 ×</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;border-bottom:1px solid rgb(236,236,236);">Claude Opus 4.6</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(85,85,85);">≈ ¥105</td>
+<td style="text-align:right;padding:10px 8px;border-bottom:1px solid rgb(236,236,236);color:rgb(150,150,150);">≈ 50 ×</td>
+</tr>
+<tr>
+<td style="padding:10px 8px;">GPT-5.5</td>
+<td style="text-align:right;padding:10px 8px;color:rgb(85,85,85);">≈ ¥110</td>
+<td style="text-align:right;padding:10px 8px;color:rgb(150,150,150);">≈ 55 ×</td>
+</tr>
+</table>
+
+<p style="margin:0 8px 18px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14.5px;letter-spacing:0.5px;color:rgb(150,150,150);">海外闭源价按近期公开报价换算，含汇率误差；V4 价为 DeepSeek 官方白天价，夜间 23:00–07:00 对半折。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这是本次 V4 最被低估的一件事。价格的降幅比性能的升幅更值得关注。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>V4-Flash（¥2 / 百万 token）</strong>：日常提问、写段东西、解释代码、整理思路——这种场景直接用 Flash 就够了。价格约为 Claude Opus 的 1/50，没什么理由不试。如果你是学生党、或者用 AI 频率很高但单次不复杂，Flash 是你应该装进工具箱的新默认。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>V4-Pro（¥24 / 百万 token）</strong>：本文里实测的那个，适合一次性要成品的场景——周末想做完的 side project、完整一套带设计 token 的页面、严谨推理的长任务（算题、写论文、分析报表、排查逻辑 bug）。接受提交后等几分钟这种节奏的话，它值得用。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">两个都不合适的场景：想要朋友聊天那样秒回的、自己有很强审美主张只要 AI 做底座的、一次随手的小问题（帮我写个自我介绍这种）——前两者用 Claude / GPT 体验更好，最后一种普通 AI 都够快。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">两个省钱小点：夜间 23:00–07:00 全量半价；缓存命中输入降到 $0.03 / 百万 token（90% 折扣）——如果你反复问相近问题，这个折扣很实在。</span></p>
+
+<!-- ==================== 结语 ==================== -->
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:24px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;letter-spacing:0.5px;line-height:1.1;">写在最后</span></strong></p>
+</section>
+<div style="margin:0 0 24px;"></div>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">V4-Pro 首日实测的结论是朴素的：它是一个靠谱的推理型大模型，能做事，能写代码，能出成品。它和 Claude 不是谁更强的关系，是两种工作模式——一个是日班即时助手，一个是夜班异步工厂。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但比它能不能做更有意思的，是它怎么做。它在番茄钟题里选了完全不同的温暖咖啡店风。它在洛伦兹题里和 Claude 撞了同一个深色紫。它在每道题里都用三倍于 Claude 的篇幅去铺设计系统。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些不是常规指标能衡量的。这些是一个 AI 的性格——是它的肌肉记忆、它的审美习惯、它思考的节奏。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">从今天开始，工具箱里多了两个选项——一个是便宜到可以随手用的 Flash，一个是接受 7 分钟等待换一份完整作品的 Pro。值不值得付费看你要做什么，但至少它们已经可以真正拿来用。</span></p>
+
+<p style="margin:40px 8px 0;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(170,170,170);">— 完 —</span></p>
+
+<!-- ==================== 底部署名区 · 参考号标配 ==================== -->
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<section style="border-left:2px solid rgb(200,200,200);padding:4px 0 4px 18px;margin:0 8px 18px;">
+<p style="margin:0 0 6px;line-height:1.9;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>编辑</strong><span style="color:rgb(180,180,180);margin:0 10px;">|</span>Liu Zhiyu</span></p>
+<p style="margin:0 0 6px;line-height:1.9;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>出品</strong><span style="color:rgb(180,180,180);margin:0 10px;">|</span>CardLink Lab</span></p>
+<p style="margin:0;line-height:1.9;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>内容来源</strong><span style="color:rgb(180,180,180);margin:0 10px;">|</span>原创</span></p>
+</section>
+
+<p style="margin:20px 8px 0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">作者提示：本文所有数据为 2026 年 4 月 24 日 DeepSeek V4 预览版发布当日实测，API 参数随后续迭代可能变化。Claude 侧答案由 Claude Opus 4.7 生成，V4-Pro 侧由 deepseek-v4-pro 默认参数生成。</span></p>
+<!-- ==================== 底部署名区结束 ==================== -->
+
+</article>
+
+<!-- 粘贴操作提示（不进公众号） -->
+<div style="max-width:677px;margin:24px auto;padding:14px 18px;background:rgb(255,245,230);border:1px solid rgb(245,200,122);font-size:13px;color:rgb(120,53,15);font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.7;">
+<p style="margin:0 0 6px;font-weight:700;">粘贴到公众号的正确操作：</p>
+<p style="margin:0 0 4px;">① 点击右上角【复制正文（无白边）】按钮——它会精确选中 article 内部的 HTML，避开 body 背景和外层白边</p>
+<p style="margin:0 0 4px;">② 直接到公众号图文编辑器 Ctrl+V 粘贴</p>
+<p style="margin:0;">③ 六处灰色占位框请用本地页面的截图替换（打开 claude-X-xxx.html / deepseek-X-xxx.html 全屏截图后上传素材库）</p>
+</div>
+
+<script>
+function copyWxArticle() {
+  var target = document.getElementById('wx-body');
+  if (!target) return;
+  var range = document.createRange();
+  range.selectNodeContents(target);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  sel.removeAllRanges();
+  var btn = document.getElementById('copy-btn');
+  if (ok) {
+    btn.textContent = '已复制 ✓';
+    btn.style.background = '#10b981';
+    setTimeout(function(){
+      btn.textContent = '复制正文（无白边）';
+      btn.style.background = '#111';
+    }, 2200);
+  } else {
+    btn.textContent = '复制失败';
+    btn.style.background = '#dc2626';
+    setTimeout(function(){
+      btn.textContent = '复制正文（无白边）';
+      btn.style.background = '#111';
+    }, 2200);
+  }
+}
+</script>
+
+</body>
+</html>

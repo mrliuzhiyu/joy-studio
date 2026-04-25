@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek V4-Pro</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f5f3ef;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',sans-serif;">
+    <article style="max-width:677px;margin:0 auto;background-color:#ffffff;padding:32px 20px 40px 20px;box-sizing:border-box;">
+
+        <!-- 主标题 -->
+        <h1 style="font-size:24px;font-weight:700;color:#1f180a;line-height:1.4;margin:0 0 10px 0;padding:0;letter-spacing:0.5px;">刚发布的 DeepSeek V4-Pro，已经长出了自己的审美</h1>
+
+        <!-- 日期行 -->
+        <p style="font-size:13px;color:#9b8e7e;line-height:1.6;margin:0 0 28px 0;padding:0;">2026 年 4 月 24 日 · DeepSeek V4-Pro 发布当日实测</p>
+
+        <!-- 引言第一段 -->
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">今天，DeepSeek 发布了 V4 预览版，同时开源。没有发布会。一条微信公众号消息、一次 API 文档刷新，V4 就这么上线了——这是他们一贯的作派。</p>
+
+        <!-- 引言第二段 -->
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">三件事值得记一下。一是 <strong style="color:#2c2416;">1M（一百万字）上下文从今天起成为 DeepSeek 所有官方服务的标配</strong>——把一整本两百页的书一次性塞给它，它还记得住头尾。二是 V4 一口气给出两个版本：旗舰 V4-Pro 和快速版 V4-Flash。三是定价——V4-Pro 输入 ¥24 / 百万 token，V4-Flash 仅 ¥2——相当于 Claude Opus 的 1/20 到 1/50。官方还顺带说 V4-Pro 使用体验优于 Sonnet 4.5、接近 Opus 4.6 非思考模式。</p>
+
+        <!-- 引言第三段 -->
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">那到底多接近？官方 SWE-bench Verified 跑分 V4-Pro 80.6% 对比 Claude Opus 4.6 的 80.8%，差 0.2 个百分点。Codeforces Elo 3206 分，追上 GPT-5.4。我做了最朴素的一件事：找一个公认的世界顶级选手 Claude Opus 4.7，给两边出同样的题。</p>
+
+        <!-- 引言第四段 -->
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 24px 0;padding:0;">题是三道差异很大的前端真题：一道考算法（归并排序可视化），一道考数学（洛伦兹吸引子 3D），一道考审美（番茄钟）。要求一样——做出一个可以直接用浏览器打开的网页。两边独立作答。</p>
+
+        <!-- 要点速览区块 -->
+        <section style="background-color:#faf7f1;border-left:3px solid #b85c38;padding:18px 20px 18px 20px;margin:0 0 32px 0;">
+            <p style="font-size:15px;color:#2c2416;line-height:1.8;margin:0 0 10px 0;padding:0;"><strong>要点速览：</strong></p>
+            <ul style="margin:0;padding:0 0 0 20px;list-style-type:disc;">
+                <li style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 6px 0;padding:0;">V4-Pro 三道题全部完成、都能跑，但每道题要等大约 7 分钟</li>
+                <li style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 6px 0;padding:0;">它生成的页面平均是 Claude 的三倍多体量，设计细节更丰富</li>
+                <li style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 6px 0;padding:0;">内部思考稿占输出总量近一半，买单时要把这部分算进去</li>
+                <li style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 6px 0;padding:0;">两家的审美取向明显不同：一个冷色硅谷风，一个暖色咖啡店风</li>
+                <li style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 6px 0;padding:0;">我自己踩过的一个坑，在 max_tokens 这个参数上</li>
+                <li style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 0 0;padding:0;">定价 V4-Pro ¥24、V4-Flash ¥2（每百万 token），约为 Claude Opus 的 1/20 到 1/50</li>
+            </ul>
+        </section>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 01 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">01 V4-Pro 是个什么模型</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">跳过市场稿话术，只讲事实。V4-Pro 总参数 1.6 万亿，每次激活 490 亿；V4-Flash 总参数 2840 亿，激活 130 亿。两个版本都采用 MoE 架构，都支持 1M 上下文，都同时开源（MIT 协议）。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4 是全球首个 100% 基于华为昇腾 + CANN 框架适配的万亿参数大模型，不依赖 NVIDIA CUDA。V4 系列默认带思考模式和非思考模式双开关——拿掉思考就是普通聊天 AI，开启思考就是推理型。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">这解释了它两个特征：回答慢（7-8 分钟才出结果）、回答稳（数学、算法、代码任务更靠谱）。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">旧接口 deepseek-chat 和 deepseek-reasoner 将在 2026 年 7 月 24 日停用。</p>
+
+        <!-- 子标题：跑分表格 -->
+        <h3 style="font-size:16px;font-weight:700;color:#2c2416;line-height:1.5;margin:0 0 12px 0;padding:0;">V4-Pro 官方跑分 vs 顶级选手</h3>
+
+        <!-- 表格1：跑分对比 -->
+        <table style="width:100%;border-collapse:collapse;margin:0 0 24px 0;padding:0;font-size:14px;color:#3d3226;line-height:1.6;border:1px solid #e5dfd5;">
+            <thead>
+                <tr style="background-color:#f8f5ef;">
+                    <th style="text-align:left;padding:10px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">测试项</th>
+                    <th style="text-align:right;padding:10px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">V4-Pro</th>
+                    <th style="text-align:left;padding:10px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">对标</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">SWE-bench Verified（代码 Agent）</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">80.6%</td>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">Claude Opus 4.6 · 80.8%</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">Codeforces Elo（竞赛编程）</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">3206 分</td>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">GPT-5.4 · 持平</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">Terminal-Bench 2.0</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">67.9%</td>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">GPT-5.4 · 持平</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">AIME 2026（数学推理）</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">99.4%</td>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">——</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">SimpleQA-Verified（世界知识）</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">57.9%</td>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">过往开源 · ~30%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 02 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">02 归并排序 · 把分治画成动画</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">归并排序是计算机专业大一就学的经典算法，像把一副打乱的扑克牌反复对半分堆再合并。要求做成能一步步看的动画。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">Claude（≈ 2 分钟、12.3 KB）：深色底黄色光，像程序员的调试工具。开局先把整棵递归树的骨架画出来，每走一步只是把对应节点高亮。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4-Pro（≈ 6.9 分钟、45.7 KB）：深紫底橙绿蓝三色分区，更像面向用户的产品页面。边演算边让节点一层一层长出来，视觉上更有进行中的感觉。代码用了 30 多个颜色配置变量。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">V4-Pro 更像成品——不像 demo，更像可以直接放进 App 的完整度。但代码差不多四倍。</p>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 03 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">03 洛伦兹吸引子 · 画一只混沌蝴蝶</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">1963 年气象学家发现的数学蝴蝶——混沌理论最有名的图形。要求 15000 个点 RK4 积分、3D 视角、颜色渐变、鼠标交互。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">Claude（≈ 1.5 分钟、9.4 KB）：黑底蓝紫洋红渐变。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4-Pro（≈ 7.8 分钟、32.9 KB）：也是黑底紫色，配色几乎和 Claude 撞了。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">两个完全独立的 AI，都选了同一个深色背景加紫色 accent。这不是偶然。洛伦兹吸引子配深色紫是网上流传最广的经典画法，两家都学到了同一个默认审美。</p>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 04 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">04 番茄钟 · 审美自由发挥</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">这题专门留一个没有标准答案的。设计要克制、留白充足这句话怎么解读完全看模型。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">Claude（≈ 2.5 分钟、13.6 KB）：白底、纯灰文字、工作态朱红、休息态翠绿。像从 Notion 或 Linear 抠出来的一页——高效冷静。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4-Pro（≈ 7.7 分钟、40.5 KB）：米白底、深咖啡色文字、工作态砖红。像从独立咖啡馆或文艺独立 App 抠出来——温暖、安静、有人情味。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">Claude 的版本像给硅谷产品经理用的工具，干净、冷、效率优先。V4-Pro 像给需要安静专注的人用的陪伴，温暖、柔、节奏慢。两个都好看，对专注的理解方向完全不同。</p>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 05 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">05 数字摆出来</h2>
+
+        <!-- 表格2：数字对比 -->
+        <table style="width:100%;border-collapse:collapse;margin:0 0 16px 0;padding:0;font-size:14px;color:#3d3226;line-height:1.6;border:1px solid #e5dfd5;">
+            <thead>
+                <tr style="background-color:#f8f5ef;">
+                    <th style="text-align:left;padding:10px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">题目</th>
+                    <th style="text-align:right;padding:10px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">Claude</th>
+                    <th style="text-align:right;padding:10px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">V4-Pro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">归并排序</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">≈ 2 分钟 · 12 KB</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">≈ 6.9 分钟 · 46 KB</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">洛伦兹吸引子</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">≈ 1.5 分钟 · 9 KB</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">≈ 7.8 分钟 · 33 KB</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;">番茄钟</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">≈ 2.5 分钟 · 14 KB</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;">≈ 7.7 分钟 · 41 KB</td>
+                </tr>
+                <tr style="background-color:#faf8f4;">
+                    <td style="text-align:left;padding:9px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">合计</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">35 KB · ≈ 6 分钟</td>
+                    <td style="text-align:right;padding:9px 12px;border:1px solid #e5dfd5;font-weight:700;color:#2c2416;">119 KB · 22 分钟</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;"><strong style="color:#2c2416;">三题总输出 48544 字，其中内部思考稿 23181 字（47.7%）。也就是说，你每付 2 块钱，有近 1 块买在看不见的那段内部思考上。</strong></p>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 06 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">06 几个不那么直接的观察</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 14px 0;padding:0;">一、V4-Pro 不是 Claude 的平替，是另一种工作模式。Claude 是你身边的同事，你说一句它接一句。V4-Pro 是外面那家下单后去吃午饭、回来就有成品的工作室。SWE-bench 80.6% vs 80.8%——差 0.2 个百分点，不是差一档。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 14px 0;padding:0;">二、V4-Pro 有一种把设计想全的习惯。三道题它代码平均是 Claude 的 3.4 倍，多出来的内容大部分是完整的设计配置——30 到 50 个颜色变量、深浅模式、动画时长、按钮悬停。对会写代码但没什么设计感的人很友好。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 14px 0;padding:0;">三、AI 已经有了自己的审美倾向，各家不一样。第二题撞脸说明经典题目已经形成共享视觉习惯。但第三题没有标准答案，两家做出完全不同的气质——冷色硅谷风 vs 暖色咖啡店风。你不是在用中立工具，是在借一种性格。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 14px 0;padding:0;">四、慢真的是问题吗？7 到 8 分钟出一个答案，在随手问的场景里慢。但如果你提前写好 5 个需求睡前提交，第二天早上看 5 份完整作品——一晚上把一周的零散思路都落地了。夜间 23:00-07:00 半价。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">五、我自己踩过的一个坑。按直觉我设了 max_tokens=8192，结果三次请求都返回空白——8192 全花在思考稿里了，可见配额为零。正确姿势是不设这个参数。我那天白烧了几刀 API 额度。</p>
+
+        <!-- 章节分隔线 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 28px 0;padding:0;">
+
+        <!-- 章节 07 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">07 到底值不值得用</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">先摆定价：V4-Flash ¥2、V4-Pro ¥24、Claude Opus 4.6 ≈¥105、GPT-5.5 ≈¥110（每百万 token）。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4-Flash（¥2）：日常提问、写段东西、解释代码——这种场景直接用 Flash 就够了。价格约为 Claude Opus 的 1/50。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4-Pro（¥24）：一次性要成品的场景——周末 side project、完整一套带设计 token 的页面、严谨推理的长任务。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">省钱小点：夜间 23:00–07:00 全量半价；缓存命中输入降 90% 折扣。</p>
+
+        <!-- 最后分隔线 -->
+        <hr style="border:none;border-top:1px solid #ddd8ce;margin:0 0 28px 0;padding:0;">
+
+        <!-- 写在最后 -->
+        <h2 style="font-size:19px;font-weight:700;color:#1f180a;line-height:1.5;margin:0 0 14px 0;padding:0;">写在最后</h2>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">V4-Pro 首日实测的结论朴素：它是靠谱的推理型大模型，能做事能写代码能出成品。它和 Claude 不是谁更强，是两种工作模式——日班即时助手，夜班异步工厂。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 16px 0;padding:0;">比能不能做更有意思的，是它怎么做。它在番茄钟里选温暖咖啡店风；在洛伦兹里和 Claude 撞深色紫；每道题用三倍篇幅铺设计系统。这些是一个 AI 的性格——肌肉记忆、审美习惯、思考节奏。</p>
+        <p style="font-size:15px;color:#3d3226;line-height:1.8;margin:0 0 20px 0;padding:0;">从今天开始，工具箱里多了两个选项。值不值得付费看你做什么，但至少它们已经可以真正拿来用。</p>
+
+        <!-- 底部装饰分隔 -->
+        <hr style="border:none;border-top:1px solid #e8e3da;margin:0 0 24px 0;padding:0;">
+
+        <!-- 底部署名 -->
+        <p style="font-size:13px;color:#9b8e7e;line-height:2;margin:0 0 4px 0;padding:0;">编辑 | Liu Zhiyu</p>
+        <p style="font-size:13px;color:#9b8e7e;line-height:2;margin:0 0 4px 0;padding:0;">出品 | CardLink Lab</p>
+        <p style="font-size:13px;color:#9b8e7e;line-height:2;margin:0 0 16px 0;padding:0;">内容来源 | 原创</p>
+
+        <p style="font-size:12px;color:#b0a698;line-height:1.7;margin:0;padding:0;">作者提示：本文所有数据为 2026 年 4 月 24 日 DeepSeek V4 预览版发布当日实测，API 参数随后续迭代可能变化。</p>
+
+    </article>
+</body>
+</html>

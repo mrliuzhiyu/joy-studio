@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>归并排序可视化 · Claude</title>
+<style>
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0b0d12;
+  color: #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 20px;
+}
+header {
+  max-width: 1100px;
+  margin: 0 auto 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+header h1 {
+  margin: 0 14px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+header h1::before {
+  content:'';
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 10px rgba(251,191,36,.6);
+}
+input[type=text] {
+  flex: 1;
+  min-width: 200px;
+  background: #1a1d26;
+  border: 1px solid #2a2f3a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-family: "SF Mono", Menlo, monospace;
+}
+input[type=text]:focus { outline: none; border-color: #fbbf24; }
+button {
+  background: #1a1d26;
+  border: 1px solid #2a2f3a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+}
+button:hover:not(:disabled) { background: #2a2f3a; border-color: #3a3f4a; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+button.primary { background: #fbbf24; color: #0b0d12; border-color: #fbbf24; font-weight: 600; }
+button.primary:hover:not(:disabled) { background: #fcd34d; }
+.speed-wrap {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: #9ca3af;
+}
+.speed-wrap input[type=range] {
+  accent-color: #fbbf24;
+  width: 80px;
+}
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #0e1015;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  overflow-x: auto;
+}
+.tree {
+  position: relative;
+  min-height: 60px;
+}
+.level {
+  position: relative;
+  height: 52px;
+  margin-bottom: 14px;
+}
+.level:last-child { margin-bottom: 0; }
+.node {
+  position: absolute;
+  top: 4px;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid #2a2f3a;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  transition: all .3s;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+.node.active { border-color: #fbbf24; background: rgba(251,191,36,0.08); box-shadow: 0 0 14px rgba(251,191,36,0.2); }
+.node.sorted { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+.cell {
+  min-width: 26px;
+  height: 32px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1d26;
+  border-radius: 5px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-family: "SF Mono", Menlo, monospace;
+  color: #e5e7eb;
+  font-weight: 500;
+  transition: all .25s;
+}
+.cell.compare { background: #f97316; color: white; transform: translateY(-4px); box-shadow: 0 4px 12px rgba(249,115,22,0.4); }
+.cell.picked { background: #fbbf24; color: #0b0d12; }
+.cell.done { background: #22c55e; color: #0b0d12; }
+.narration {
+  max-width: 1100px;
+  margin: 14px auto;
+  font-size: 13px;
+  color: #9ca3af;
+  font-variant-numeric: tabular-nums;
+  font-family: "SF Mono", Menlo, monospace;
+  min-height: 20px;
+}
+.narration b { color: #fbbf24; font-weight: 600; }
+.controls {
+  max-width: 1100px;
+  margin: 16px auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.progress {
+  margin-left: 12px;
+  font-size: 12px;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 640px) {
+  body { padding: 14px; }
+  header h1 { font-size: 14px; }
+  main { padding: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>归并排序可视化</h1>
+  <input id="input" type="text" value="38,27,43,3,9,82,10">
+  <button id="run" class="primary">开始 / 重置</button>
+  <div class="speed-wrap">
+    <span>速度</span>
+    <input id="speed" type="range" min="50" max="1200" value="400" step="50">
+  </div>
+</header>
+
+<main>
+  <div class="tree" id="tree"></div>
+</main>
+
+<div class="narration" id="msg">输入一个数组，点击"开始 / 重置"。</div>
+
+<div class="controls">
+  <button id="prev">← 上一步</button>
+  <button id="play">▶ 自动播放</button>
+  <button id="next">下一步 →</button>
+  <span class="progress" id="prog">0 / 0</span>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const inp = $('input'), run = $('run'), speed = $('speed');
+  const prev = $('prev'), play = $('play'), next = $('next'), prog = $('prog');
+  const tree = $('tree'), msg = $('msg');
+
+  let steps = [], cursor = -1, autoTimer = null, nodes = {}, totalLen = 0;
+
+  function parse(s) {
+    return s.split(/[,\s]+/).map(t=>parseInt(t,10)).filter(v=>!isNaN(v));
+  }
+
+  function nodeId(l,r) { return `n-${l}-${r}`; }
+
+  // 记录所有步骤 + 节点元数据
+  function record(arr) {
+    const out = [];
+    const meta = {}; // id -> {range, depth, values}
+    let maxDepth = 0;
+
+    function sort(l, r, depth) {
+      const id = nodeId(l,r);
+      meta[id] = { range:[l,r], depth, values: arr.slice(l,r+1) };
+      if (depth > maxDepth) maxDepth = depth;
+      if (l >= r) {
+        out.push({ t:'leaf', id, msg:`叶节点 [${arr[l]}]` });
+        return [arr[l]];
+      }
+      out.push({ t:'split', id, msg:`拆分 [${arr.slice(l,r+1).join(', ')}]` });
+      const mid = (l+r) >> 1;
+      const L = sort(l, mid, depth+1);
+      const R = sort(mid+1, r, depth+1);
+      out.push({ t:'begin-merge', id, left: L.slice(), right: R.slice(),
+                 msg: `合并 L=[${L.join(', ')}] 与 R=[${R.join(', ')}]`});
+      const merged = [];
+      let i=0,j=0;
+      while (i<L.length && j<R.length) {
+        out.push({ t:'compare', id, leftIdx:i, rightIdx:j, leftVal:L[i], rightVal:R[j],
+                   msg:`比较 L[${i}]=${L[i]} 与 R[${j}]=${R[j]}` });
+        if (L[i] <= R[j]) {
+          merged.push(L[i]);
+          out.push({ t:'pick', id, side:'L', val:L[i], dstIdx:merged.length-1,
+                     msg:`取 L[${i}]=${L[i]} → 放到第 ${merged.length} 位` });
+          i++;
+        } else {
+          merged.push(R[j]);
+          out.push({ t:'pick', id, side:'R', val:R[j], dstIdx:merged.length-1,
+                     msg:`取 R[${j}]=${R[j]} → 放到第 ${merged.length} 位` });
+          j++;
+        }
+      }
+      while (i<L.length) {
+        merged.push(L[i]);
+        out.push({ t:'pick', id, side:'L', val:L[i], dstIdx:merged.length-1, msg:`L 剩余 ${L[i]}` });
+        i++;
+      }
+      while (j<R.length) {
+        merged.push(R[j]);
+        out.push({ t:'pick', id, side:'R', val:R[j], dstIdx:merged.length-1, msg:`R 剩余 ${R[j]}` });
+        j++;
+      }
+      out.push({ t:'merged', id, values: merged.slice(), msg:`[${merged.join(', ')}] 完成排序` });
+      meta[id].values = merged.slice();
+      return merged;
+    }
+    sort(0, arr.length-1, 0);
+    return { steps: out, meta, maxDepth };
+  }
+
+  // 渲染初始树骨架
+  function renderSkeleton(arr) {
+    tree.innerHTML = '';
+    totalLen = arr.length;
+    const levels = {};
+    for (const id in nodes) {
+      const { range:[l,r], depth, values } = nodes[id];
+      if (!levels[depth]) levels[depth] = [];
+      levels[depth].push({ id, l, r, values });
+    }
+    const depths = Object.keys(levels).map(Number).sort((a,b)=>a-b);
+    for (const d of depths) {
+      const lvl = document.createElement('div');
+      lvl.className = 'level';
+      lvl.dataset.depth = d;
+      for (const { id, l, r, values } of levels[d]) {
+        const node = document.createElement('div');
+        node.className = 'node';
+        node.id = id;
+        node.style.left = (l / totalLen * 100) + '%';
+        node.style.width = ((r-l+1) / totalLen * 100) + '%';
+        for (let i = 0; i < values.length; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.textContent = values[i];
+          cell.dataset.idx = i;
+          node.appendChild(cell);
+        }
+        lvl.appendChild(node);
+      }
+      tree.appendChild(lvl);
+    }
+  }
+
+  // 重置所有 cell / node 状态到初始（按 meta.values 重绘）
+  function resetVisual() {
+    for (const id in nodes) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      el.classList.remove('active', 'sorted');
+      const { values } = nodes[id];
+      // 初始状态：只显示最顶层完整数组；其他层在拆分时才出现
+      if (id === nodeId(0, totalLen-1)) {
+        el.style.opacity = '1';
+      } else {
+        el.style.opacity = '0.15';
+      }
+      [...el.children].forEach((c, i) => {
+        c.className = 'cell';
+        c.textContent = values[i] ?? '';
+      });
+    }
+  }
+
+  // 应用第 0..i 步之后的状态（重建法）
+  function applyTo(idx) {
+    resetVisual();
+    for (let k = 0; k <= idx && k < steps.length; k++) {
+      applyOne(steps[k], k === idx);
+    }
+    prog.textContent = `${idx+1} / ${steps.length}`;
+    msg.innerHTML = idx >= 0 ? `第 <b>${idx+1}</b> 步 · ${steps[idx].msg}` : '';
+    prev.disabled = idx <= 0;
+    next.disabled = idx >= steps.length - 1;
+  }
+
+  function applyOne(step, isCurrent) {
+    const el = document.getElementById(step.id);
+    if (!el) return;
+    if (step.t === 'split') {
+      // 让子节点出现
+      const { range:[l,r] } = nodes[step.id];
+      const mid = (l+r) >> 1;
+      const left = document.getElementById(nodeId(l, mid));
+      const right = document.getElementById(nodeId(mid+1, r));
+      if (left) left.style.opacity = '1';
+      if (right) right.style.opacity = '1';
+    } else if (step.t === 'leaf') {
+      el.classList.add('sorted');
+      [...el.children].forEach(c => c.classList.add('done'));
+    } else if (step.t === 'begin-merge') {
+      if (isCurrent) el.classList.add('active');
+    } else if (step.t === 'compare') {
+      const { range:[l,r] } = nodes[step.id];
+      const mid = (l+r) >> 1;
+      const leftEl = document.getElementById(nodeId(l, mid));
+      const rightEl = document.getElementById(nodeId(mid+1, r));
+      if (leftEl && isCurrent) {
+        const c = leftEl.children[step.leftIdx];
+        if (c) c.classList.add('compare');
+      }
+      if (rightEl && isCurrent) {
+        const c = rightEl.children[step.rightIdx];
+        if (c) c.classList.add('compare');
+      }
+    } else if (step.t === 'pick') {
+      // 把 val 写到父节点 dstIdx 位置
+      const cell = el.children[step.dstIdx];
+      if (cell) {
+        cell.textContent = step.val;
+        cell.classList.add('picked');
+      }
+    } else if (step.t === 'merged') {
+      el.classList.remove('active');
+      el.classList.add('sorted');
+      [...el.children].forEach((c, i) => {
+        c.className = 'cell done';
+        c.textContent = step.values[i];
+      });
+    }
+  }
+
+  function start() {
+    const arr = parse(inp.value);
+    if (arr.length < 2) { msg.textContent = '至少输入 2 个数字'; return; }
+    stopAuto();
+    const rec = record(arr);
+    steps = rec.steps;
+    nodes = rec.meta;
+    renderSkeleton(arr);
+    cursor = -1;
+    next.disabled = false; prev.disabled = true;
+    applyTo(cursor >= 0 ? cursor : 0);
+    cursor = 0;
+  }
+
+  function stepForward() {
+    if (cursor >= steps.length - 1) { stopAuto(); return; }
+    cursor++;
+    applyTo(cursor);
+  }
+  function stepBackward() {
+    if (cursor <= 0) return;
+    cursor--;
+    applyTo(cursor);
+  }
+
+  function stopAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = null;
+    play.textContent = '▶ 自动播放';
+  }
+  function toggleAuto() {
+    if (autoTimer) { stopAuto(); return; }
+    play.textContent = '❚❚ 暂停';
+    const tick = () => {
+      if (cursor >= steps.length - 1) { stopAuto(); return; }
+      stepForward();
+    };
+    autoTimer = setInterval(tick, parseInt(speed.value, 10));
+  }
+
+  run.addEventListener('click', start);
+  next.addEventListener('click', () => { stopAuto(); stepForward(); });
+  prev.addEventListener('click', () => { stopAuto(); stepBackward(); });
+  play.addEventListener('click', toggleAuto);
+  speed.addEventListener('input', () => {
+    if (autoTimer) { stopAuto(); toggleAuto(); }
+  });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') start(); });
+
+  // 初始化：先渲染一次默认数组
+  start();
+})();
+</script>
+</body>
+</html>

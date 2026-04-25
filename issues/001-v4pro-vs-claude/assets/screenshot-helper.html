@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>截图辅助页 · V4-Pro vs Claude 公众号排版对比</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #e8e8e8;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  color: #333;
+}
+.topbar {
+  padding: 20px 28px;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar h1 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.topbar p {
+  margin: 0;
+  color: #666;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+.topbar p code { background: #f5f5f5; padding: 1px 6px; border-radius: 3px; font-family: 'SF Mono', Consolas, monospace; font-size: 12px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 24px 28px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.col header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.col header .name {
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.col header .name::before {
+  content: '';
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.col.claude header .name::before { background: #d97706; }
+.col.deepseek header .name::before { background: #4D6BFE; }
+.col header .meta {
+  font-size: 11px;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+.col iframe {
+  width: 100%;
+  height: 800px;
+  border: 0;
+  display: block;
+}
+.col .controls {
+  padding: 10px 16px;
+  border-top: 1px solid #eee;
+  font-size: 11.5px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  color: #666;
+}
+.col .controls a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+.col .controls a:hover { text-decoration: underline; }
+
+.tip {
+  max-width: 1500px;
+  margin: 0 auto 24px;
+  padding: 14px 22px;
+  background: #fff5e6;
+  border: 1px solid #f5c87a;
+  font-size: 13px;
+  color: #78350f;
+  border-radius: 6px;
+  line-height: 1.8;
+}
+.tip strong { color: #111; }
+.tip ol { margin: 6px 0 0; padding-left: 22px; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>截图辅助页 · 同一篇文章，两种排版审美</h1>
+  <p>左边是 Claude Opus 4.7（按"阅览室"风格）的排版；右边是 DeepSeek V4-Pro 自由发挥的排版。用于对比截图上传公众号素材库。</p>
+</div>
+
+<div class="tip">
+<strong>怎么截图</strong>
+<ol>
+<li>在两栏都滚动到各自同一位置（比如章节 02 开头），暂停</li>
+<li>浏览器全屏截图（Mac <code style="background:white;padding:1px 5px;border-radius:3px;">Cmd+Shift+4</code> / Windows <code style="background:white;padding:1px 5px;border-radius:3px;">Win+Shift+S</code>），框选两栏一起</li>
+<li>公众号素材库上传，插入到新章节对应截图占位</li>
+<li>也可以分别截两栏：左栏单独、右栏单独、两栏并排——3 张图可以给读者不同视角</li>
+</ol>
+</div>
+
+<div class="grid">
+  <article class="col claude">
+    <header>
+      <span class="name">Claude Opus 4.7</span>
+      <span class="meta">按阅览室风格 · 34 KB</span>
+    </header>
+    <iframe src="wechat-article.html" title="Claude 排版"></iframe>
+    <div class="controls">
+      <a href="wechat-article.html" target="_blank">新标签页打开</a>
+      <span>·</span>
+      <span>滚动两栏对齐章节再截图</span>
+    </div>
+  </article>
+
+  <article class="col deepseek">
+    <header>
+      <span class="name">DeepSeek V4-Pro</span>
+      <span class="meta">自由发挥 · 5.8 分钟 · 16 KB</span>
+    </header>
+    <iframe src="exp-v4pro-layout-clean.html" title="V4-Pro 排版"></iframe>
+    <div class="controls">
+      <a href="exp-v4pro-layout-clean.html" target="_blank">新标签页打开</a>
+      <span>·</span>
+      <a href="exp-layout-raw.json" target="_blank">原始 JSON</a>
+      <span>·</span>
+      <a href="exp-reasoning.txt" target="_blank">思维链原文</a>
+    </div>
+  </article>
+</div>
+
+</body>
+</html>

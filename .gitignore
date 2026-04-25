@@ -1,0 +1,20 @@
+# 临时文件（用完即删，不入库）
+.tmp/
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*~
+
+# 依赖（如未来加 JS 工具链）
+node_modules/
+
+# 本地环境
+.env
+.env.local

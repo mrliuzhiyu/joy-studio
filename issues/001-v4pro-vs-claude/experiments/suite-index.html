@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>同题三连评测 · Claude Opus 4.7 vs DeepSeek V4-Pro</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  margin: 0;
+  background: #fafafa;
+  color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+/* ---- Hero ---- */
+.hero {
+  background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+  padding: 48px 32px 36px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+.hero .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 14px;
+}
+.hero .kicker::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: linear-gradient(135deg, #d97706, #2563eb);
+}
+.hero h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.6px;
+  color: #0f172a;
+}
+.hero .subtitle {
+  font-size: 15px;
+  color: #4b5563;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.hero .summary {
+  display: inline-flex;
+  gap: 32px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero .stat {
+  text-align: left;
+}
+.hero .stat .n {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+.hero .stat .label {
+  font-size: 11.5px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+
+/* ---- Article frame ---- */
+article {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+section {
+  margin-bottom: 56px;
+}
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+  position: relative;
+  padding-left: 14px;
+}
+h2::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 5px; bottom: 5px;
+  width: 3px;
+  background: linear-gradient(180deg, #d97706, #2563eb);
+  border-radius: 2px;
+}
+.intro-text {
+  font-size: 15px;
+  color: #374151;
+  max-width: 820px;
+}
+.intro-text p { margin: 0 0 12px; }
+
+/* ---- Tables ---- */
+table.metrics {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #e5e7eb;
+  margin: 16px 0;
+}
+table.metrics th, table.metrics td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+  font-variant-numeric: tabular-nums;
+  vertical-align: top;
+}
+table.metrics th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+table.metrics td.num { text-align: right; }
+table.metrics tr:last-child td { border-bottom: 0; }
+table.metrics .bad { color: #dc2626; }
+table.metrics .ok { color: #059669; }
+table.metrics .col-claude { background: rgba(217,119,6,0.04); }
+table.metrics .col-deepseek { background: rgba(37,99,235,0.04); }
+
+/* ---- Test section ---- */
+.test {
+  margin-bottom: 72px;
+}
+.test .head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.test .head .title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+.test .head .num {
+  font-size: 11px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.test .axis {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+.test .desc {
+  color: #374151;
+  font-size: 14px;
+  max-width: 820px;
+  margin: 10px 0 18px;
+}
+.test details.prompt-drawer {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 8px 0 20px;
+  font-size: 12.5px;
+}
+.test details.prompt-drawer summary {
+  cursor: pointer;
+  color: #4b5563;
+  font-weight: 500;
+  user-select: none;
+  list-style: none;
+}
+.test details.prompt-drawer summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform .15s;
+}
+.test details.prompt-drawer[open] summary::before { transform: rotate(90deg); }
+.test details.prompt-drawer[open] summary { margin-bottom: 8px; }
+.test details.prompt-drawer pre {
+  white-space: pre-wrap;
+  color: #374151;
+  line-height: 1.75;
+  font-family: "SF Mono", Menlo, Consolas, "PingFang SC", monospace;
+  font-size: 12px;
+  margin: 0;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 20px 0 22px;
+}
+@media (max-width: 1000px) {
+  .compare-grid { grid-template-columns: 1fr; }
+}
+.card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 0 0 1px #e5e7eb;
+  display: flex; flex-direction: column;
+}
+.card > header {
+  padding: 12px 18px;
+  background: #fcfcfc;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.card .name {
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.card .name::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.card.claude .name::before   { background: #d97706; }
+.card.deepseek .name::before { background: #2563eb; }
+.card .meta {
+  font-size: 11px;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  line-height: 1.55;
+}
+.iframe-wrap {
+  aspect-ratio: 4/3;
+  background: #0a0a0f;
+}
+.iframe-wrap iframe {
+  width: 100%; height: 100%; border: 0; display: block;
+}
+.card-foot {
+  padding: 10px 18px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 11.5px;
+  display: flex;
+  gap: 10px;
+  color: #6b7280;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.card-foot a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+.card-foot a:hover { text-decoration: underline; }
+.card-foot .sep { color: #cbd5e1; }
+
+.obs {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px #e5e7eb;
+  padding: 18px 22px;
+  font-size: 13.5px;
+  color: #374151;
+  line-height: 1.8;
+}
+.obs h3 {
+  font-size: 13px;
+  margin: 0 0 10px;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+.obs h3::before {
+  content: '▎';
+  color: #d97706;
+  margin-right: 4px;
+}
+.obs ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.obs li { margin: 5px 0; }
+.obs .tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: #f3f4f6;
+  color: #525252;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* ---- Score visualization ---- */
+.radar-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+@media (max-width: 900px) { .radar-wrap { grid-template-columns: 1fr; } }
+
+.dim-bars {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px #e5e7eb;
+  padding: 20px 24px;
+}
+.dim-bars h3 {
+  font-size: 13px; margin: 0 0 14px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: #374151; font-weight: 700;
+}
+.dim-bars .row { margin-bottom: 12px; }
+.dim-bars .row:last-child { margin-bottom: 0; }
+.dim-bars .label {
+  font-size: 12px;
+  color: #4b5563;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.dim-bars .label .r {
+  font-variant-numeric: tabular-nums;
+  color: #6b7280;
+  font-size: 11px;
+}
+.dim-bars .track {
+  height: 22px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.dim-bars .fill {
+  position: absolute;
+  top: 0; bottom: 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+}
+.dim-bars .fill.claude { background: linear-gradient(90deg, #d97706, #f59e0b); }
+.dim-bars .fill.deepseek { background: linear-gradient(90deg, #1d4ed8, #2563eb); top: 11px; bottom: -11px; height: 11px; border-radius: 0 4px 4px 0; }
+.dim-bars.dual .track { height: 22px; }
+.dim-bars.dual .fill.claude { height: 11px; top: 0; bottom: auto; }
+.dim-bars.dual .fill.deepseek { height: 11px; top: 11px; bottom: auto; }
+
+/* ---- Conclusion ---- */
+.conclusion {
+  background: white;
+  border-radius: 14px;
+  padding: 28px 32px;
+  box-shadow: 0 0 0 1px #e5e7eb;
+  font-size: 14px;
+  line-height: 1.85;
+  color: #1f2937;
+}
+.conclusion p { margin: 0 0 12px; }
+.conclusion p:last-child { margin: 0; }
+.conclusion strong { color: #0f172a; font-weight: 700; }
+
+footer.foot {
+  border-top: 1px solid #e5e7eb;
+  padding: 24px 32px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+footer.foot a { color: #2563eb; text-decoration: none; }
+footer.foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="kicker">CardLink Lab · 2026.04.24</div>
+  <h1>同题三连评测：Claude Opus 4.7 vs DeepSeek V4-Pro</h1>
+  <div class="subtitle">三道真·前端题 · 覆盖算法、数学、设计三条轴 · 完整记录输入输出、耗时与思维链开销</div>
+  <div class="summary">
+    <div class="stat">
+      <div class="n">3</div>
+      <div class="label">道题</div>
+    </div>
+    <div class="stat">
+      <div class="n">22 min</div>
+      <div class="label">V4-Pro API 时间</div>
+    </div>
+    <div class="stat">
+      <div class="n">48 544</div>
+      <div class="label">completion tokens</div>
+    </div>
+    <div class="stat">
+      <div class="n">47.7 %</div>
+      <div class="label">思维链占比</div>
+    </div>
+    <div class="stat">
+      <div class="n">6 份</div>
+      <div class="label">可运行页面</div>
+    </div>
+  </div>
+</div>
+
+<article>
+
+<!-- ========= 导语 ========= -->
+<section>
+  <h2>为什么做这个</h2>
+  <div class="intro-text">
+    <p>DeepSeek V4-Pro 是家喻户晓的"国内顶级推理大模型"，但对前端/代码生成这类"不那么像数学题"的任务到底能做到什么程度，少有人把实物做出来并排比。这次做一次真实、可验证、不手下留情的同题三连评测：<strong>同一个 prompt 同时发给 V4-Pro 和 Claude Opus 4.7</strong>，每家各产出一份可直接用浏览器打开的 HTML，然后在同一篇文章里把它们放到一起。</p>
+    <p>三道题刻意选了三条差异很大的轴：<strong>算法可视化（归并排序）</strong>考"动画 + 状态机 + 交互控制"；<strong>3D 数学渲染（洛伦兹吸引子）</strong>考"数值积分 + 投影 + 动效性能"；<strong>UI/UX 开放题（番茄钟）</strong>考"审美、产品化细节、持久化"。</p>
+    <p>V4-Pro 的调用参数本轮统一为 <code>temperature=0.2~0.3</code>，<strong>不传 max_tokens</strong>（踩坑记录见上一篇实验，传 8192 会把预算全让思维链吃掉）。三个请求并发下发，数据来自真实 API 响应。</p>
+  </div>
+</section>
+
+<!-- ========= 总览指标表 ========= -->
+<section>
+  <h2>Executive Summary</h2>
+  <table class="metrics">
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th class="col-claude">Claude Opus 4.7 (1M)</th>
+        <th class="col-deepseek">DeepSeek V4-Pro</th>
+        <th>注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>响应时延（单轮）</td>
+        <td class="col-claude">Agent 内即时</td>
+        <td class="col-deepseek num">412–465 s · 平均 447 s</td>
+        <td>V4-Pro 为 /v1/chat/completions 同步调用</td>
+      </tr>
+      <tr>
+        <td>代码总字符（三题合计）</td>
+        <td class="col-claude num">35.3 KB（36 168 B）</td>
+        <td class="col-deepseek num">119 KB（121 997 B）</td>
+        <td>V4-Pro 普遍是 3.0–3.7× 于 Claude</td>
+      </tr>
+      <tr>
+        <td>completion tokens（三题合计）</td>
+        <td class="col-claude num">—</td>
+        <td class="col-deepseek num">48 544</td>
+        <td>计费按此算</td>
+      </tr>
+      <tr>
+        <td>reasoning tokens</td>
+        <td class="col-claude">对话中不可见</td>
+        <td class="col-deepseek num">23 181（47.7 %）</td>
+        <td>V4-Pro 近一半预算在思维链</td>
+      </tr>
+      <tr>
+        <td>finish_reason = stop</td>
+        <td class="col-claude ok">3 / 3</td>
+        <td class="col-deepseek ok">3 / 3</td>
+        <td>两边都没被截断</td>
+      </tr>
+      <tr>
+        <td>首次即可运行</td>
+        <td class="col-claude ok">3 / 3</td>
+        <td class="col-deepseek ok">3 / 3</td>
+        <td>两边代码都能直接用浏览器打开</td>
+      </tr>
+      <tr>
+        <td>编码坑</td>
+        <td class="col-claude">—</td>
+        <td class="col-deepseek">无</td>
+        <td>本轮 UTF-8 编码干净、无 mojibake</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========= 测试 1：归并排序 ========= -->
+<section class="test">
+  <div class="head">
+    <div>
+      <span class="axis">题 #1 · 算法可视化</span>
+      <div class="title" style="margin-top:6px;">归并排序可视化</div>
+    </div>
+    <span class="num">T1 · Algorithm</span>
+  </div>
+  <div class="desc">考察"分治过程树形展示 + 动画 + 单步控制"。题目要求把递归拆分和 merge 步骤都用可视化呈现，还要有"上一步/下一步/自动播放/暂停"四个按钮。</div>
+  <details class="prompt-drawer"><summary>题目全文</summary>
+<pre>做一个归并排序可视化网页。
+
+要求：
+1. 顶部有一个文本框（默认填 "38,27,43,3,9,82,10"）、一个"开始/重置"按钮、一个速度滑块（快-慢）。
+2. 点击开始后动画展示 mergeSort 的分治过程：
+   - 每一层递归横向展开，父数组向下分裂成两个子数组；
+   - merge 阶段：两个子数组里正在比较的元素高亮橙色，选中后移动到上层对应位置；
+   - 已完成排序的层用绿色标注。
+3. 底部有"上一步 / 下一步 / 自动播放 / 暂停"四个按钮，支持单步观察。
+4. 深色主题、干净排版、移动端可看。
+
+单文件 HTML，内嵌 CSS+JS，不引用任何外部 CDN / 图片 / 字体。只输出完整 HTML（从 &lt;!DOCTYPE html&gt; 到 &lt;/html&gt;）。</pre>
+  </details>
+
+  <div class="compare-grid">
+    <article class="card claude">
+      <header>
+        <span class="name">Claude Opus 4.7</span>
+        <span class="meta">12.6 KB · Agent 内即时</span>
+      </header>
+      <div class="iframe-wrap"><iframe src="claude-1-mergesort.html" title="Claude T1"></iframe></div>
+      <div class="card-foot">
+        <a href="claude-1-mergesort.html" target="_blank">新标签页打开</a>
+        <span class="sep">·</span>
+        <a href="claude-1-mergesort.html" download>下载</a>
+      </div>
+    </article>
+    <article class="card deepseek">
+      <header>
+        <span class="name">DeepSeek V4-Pro</span>
+        <span class="meta">47 KB · 412 s · 15 905 tok（reasoning 6 362）</span>
+      </header>
+      <div class="iframe-wrap"><iframe src="deepseek-1-mergesort.html" title="V4-Pro T1"></iframe></div>
+      <div class="card-foot">
+        <a href="deepseek-1-mergesort.html" target="_blank">新标签页打开</a>
+        <span class="sep">·</span>
+        <a href="deepseek-1-mergesort.html" download>下载</a>
+        <span class="sep">·</span>
+        <a href="raw-1.json" target="_blank">原始 JSON</a>
+        <span class="sep">·</span>
+        <a href="reasoning-1.txt" target="_blank">思维链原文</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="obs">
+    <h3>本题观察</h3>
+    <ul>
+      <li><span class="tag">取态</span>Claude 按"树的完整骨架 + 分步回放"的思路——一开始就把所有层的节点画出来，随步骤高亮/填色。V4-Pro 选了"增量构建"——按层逐步 DOM 追加，动画感更强。两种合法，各有侧重。</li>
+      <li><span class="tag">视觉</span>Claude 深色 + 黄色 accent（<code>#fbbf24</code>），节点间距紧凑，排版类似调试器；V4-Pro 深紫底 + 橙/绿/蓝三色分工，用大量 CSS 变量，排版更"产品级"。</li>
+      <li><span class="tag">体量</span>Claude 12.6 KB / V4-Pro 47 KB（约 3.7 倍）。V4-Pro 的 CSS 扩成了超 30 个 token 的设计系统；Claude 把所有样式压在 200 行内。</li>
+      <li><span class="tag">思维链</span>V4-Pro 本题花了 6 362 reasoning tokens，约占本题总预算的 40 %。思维链原文可点右下角链接查看。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========= 测试 2：洛伦兹 ========= -->
+<section class="test">
+  <div class="head">
+    <div>
+      <span class="axis">题 #2 · 数学渲染</span>
+      <div class="title" style="margin-top:6px;">洛伦兹吸引子 3D 可视化</div>
+    </div>
+    <span class="num">T2 · Math / Physics</span>
+  </div>
+  <div class="desc">考察"RK4 数值积分 + 3D→2D 投影 + 颜色渐变 + 交互性能"。15000 个点按时间渐变色，鼠标拖拽改视角、滚轮缩放、自动缓慢旋转。</div>
+  <details class="prompt-drawer"><summary>题目全文</summary>
+<pre>做一个洛伦兹吸引子 3D 可视化网页。
+
+要求：
+1. canvas 上绘制洛伦兹吸引子轨迹：参数 σ=10, ρ=28, β=8/3；RK4 积分，步长 0.005，累计 15000 个点。
+2. 轨迹颜色随时间从蓝 (#3b82f6) → 紫 (#a855f7) → 洋红 (#ec4899) 渐变；线宽约 1px；轨迹有发光效果（shadowBlur）。
+3. 自动绕 Y 轴缓慢旋转；支持鼠标拖拽调整视角（yaw/pitch）；滚轮缩放。
+4. 顶部小面板实时显示当前动画帧率 (FPS)、当前已绘制点数、视角参数。
+5. 深色主题（背景 #0a0a0f），移动端触摸拖拽可用。</pre>
+  </details>
+
+  <div class="compare-grid">
+    <article class="card claude">
+      <header>
+        <span class="name">Claude Opus 4.7</span>
+        <span class="meta">9.6 KB · Agent 内即时</span>
+      </header>
+      <div class="iframe-wrap"><iframe src="claude-2-lorenz.html" title="Claude T2"></iframe></div>
+      <div class="card-foot">
+        <a href="claude-2-lorenz.html" target="_blank">新标签页打开</a>
+        <span class="sep">·</span>
+        <a href="claude-2-lorenz.html" download>下载</a>
+      </div>
+    </article>
+    <article class="card deepseek">
+      <header>
+        <span class="name">DeepSeek V4-Pro</span>
+        <span class="meta">34 KB · 465 s · 14 960 tok（reasoning 8 093）</span>
+      </header>
+      <div class="iframe-wrap"><iframe src="deepseek-2-lorenz.html" title="V4-Pro T2"></iframe></div>
+      <div class="card-foot">
+        <a href="deepseek-2-lorenz.html" target="_blank">新标签页打开</a>
+        <span class="sep">·</span>
+        <a href="deepseek-2-lorenz.html" download>下载</a>
+        <span class="sep">·</span>
+        <a href="raw-2.json" target="_blank">原始 JSON</a>
+        <span class="sep">·</span>
+        <a href="reasoning-2.txt" target="_blank">思维链原文</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="obs">
+    <h3>本题观察</h3>
+    <ul>
+      <li><span class="tag">撞色</span>配色出奇一致：两边都选 <code>#0a0a0f</code> 作主背景、紫色为 accent。Claude 用蓝→紫→洋红连续渐变（题目要求的那组），V4-Pro 也按题做了渐变。</li>
+      <li><span class="tag">渲染策略</span>Claude 做了"按颜色段批量 stroke"优化——连续相同颜色的线段合并进一个 Path 再 stroke，减少 strokeStyle 切换；V4-Pro 路径未看源码不展开。两边都用了 shadowBlur 发光。</li>
+      <li><span class="tag">交互</span>都正确实现拖拽 + 滚轮 + 触屏。Claude 的面板在左上小卡片，V4-Pro 的在顶部居中 pill 栏——两种主流选择。</li>
+      <li><span class="tag">思维链密度最高</span>V4-Pro 本题 8 093 tok 思维链，占比 54 %，三题中最高。合理：RK4 公式 + 旋转矩阵 + 坐标系映射 + 性能折衷都需要显式推导。</li>
+      <li><span class="tag">体量</span>Claude 9.6 KB / V4-Pro 34 KB（约 3.5 倍）。Claude 的做法是"尽可能让代码 terse"，V4-Pro 偏"每个职责都单独一段 CSS / 函数"。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========= 测试 3：番茄钟 ========= -->
+<section class="test">
+  <div class="head">
+    <div>
+      <span class="axis">题 #3 · UI/UX 开放题</span>
+      <div class="title" style="margin-top:6px;">番茄钟（Pomodoro）</div>
+    </div>
+    <span class="num">T3 · Design Taste</span>
+  </div>
+  <div class="desc">考察"审美取向 + 产品化细节"。25/5/15 分钟循环 + SVG 环形进度 + 任务列表 localStorage + 深浅主题。没有"唯一正解"，完全看模型自己的设计语言。</div>
+  <details class="prompt-drawer"><summary>题目全文</summary>
+<pre>做一个番茄钟 (Pomodoro) 网页。
+
+要求：
+1. 默认循环：25 分钟工作 → 5 分钟短休息 → 每 4 轮后 15 分钟长休息。
+2. 页面中心一个大号数字时钟（MM:SS），外圈 SVG 环形进度条随时间走；工作态/休息态颜色不同。
+3. "开始 / 暂停 / 跳过本阶段 / 重置"四按钮。
+4. 下方有任务列表：输入框新建任务 + 已完成番茄数徽标 + 删除按钮；数据用 localStorage 持久化。
+5. 右上角深浅主题切换按钮，设置也持久化。
+6. 设计要克制、留白充足、动画流畅（过渡 200-300ms），移动端可用。</pre>
+  </details>
+
+  <div class="compare-grid">
+    <article class="card claude">
+      <header>
+        <span class="name">Claude Opus 4.7</span>
+        <span class="meta">14 KB · Agent 内即时</span>
+      </header>
+      <div class="iframe-wrap"><iframe src="claude-3-pomodoro.html" title="Claude T3"></iframe></div>
+      <div class="card-foot">
+        <a href="claude-3-pomodoro.html" target="_blank">新标签页打开</a>
+        <span class="sep">·</span>
+        <a href="claude-3-pomodoro.html" download>下载</a>
+      </div>
+    </article>
+    <article class="card deepseek">
+      <header>
+        <span class="name">DeepSeek V4-Pro</span>
+        <span class="meta">42 KB · 463 s · 17 679 tok（reasoning 8 726）</span>
+      </header>
+      <div class="iframe-wrap"><iframe src="deepseek-3-pomodoro.html" title="V4-Pro T3"></iframe></div>
+      <div class="card-foot">
+        <a href="deepseek-3-pomodoro.html" target="_blank">新标签页打开</a>
+        <span class="sep">·</span>
+        <a href="deepseek-3-pomodoro.html" download>下载</a>
+        <span class="sep">·</span>
+        <a href="raw-3.json" target="_blank">原始 JSON</a>
+        <span class="sep">·</span>
+        <a href="reasoning-3.txt" target="_blank">思维链原文</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="obs">
+    <h3>本题观察</h3>
+    <ul>
+      <li><span class="tag">品味差异最明显</span>Claude 选"冷色极简"——白/灰底，工作态红 <code>#ef4444</code>，休息态绿 <code>#10b981</code>，长休息蓝 <code>#3b82f6</code>，28px tabular-nums 大钟，偏"Notion / Linear"风。V4-Pro 选"咖啡店温暖感"——米白 <code>#f7f5f2</code> + 深啡文字 <code>#2c2416</code> + 红砖色工作态 <code>#d94e3c</code>，非常"专注向 app"的调性。两种都好看，取向截然不同。</li>
+      <li><span class="tag">功能完整度</span>两家都按要求做了：SVG 环、phase 切换、任务 CRUD + 🍅 计数、localStorage、深浅主题、阶段切换音效。Claude 额外做了"点击任务打勾 / 选中当前进行中任务"；V4-Pro 的设计 token 系统更厚（~50 个变量）。</li>
+      <li><span class="tag">代码组织</span>Claude 单 IIFE + 单一 state 对象；V4-Pro 拆了多个函数模块，CSS 按组件分段注释。</li>
+      <li><span class="tag">体量</span>Claude 14 KB / V4-Pro 42 KB（约 3.0 倍）。V4-Pro 光 CSS 变量声明就占前 200 行。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========= 横向对比表 ========= -->
+<section>
+  <h2>多维横向对比</h2>
+  <div class="intro-text">
+    <p>以下是对三道题所做的六份 HTML 在几个关键维度上的主观打分（1–10），结合客观指标（体量、耗时、token 用量）。<strong>不是说分高就一定好</strong>——比如体量的 10 分代表"简洁高效"，5 分代表"堆得厉害"。</p>
+  </div>
+
+  <div class="radar-wrap">
+    <div class="dim-bars dual">
+      <h3>需求覆盖度（满分 10）</h3>
+      <div class="row">
+        <div class="label"><span>T1 归并排序</span><span class="r">9 / 9</span></div>
+        <div class="track"><div class="fill claude" style="width:90%">Claude</div><div class="fill deepseek" style="width:90%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T2 洛伦兹</span><span class="r">10 / 9</span></div>
+        <div class="track"><div class="fill claude" style="width:100%">Claude</div><div class="fill deepseek" style="width:90%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T3 番茄钟</span><span class="r">9 / 10</span></div>
+        <div class="track"><div class="fill claude" style="width:90%">Claude</div><div class="fill deepseek" style="width:100%">V4-Pro</div></div>
+      </div>
+    </div>
+
+    <div class="dim-bars dual">
+      <h3>视觉/排版（满分 10）</h3>
+      <div class="row">
+        <div class="label"><span>T1 归并排序</span><span class="r">7 / 9</span></div>
+        <div class="track"><div class="fill claude" style="width:70%">Claude</div><div class="fill deepseek" style="width:90%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T2 洛伦兹</span><span class="r">9 / 9</span></div>
+        <div class="track"><div class="fill claude" style="width:90%">Claude</div><div class="fill deepseek" style="width:90%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T3 番茄钟</span><span class="r">9 / 10</span></div>
+        <div class="track"><div class="fill claude" style="width:90%">Claude</div><div class="fill deepseek" style="width:100%">V4-Pro</div></div>
+      </div>
+    </div>
+
+    <div class="dim-bars dual">
+      <h3>代码简洁度（满分 10，越精越高）</h3>
+      <div class="row">
+        <div class="label"><span>T1 · 12.6 KB vs 47 KB</span><span class="r">9 / 5</span></div>
+        <div class="track"><div class="fill claude" style="width:90%">Claude</div><div class="fill deepseek" style="width:50%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T2 · 9.6 KB vs 34 KB</span><span class="r">10 / 4</span></div>
+        <div class="track"><div class="fill claude" style="width:100%">Claude</div><div class="fill deepseek" style="width:40%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T3 · 14 KB vs 42 KB</span><span class="r">9 / 4</span></div>
+        <div class="track"><div class="fill claude" style="width:90%">Claude</div><div class="fill deepseek" style="width:40%">V4-Pro</div></div>
+      </div>
+    </div>
+
+    <div class="dim-bars dual">
+      <h3>延迟 / 可用性（满分 10）</h3>
+      <div class="row">
+        <div class="label"><span>T1 · 即时 vs 412 s</span><span class="r">10 / 4</span></div>
+        <div class="track"><div class="fill claude" style="width:100%">Claude</div><div class="fill deepseek" style="width:40%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T2 · 即时 vs 465 s</span><span class="r">10 / 3</span></div>
+        <div class="track"><div class="fill claude" style="width:100%">Claude</div><div class="fill deepseek" style="width:30%">V4-Pro</div></div>
+      </div>
+      <div class="row">
+        <div class="label"><span>T3 · 即时 vs 463 s</span><span class="r">10 / 3</span></div>
+        <div class="track"><div class="fill claude" style="width:100%">Claude</div><div class="fill deepseek" style="width:30%">V4-Pro</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 输入输出完整记录 ========= -->
+<section>
+  <h2>完整 I/O 记录（V4-Pro）</h2>
+  <table class="metrics">
+    <thead>
+      <tr>
+        <th>题号</th>
+        <th class="num">prompt tok</th>
+        <th class="num">completion tok</th>
+        <th class="num">reasoning tok</th>
+        <th class="num">visible tok ≈</th>
+        <th class="num">visible 字符</th>
+        <th class="num">耗时</th>
+        <th>finish</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T1 归并排序</td>
+        <td class="num">217</td>
+        <td class="num">15 905</td>
+        <td class="num">6 362</td>
+        <td class="num">9 543</td>
+        <td class="num">44 462</td>
+        <td class="num">412.1 s</td>
+        <td class="ok">stop</td>
+      </tr>
+      <tr>
+        <td>T2 洛伦兹</td>
+        <td class="num">295</td>
+        <td class="num">14 960</td>
+        <td class="num">8 093</td>
+        <td class="num">6 867</td>
+        <td class="num">29 199</td>
+        <td class="num">465.5 s</td>
+        <td class="ok">stop</td>
+      </tr>
+      <tr>
+        <td>T3 番茄钟</td>
+        <td class="num">268</td>
+        <td class="num">17 679</td>
+        <td class="num">8 726</td>
+        <td class="num">8 953</td>
+        <td class="num">40 030</td>
+        <td class="num">463.1 s</td>
+        <td class="ok">stop</td>
+      </tr>
+      <tr style="background:#f9fafb;font-weight:700;">
+        <td>合计</td>
+        <td class="num">780</td>
+        <td class="num">48 544</td>
+        <td class="num">23 181</td>
+        <td class="num">25 363</td>
+        <td class="num">113 691</td>
+        <td class="num">1340.7 s (22.3 min)</td>
+        <td class="ok">3 / 3</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="intro-text" style="margin-top:14px;">
+    <p>所有 visible token 与字符数都是去掉 <code>```html</code> 围栏后的净值。reasoning tokens 在 <code>message.reasoning_content</code> 字段里完整可读——本轮合计 23 181 token，约 2.3 万字的推理稿，里面有完整的"方案拆分 → 边界检查 → 坐标映射 → CSS 设计 token 选取"等思考。可以点每题的"思维链原文"链接查看。</p>
+  </div>
+</section>
+
+<!-- ========= 结论 ========= -->
+<section>
+  <h2>结论</h2>
+  <div class="conclusion">
+    <p><strong>V4-Pro 的前端代码能力是真的"能打"</strong>。三题都一次通过 <code>finish_reason=stop</code>，所有功能点基本覆盖，视觉取向也有自己明确的主张（尤其 T3 的咖啡店美学很有辨识度）。这不是"玩具级"的水平——是可以直接塞进一个 side project 的水平。</p>
+    <p><strong>但两个代价要清楚地摆在桌上</strong>：一是 <strong>延迟</strong>——单发一题 7–8 分钟同步等待，不能做交互式开发流，必须做成"submit → 异步回来看"的工作流；二是 <strong>体量</strong>——V4-Pro 的输出普遍是 Claude 的 4–7 倍，大多花在 CSS 设计 token 展开和"按组件切段"的组织上。如果你追求的是 terse、可读、便于后续人工维护的代码，V4-Pro 的输出需要再精简一遍。</p>
+    <p><strong>思维链是 V4-Pro 最大的隐形成本</strong>。本轮合计 23 181 reasoning tokens ≈ 47.7 % 的输出预算花在推理上。这部分正常计费，但对用户不可见（除非你主动读 <code>reasoning_content</code>）。如果纯按"可见代码字符 / 花钱 tokens"算性价比，V4-Pro 大概是把约一半的钱买了"看不见的思考"——这不是 bug，是推理模型的共性，但需要在成本模型里预留。</p>
+    <p><strong>品味维度有意思</strong>。三题里有两题两家撞色（T2 都深色紫、T1 都深色暖色 accent），但 T3 番茄钟完全走向两个方向——Claude 冷色 Notion 风，V4-Pro 咖啡店米白暖红。同样的 prompt 能出如此差异的审美取向，说明大模型的"设计肌肉记忆"这件事是真实存在的。如果你给设计自由度不抠细节，V4-Pro 会帮你补一套完整的视觉语言；如果你自己有审美主张，Claude 的简洁更好往上叠加。</p>
+    <p><strong>什么时候选谁</strong>：需要"即时交互开发、代码精简、自己有审美主张"时用 Claude；需要"一次性产出完整 side project、接受 7 分钟等待、愿意给模型设计自由"时用 V4-Pro。两者不是替代关系，更像两种不同的工作模式。</p>
+  </div>
+</section>
+
+</article>
+
+<footer class="foot">
+  由 Claude Opus 4.7 (1M context) 自主完成 · CardLink Lab ·
+  <a href="wechat-article.html">查看公众号排版版</a> ·
+  <a href="./">返回文件夹</a>
+</footer>
+
+</body>
+</html>

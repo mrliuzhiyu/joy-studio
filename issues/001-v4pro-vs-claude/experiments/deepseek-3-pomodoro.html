@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄钟</title>
+    <style>
+        :root {
+            --bg: #f7f5f2;
+            --surface: #ffffff;
+            --surface-hover: #faf9f7;
+            --text: #2c2416;
+            --text-secondary: #8c7a6b;
+            --border: #e8e3db;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+            --work-color: #d94e3c;
+            --work-color-light: #fce8e5;
+            --work-color-glow: rgba(217, 78, 60, 0.2);
+            --break-color: #4a8c6f;
+            --break-color-light: #e6f4ed;
+            --break-color-glow: rgba(74, 140, 111, 0.2);
+            --ring-bg: #e8e3db;
+            --button-bg: #ffffff;
+            --button-text: #2c2416;
+            --button-border: #d5cec4;
+            --button-hover-bg: #f5f2ed;
+            --button-primary-bg: #2c2416;
+            --button-primary-text: #f7f5f2;
+            --button-primary-hover: #3d3526;
+            --badge-bg: #fce8e5;
+            --badge-text: #c0392b;
+            --input-bg: #ffffff;
+            --input-border: #e0dbd3;
+            --input-focus-border: #b8a99a;
+            --delete-color: #c4b5a5;
+            --delete-hover-color: #d94e3c;
+            --transition-speed: 0.25s;
+            --font-mono: 'SF Mono', 'Cascadia Code', 'Menlo', 'Consolas', 'Courier New', monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #1c1a18;
+            --surface: #262320;
+            --surface-hover: #2e2b27;
+            --text: #e8e3db;
+            --text-secondary: #a3988c;
+            --border: #3d3730;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2);
+            --work-color: #e8654f;
+            --work-color-light: #3d201a;
+            --work-color-glow: rgba(232, 101, 79, 0.25);
+            --break-color: #5daa84;
+            --break-color-light: #1a3026;
+            --break-color-glow: rgba(93, 170, 132, 0.2);
+            --ring-bg: #3d3730;
+            --button-bg: #2e2b27;
+            --button-text: #e8e3db;
+            --button-border: #4a433b;
+            --button-hover-bg: #3d3730;
+            --button-primary-bg: #e8e3db;
+            --button-primary-text: #1c1a18;
+            --button-primary-hover: #f0ece6;
+            --badge-bg: #3d201a;
+            --badge-text: #e8654f;
+            --input-bg: #2e2b27;
+            --input-border: #4a433b;
+            --input-focus-border: #7a6e60;
+            --delete-color: #6b6055;
+            --delete-hover-color: #e8654f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem 4rem;
+            transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.25rem;
+        }
+
+        .app-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text);
+            user-select: none;
+        }
+
+        .theme-toggle-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed) ease;
+            box-shadow: var(--shadow);
+            color: var(--text);
+            line-height: 1;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .theme-toggle-btn:hover {
+            background: var(--surface-hover);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        .theme-toggle-btn:active {
+            transform: scale(0.94);
+            transition: transform 0.1s ease;
+        }
+
+        .timer-section {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .progress-ring-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.04));
+            transition: filter var(--transition-speed) ease;
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: var(--ring-bg);
+            stroke-width: 7;
+            transition: stroke var(--transition-speed) ease;
+        }
+
+        .ring-progress {
+            fill: none;
+            stroke: var(--work-color);
+            stroke-width: 7;
+            stroke-linecap: round;
+            transition: stroke var(--transition-speed) ease, stroke-dashoffset 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ring-progress.break-mode {
+            stroke: var(--break-color);
+        }
+
+        .timer-display {
+            position: absolute;
+            font-family: var(--font-mono);
+            font-size: clamp(3.2rem, 8vw, 4.8rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-align: center;
+            line-height: 1;
+            transition: color var(--transition-speed) ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .phase-indicator {
+            position: absolute;
+            bottom: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--work-color);
+            background: var(--work-color-light);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            transition: all var(--transition-speed) ease;
+            z-index: 1;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .phase-indicator.break-mode {
+            color: var(--break-color);
+            background: var(--break-color-light);
+        }
+
+        .round-dots {
+            display: flex;
+            gap: 0.45rem;
+            justify-content: center;
+            margin-top: -0.3rem;
+            transition: all var(--transition-speed) ease;
+        }
+        .round-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ring-bg);
+            transition: all var(--transition-speed) ease;
+        }
+        .round-dot.filled {
+            background: var(--work-color);
+            box-shadow: 0 0 6px var(--work-color-glow);
+        }
+        .round-dot.current {
+            background: var(--work-color);
+            box-shadow: 0 0 10px var(--work-color-glow);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+        @keyframes dotPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 6px var(--work-color-glow);
+            }
+            50% {
+                box-shadow: 0 0 14px var(--work-color-glow), 0 0 20px var(--work-color-glow);
+            }
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        .btn {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.7rem 1.3rem;
+            border-radius: 12px;
+            border: 1px solid var(--button-border);
+            background: var(--button-bg);
+            color: var(--button-text);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+            box-shadow: var(--shadow);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:hover {
+            background: var(--button-hover-bg);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        .btn:active {
+            transform: scale(0.96);
+            transition: transform 0.1s ease;
+            box-shadow: var(--shadow);
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .btn-primary {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            border-color: var(--button-primary-bg);
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: var(--button-primary-hover);
+            border-color: var(--button-primary-hover);
+        }
+        .btn-start {
+            min-width: 90px;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+        }
+        .btn-icon {
+            padding: 0.7rem 1rem;
+        }
+
+        .task-section {
+            width: 100%;
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1.4rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border);
+        }
+        .task-section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .task-input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .task-input {
+            flex: 1;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            padding: 0.65rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text);
+            transition: all var(--transition-speed) ease;
+            outline: none;
+            min-width: 0;
+            letter-spacing: 0.01em;
+        }
+        .task-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+        .task-input:focus {
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+        }
+        .btn-add-task {
+            padding: 0.65rem 1.1rem;
+            border-radius: 10px;
+            border: 1px solid var(--button-border);
+            background: var(--button-bg);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            white-space: nowrap;
+            box-shadow: var(--shadow);
+            letter-spacing: 0.01em;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            min-height: 41px;
+        }
+        .btn-add-task:hover {
+            background: var(--button-hover-bg);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-add-task:active {
+            transform: scale(0.96);
+            transition: transform 0.1s ease;
+        }
+
+        .task-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 320px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .task-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .task-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .task-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 10px;
+            background: var(--surface);
+            transition: all var(--transition-speed) ease;
+            border: 1px solid transparent;
+            animation: fadeInItem 0.3s ease forwards;
+        }
+        @keyframes fadeInItem {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .task-item:hover {
+            background: var(--surface-hover);
+            border-color: var(--border);
+        }
+        .task-name {
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--text);
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+        }
+        .tomato-badge-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+        .tomato-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 13px;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0 0.5rem;
+            transition: all var(--transition-speed) ease;
+            user-select: none;
+            letter-spacing: 0.02em;
+        }
+        .btn-increment {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--button-bg);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed) ease;
+            padding: 0;
+            line-height: 1;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .btn-increment:hover {
+            background: var(--work-color-light);
+            color: var(--work-color);
+            border-color: var(--work-color);
+        }
+        .btn-increment:active {
+            transform: scale(0.88);
+            transition: transform 0.1s ease;
+        }
+        .btn-delete {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--delete-color);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed) ease;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .btn-delete:hover {
+            color: var(--delete-hover-color);
+            background: rgba(217, 78, 60, 0.08);
+        }
+        .btn-delete:active {
+            transform: scale(0.85);
+            transition: transform 0.1s ease;
+        }
+        .task-empty {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding: 1.5rem 0;
+            opacity: 0.7;
+            letter-spacing: 0.02em;
+        }
+
+        .toast {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            padding: 0.7rem 1.4rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            z-index: 100;
+            pointer-events: none;
+            transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: var(--shadow-md);
+            white-space: nowrap;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1.2rem 0.8rem 3rem;
+            }
+            .container {
+                gap: 1.5rem;
+                max-width: 100%;
+            }
+            .timer-section {
+                max-width: 280px;
+            }
+            .controls {
+                gap: 0.5rem;
+            }
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.82rem;
+                border-radius: 10px;
+                min-height: 40px;
+            }
+            .btn-start {
+                min-width: 75px;
+                font-size: 0.88rem;
+            }
+            .task-section {
+                padding: 1rem;
+                border-radius: 14px;
+            }
+            .task-input {
+                font-size: 0.85rem;
+                padding: 0.55rem 0.75rem;
+            }
+            .btn-add-task {
+                font-size: 0.85rem;
+                padding: 0.55rem 0.9rem;
+            }
+            .task-item {
+                padding: 0.5rem 0.6rem;
+                gap: 0.5rem;
+            }
+            .task-name {
+                font-size: 0.85rem;
+            }
+            .round-dots {
+                gap: 0.35rem;
+            }
+            .round-dot {
+                width: 7px;
+                height: 7px;
+            }
+            .phase-indicator {
+                font-size: 0.78rem;
+                padding: 0.25rem 0.8rem;
+                bottom: 16%;
+            }
+        }
+        @media (max-width: 360px) {
+            .timer-section {
+                max-width: 240px;
+            }
+            .timer-display {
+                font-size: 2.8rem;
+            }
+            .controls {
+                gap: 0.4rem;
+            }
+            .btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.78rem;
+                border-radius: 8px;
+                min-height: 36px;
+            }
+            .btn-start {
+                min-width: 65px;
+                font-size: 0.82rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="app-title">🍅 番茄钟</span>
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="切换主题" title="切换深浅主题">🌙</button>
+        </header>
+
+        <div class="timer-section" id="timerSection">
+            <svg class="progress-ring-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                <circle class="ring-bg" cx="150" cy="150" r="125"/>
+                <circle class="ring-progress" id="ringProgress" cx="150" cy="150" r="125"/>
+            </svg>
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="phase-indicator" id="phaseIndicator">工作中</div>
+        </div>
+
+        <div class="round-dots" id="roundDots">
+            <span class="round-dot filled current"></span>
+            <span class="round-dot"></span>
+            <span class="round-dot"></span>
+            <span class="round-dot"></span>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary btn-start" id="btnStartPause">开始</button>
+            <button class="btn" id="btnSkip">跳过</button>
+            <button class="btn" id="btnReset">重置</button>
+        </div>
+
+        <div class="task-section">
+            <div class="task-section-title">📋 任务列表</div>
+            <div class="task-input-row">
+                <input type="text" class="task-input" id="taskInput" placeholder="添加新任务…" maxlength="120" autocomplete="off">
+                <button class="btn-add-task" id="btnAddTask">添加</button>
+            </div>
+            <ul class="task-list" id="taskList"></ul>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            const PHASE_CONFIG = {
+                work: { label: '工作中', duration: 25 * 60, colorKey: 'work' },
+                shortBreak: { label: '短休息', duration: 5 * 60, colorKey: 'break' },
+                longBreak: { label: '长休息', duration: 15 * 60, colorKey: 'break' },
+            };
+
+            const RING_CIRCUMFERENCE = 2 * Math.PI * 125;
+
+            function getStored(key, fallback) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (raw === null) return fallback;
+                    return JSON.parse(raw);
+                } catch (e) {
+                    return fallback;
+                }
+            }
+
+            function setStored(key, value) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {}
+            }
+
+            let theme = getStored('pomodoro_theme', 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+            updateThemeButton();
+
+            let tasks = getStored('pomodoro_tasks', []);
+
+            let storedState = getStored('pomodoro_state', null);
+            let phase = 'work';
+            let remainingSeconds = PHASE_CONFIG.work.duration;
+            let roundsCompleted = 0;
+            let isRunning = false;
+            let timerInterval = null;
+            let startTimestamp = null;
+            let remainingAtStart = null;
+
+            if (storedState && typeof storedState === 'object') {
+                phase = storedState.phase || 'work';
+                if (!PHASE_CONFIG[phase]) phase = 'work';
+                remainingSeconds = typeof storedState.remainingSeconds === 'number' ? storedState.remainingSeconds :
+                    PHASE_CONFIG[phase].duration;
+                roundsCompleted = typeof storedState.roundsCompleted === 'number' ? storedState.roundsCompleted : 0;
+                if (storedState.isRunning && typeof storedState.startTimestamp === 'number' && typeof storedState
+                    .remainingAtStart === 'number') {
+                    const elapsed = Math.floor((Date.now() - storedState.startTimestamp) / 1000);
+                    remainingSeconds = Math.max(0, storedState.remainingAtStart - elapsed);
+                    if (remainingSeconds <= 0) {
+                        handlePhaseCompletion(false);
+                    } else {
+                        isRunning = true;
+                        startTimestamp = storedState.startTimestamp;
+                        remainingAtStart = storedState.remainingAtStart;
+                    }
+                }
+                if (remainingSeconds > PHASE_CONFIG[phase].duration) {
+                    remainingSeconds = PHASE_CONFIG[phase].duration;
+                }
+                if (remainingSeconds < 0) remainingSeconds = 0;
+            }
+
+            function updateThemeButton() {
+                const btn = document.getElementById('themeToggle');
+                btn.textContent = theme === 'light' ? '🌙' : '☀️';
+                btn.title = theme === 'light' ? '切换到深色主题' : '切换到浅色主题';
+            }
+
+            function saveState() {
+                const state = {
+                    phase,
+                    remainingSeconds,
+                    roundsCompleted,
+                    isRunning,
+                    startTimestamp: isRunning ? startTimestamp : null,
+                    remainingAtStart: isRunning ? remainingAtStart : null,
+                };
+                setStored('pomodoro_state', state);
+            }
+
+            function saveTasks() {
+                setStored('pomodoro_tasks', tasks);
+            }
+
+            function getCurrentPhaseConfig() {
+                return PHASE_CONFIG[phase];
+            }
+
+            function getCurrentRoundInCycle() {
+                return (roundsCompleted % 4);
+            }
+
+            function formatTime(seconds) {
+                const s = Math.max(0, Math.floor(seconds));
+                const m = Math.floor(s / 60);
+                const sec = s % 60;
+                return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+            }
+
+            function updateRingProgress() {
+                const ring = document.getElementById('ringProgress');
+                const config = getCurrentPhaseConfig();
+                const total = config.duration;
+                const fraction = total > 0 ? Math.max(0, Math.min(1, remainingSeconds / total)) : 1;
+                const offset = RING_CIRCUMFERENCE * fraction;
+                ring.style.strokeDasharray = RING_CIRCUMFERENCE;
+                ring.style.strokeDashoffset = offset;
+                if (config.colorKey === 'break') {
+                    ring.classList.add('break-mode');
+                } else {
+                    ring.classList.remove('break-mode');
+                }
+            }
+
+            function updatePhaseIndicator() {
+                const indicator = document.getElementById('phaseIndicator');
+                const config = getCurrentPhaseConfig();
+                let text = config.label;
+                if (phase === 'work') {
+                    const roundNum = getCurrentRoundInCycle() + 1;
+                    text = '工作中 · 第' + roundNum + '轮';
+                } else if (phase === 'longBreak') {
+                    text = '长休息 · 15分钟';
+                } else {
+                    text = '短休息 · 5分钟';
+                }
+                indicator.textContent = text;
+                if (config.colorKey === 'break') {
+                    indicator.classList.add('break-mode');
+                } else {
+                    indicator.classList.remove('break-mode');
+                }
+            }
+
+            function updateRoundDots() {
+                const dotsContainer = document.getElementById('roundDots');
+                const dots = dotsContainer.querySelectorAll('.round-dot');
+                const currentCycleIndex = getCurrentRoundInCycle();
+                dots.forEach((dot, i) => {
+                    dot.classList.remove('filled', 'current');
+                    if (i < currentCycleIndex) {
+                        dot.classList.add('filled');
+                    } else if (i === currentCycleIndex && phase === 'work') {
+                        dot.classList.add('filled', 'current');
+                    } else if (i === currentCycleIndex && phase !== 'work') {
+                        dot.classList.add('filled');
+                    }
+                });
+                if (phase !== 'work' && currentCycleIndex === 0 && roundsCompleted > 0 && roundsCompleted % 4 ===
+                    0) {
+                    dots.forEach(d => d.classList.remove('filled', 'current'));
+                }
+            }
+
+            function updateDisplay() {
+                document.getElementById('timerDisplay').textContent = formatTime(remainingSeconds);
+                updateRingProgress();
+                updatePhaseIndicator();
+                updateRoundDots();
+                updateStartPauseButton();
+            }
+
+            function updateStartPauseButton() {
+                const btn = document.getElementById('btnStartPause');
+                if (isRunning) {
+                    btn.textContent = '暂停';
+                    btn.classList.add('btn-primary');
+                } else {
+                    btn.textContent = '开始';
+                    btn.classList.add('btn-primary');
+                }
+            }
+
+            function startTimer() {
+                if (isRunning) return;
+                isRunning = true;
+                startTimestamp = Date.now();
+                remainingAtStart = remainingSeconds;
+                updateStartPauseButton();
+                saveState();
+                timerInterval = setInterval(tick, 250);
+            }
+
+            function pauseTimer() {
+                if (!isRunning) return;
+                isRunning = false;
+                startTimestamp = null;
+                remainingAtStart = null;
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                updateStartPauseButton();
+                saveState();
+            }
+
+            function tick() {
+                if (!isRunning) return;
+                const elapsed = Math.floor((Date.now() - startTimestamp) / 1000);
+                const newRemaining = Math.max(0, remainingAtStart - elapsed);
+                if (newRemaining !== remainingSeconds) {
+                    remainingSeconds = newRemaining;
+                    updateDisplay();
+                    if (remainingSeconds <= 0) {
+                        handlePhaseCompletion(true);
+                    }
+                }
+                if (isRunning && remainingSeconds > 0 && Math.floor(remainingSeconds) % 5 === 0 && Math.floor(
+                        remainingSeconds) !== Math.floor((remainingAtStart - elapsed + 0.5) % 5)) {
+                    saveState();
+                }
+            }
+
+            function handlePhaseCompletion(naturalCompletion) {
+                pauseTimer();
+                if (naturalCompletion && phase === 'work') {
+                    roundsCompleted++;
+                    if (tasks.length > 0) {
+                        tasks[0].tomatoCount = (tasks[0].tomatoCount || 0) + 1;
+                        saveTasks();
+                        renderTaskList();
+                    }
+                    showToast('✅ 番茄完成！');
+                }
+                if (phase === 'work') {
+                    if (roundsCompleted > 0 && roundsCompleted % 4 === 0) {
+                        phase = 'longBreak';
+                    } else {
+                        phase = 'shortBreak';
+                    }
+                } else {
+                    phase = 'work';
+                }
+                remainingSeconds = PHASE_CONFIG[phase].duration;
+                updateDisplay();
+                saveState();
+                startTimer();
+                if (phase === 'work' && roundsCompleted > 0 && roundsCompleted % 4 === 0 && naturalCompletion) {
+                    showToast('🌿 长休息时间到，好好放松');
+                } else if (phase === 'shortBreak' && naturalCompletion) {
+                    showToast('☕ 短休息，马上回来');
+                } else if (phase === 'work' && !naturalCompletion) {
+                    showToast('💪 开始新的番茄钟');
+                }
+            }
+
+            function skipPhase() {
+                const wasRunning = isRunning;
+                pauseTimer();
+                if (phase === 'work') {} else {
+                    if (phase === 'longBreak' && roundsCompleted > 0 && roundsCompleted % 4 === 0) {} else if (phase ===
+                        'shortBreak') {}
+                }
+                if (phase === 'work') {
+                    if ((roundsCompleted + 1) > 0 && (roundsCompleted + 1) % 4 === 0) {
+                        phase = 'longBreak';
+                    } else {
+                        phase = 'shortBreak';
+                    }
+                } else {
+                    phase = 'work';
+                }
+                remainingSeconds = PHASE_CONFIG[phase].duration;
+                updateDisplay();
+                saveState();
+                if (wasRunning) {
+                    startTimer();
+                }
+                showToast('⏭ 已跳过当前阶段');
+            }
+
+            function resetPhase() {
+                const wasRunning = isRunning;
+                pauseTimer();
+                remainingSeconds = PHASE_CONFIG[phase].duration;
+                updateDisplay();
+                saveState();
+                if (wasRunning) {
+                    startTimer();
+                }
+                showToast('🔄 已重置计时');
+            }
+
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                if (toast._timeout) clearTimeout(toast._timeout);
+                toast.textContent = message;
+                toast.classList.add('show');
+                toast._timeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast._timeout = null;
+                }, 1800);
+            }
+
+            function renderTaskList() {
+                const list = document.getElementById('taskList');
+                if (tasks.length === 0) {
+                    list.innerHTML = '<li class="task-empty">暂无任务，添加一个开始吧 ✨</li>';
+                } else {
+                    list.innerHTML = tasks.map((task, index) => {
+                        const count = task.tomatoCount || 0;
+                        return `
+                                <li class="task-item" data-index="${index}">
+                                    <span class="task-name" title="${escapeHtml(task.name)}">${escapeHtml(task.name)}</span>
+                                    <span class="tomato-badge-wrap">
+                                        <span class="tomato-badge" title="已完成番茄数">🍅 ${count}</span>
+                                        <button class="btn-increment" data-action="increment" data-index="${index}" title="增加番茄数" aria-label="增加番茄数">+</button>
+                                    </span>
+                                    <button class="btn-delete" data-action="delete" data-index="${index}" title="删除任务" aria-label="删除任务">×</button>
+                                </li>`;
+                    }).join('');
+                }
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function addTask(name) {
+                const trimmed = name.trim();
+                if (!trimmed) return;
+                tasks.unshift({ name: trimmed, tomatoCount: 0 });
+                saveTasks();
+                renderTaskList();
+                document.getElementById('taskInput').value = '';
+                document.getElementById('taskInput').focus();
+            }
+
+            function deleteTask(index) {
+                if (index < 0 || index >= tasks.length) return;
+                tasks.splice(index, 1);
+                saveTasks();
+                renderTaskList();
+            }
+
+            function incrementTaskTomato(index) {
+                if (index < 0 || index >= tasks.length) return;
+                tasks[index].tomatoCount = (tasks[index].tomatoCount || 0) + 1;
+                saveTasks();
+                renderTaskList();
+            }
+
+            function handleTaskListClick(e) {
+                const actionBtn = e.target.closest('[data-action]');
+                if (!actionBtn) return;
+                const action = actionBtn.getAttribute('data-action');
+                const index = parseInt(actionBtn.getAttribute('data-index'), 10);
+                if (isNaN(index)) return;
+                if (action === 'delete') {
+                    deleteTask(index);
+                } else if (action === 'increment') {
+                    incrementTaskTomato(index);
+                }
+            }
+
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                theme = theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                setStored('pomodoro_theme', theme);
+                updateThemeButton();
+            });
+
+            document.getElementById('btnStartPause').addEventListener('click', function() {
+                if (isRunning) {
+                    pauseTimer();
+                } else {
+                    startTimer();
+                }
+            });
+
+            document.getElementById('btnSkip').addEventListener('click', skipPhase);
+            document.getElementById('btnReset').addEventListener('click', resetPhase);
+
+            document.getElementById('btnAddTask').addEventListener('click', function() {
+                const input = document.getElementById('taskInput');
+                addTask(input.value);
+            });
+
+            document.getElementById('taskInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addTask(this.value);
+                }
+            });
+
+            document.getElementById('taskList').addEventListener('click', handleTaskListClick);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space' && e.target === document.body) {
+                    e.preventDefault();
+                    if (isRunning) {
+                        pauseTimer();
+                    } else {
+                        startTimer();
+                    }
+                }
+            });
+
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    saveState();
+                } else {
+                    if (isRunning && startTimestamp && remainingAtStart !== null) {
+                        const elapsed = Math.floor((Date.now() - startTimestamp) / 1000);
+                        const newRemaining = Math.max(0, remainingAtStart - elapsed);
+                        if (newRemaining <= 0) {
+                            remainingSeconds = 0;
+                            updateDisplay();
+                            handlePhaseCompletion(true);
+                        } else {
+                            remainingSeconds = newRemaining;
+                            updateDisplay();
+                        }
+                    }
+                }
+            });
+
+            updateDisplay();
+            renderTaskList();
+            if (isRunning) {
+                updateStartPauseButton();
+                timerInterval = setInterval(tick, 250);
+                const elapsed = Math.floor((Date.now() - startTimestamp) / 1000);
+                const newRemaining = Math.max(0, remainingAtStart - elapsed);
+                if (newRemaining <= 0) {
+                    remainingSeconds = 0;
+                    updateDisplay();
+                    handlePhaseCompletion(true);
+                } else {
+                    remainingSeconds = newRemaining;
+                    updateDisplay();
+                }
+            }
+            saveState();
+
+            const ringProgressEl = document.getElementById('ringProgress');
+            ringProgressEl.style.strokeDasharray = RING_CIRCUMFERENCE;
+            ringProgressEl.style.strokeDashoffset = RING_CIRCUMFERENCE;
+            updateRingProgress();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>洛伦兹吸引子 - 3D 可视化</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --panel-bg: rgba(10, 10, 20, 0.85);
+            --text: #c8c8d4;
+            --text-secondary: #8888a0;
+            --accent: #a855f7;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            overflow: hidden;
+            font-family: 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            touch-action: none;
+            height: 100dvh;
+            width: 100dvw;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        canvas:active {
+            cursor: grabbing;
+        }
+
+        .panel {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            pointer-events: auto;
+            flex-wrap: wrap;
+            justify-content: center;
+            min-width: 280px;
+        }
+
+        .panel-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+        }
+
+        .panel-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .panel-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            min-width: 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            padding: 2px 8px;
+            letter-spacing: 0.02em;
+        }
+
+        .panel-value.fps {
+            color: #60e8a0;
+        }
+        .panel-value.points {
+            color: #a0c4ff;
+        }
+        .panel-value.angle {
+            color: #e0b0ff;
+        }
+
+        .panel-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            border-radius: 1px;
+        }
+
+        @media (max-width: 640px) {
+            .panel {
+                top: 8px;
+                padding: 10px 14px;
+                gap: 12px;
+                border-radius: 10px;
+                min-width: auto;
+            }
+            .panel-item {
+                gap: 4px;
+            }
+            .panel-label {
+                font-size: 9px;
+            }
+            .panel-value {
+                font-size: 11px;
+                padding: 2px 6px;
+                min-width: 32px;
+            }
+            .panel-divider {
+                height: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="panel" id="panel">
+        <div class="panel-item">
+            <span class="panel-label">FPS</span>
+            <span class="panel-value fps" id="fps-val">--</span>
+        </div>
+        <div class="panel-divider"></div>
+        <div class="panel-item">
+            <span class="panel-label">点数</span>
+            <span class="panel-value points" id="points-val">15000</span>
+        </div>
+        <div class="panel-divider"></div>
+        <div class="panel-item">
+            <span class="panel-label">偏航</span>
+            <span class="panel-value angle" id="yaw-val">0°</span>
+        </div>
+        <div class="panel-divider"></div>
+        <div class="panel-item">
+            <span class="panel-label">俯仰</span>
+            <span class="panel-value angle" id="pitch-val">25°</span>
+        </div>
+        <div class="panel-divider"></div>
+        <div class="panel-item">
+            <span class="panel-label">缩放</span>
+            <span class="panel-value angle" id="zoom-val">1.0x</span>
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        (function() {
+            // ─────────────────────────────────────
+            // 洛伦兹吸引子参数
+            // ─────────────────────────────────────
+            const SIGMA = 10.0;
+            const RHO = 28.0;
+            const BETA = 8.0 / 3.0;
+            const DT = 0.005;
+            const TOTAL_POINTS = 15000;
+
+            // ─────────────────────────────────────
+            // DOM 元素
+            // ─────────────────────────────────────
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const panel = document.getElementById('panel');
+            const fpsValEl = document.getElementById('fps-val');
+            const pointsValEl = document.getElementById('points-val');
+            const yawValEl = document.getElementById('yaw-val');
+            const pitchValEl = document.getElementById('pitch-val');
+            const zoomValEl = document.getElementById('zoom-val');
+
+            // ─────────────────────────────────────
+            // 状态变量
+            // ─────────────────────────────────────
+            let points = []; // 存储所有3D点
+            let centroidX = 0,
+                centroidY = 0,
+                centroidZ = 0;
+            let autoAngle = 0; // 自动绕Y轴旋转角度
+            let userYaw = 0; // 用户拖拽偏航
+            let userPitch = 0.44; // 初始俯仰约25度 (0.44弧度)
+            let zoomLevel = 1.0; // 缩放级别
+            const ZOOM_MIN = 0.35;
+            const ZOOM_MAX = 3.5;
+            const BASE_DISTANCE = 72;
+
+            // 拖拽状态
+            let isDragging = false;
+            let dragPrevX = 0;
+            let dragPrevY = 0;
+            let dragYawStart = 0;
+            let dragPitchStart = 0;
+
+            // 触摸缩放
+            let touchPinchDist = 0;
+            let touchPinchZoomStart = 1.0;
+            let isPinching = false;
+
+            // 惯性
+            let inertiaYawVel = 0;
+            let inertiaPitchVel = 0;
+            const INERTIA_DECAY = 0.94;
+            const INERTIA_THRESHOLD = 0.0003;
+
+            // FPS
+            let fpsSmooth = 0;
+            let lastFrameTime = performance.now();
+            let fpsUpdateCounter = 0;
+            let fpsAccum = 0;
+
+            // 动画
+            let animationId = null;
+            const AUTO_ROTATE_SPEED = 0.0045; // 弧度/帧 (~0.27 rad/s 在60fps)
+
+            // Canvas尺寸
+            let canvasWidth = 0;
+            let canvasHeight = 0;
+            let dpr = 1;
+            let focalLength = 400;
+            let centerScreenX = 0;
+            let centerScreenY = 0;
+
+            // ─────────────────────────────────────
+            // 洛伦兹系统导数
+            // ─────────────────────────────────────
+            function lorenzDeriv(x, y, z) {
+                return [
+                    SIGMA * (y - x),
+                    x * (RHO - z) - y,
+                    x * y - BETA * z,
+                ];
+            }
+
+            // ─────────────────────────────────────
+            // RK4 单步积分
+            // ─────────────────────────────────────
+            function rk4Step(x, y, z, dt) {
+                const [dx1, dy1, dz1] = lorenzDeriv(x, y, z);
+                const x2 = x + 0.5 * dt * dx1;
+                const y2 = y + 0.5 * dt * dy1;
+                const z2 = z + 0.5 * dt * dz1;
+                const [dx2, dy2, dz2] = lorenzDeriv(x2, y2, z2);
+                const x3 = x + 0.5 * dt * dx2;
+                const y3 = y + 0.5 * dt * dy2;
+                const z3 = z + 0.5 * dt * dz2;
+                const [dx3, dy3, dz3] = lorenzDeriv(x3, y3, z3);
+                const x4 = x + dt * dx3;
+                const y4 = y + dt * dy3;
+                const z4 = z + dt * dz3;
+                const [dx4, dy4, dz4] = lorenzDeriv(x4, y4, z4);
+
+                return [
+                    x + (dt / 6.0) * (dx1 + 2 * dx2 + 2 * dx3 + dx4),
+                    y + (dt / 6.0) * (dy1 + 2 * dy2 + 2 * dy3 + dy4),
+                    z + (dt / 6.0) * (dz1 + 2 * dz2 + 2 * dz3 + dz4),
+                ];
+            }
+
+            // ─────────────────────────────────────
+            // 生成所有轨迹点
+            // ─────────────────────────────────────
+            function generatePoints() {
+                points = [];
+                let x = 1.0;
+                let y = 1.0;
+                let z = 1.0;
+
+                for (let i = 0; i < TOTAL_POINTS; i++) {
+                    points.push({ x, y, z });
+                    [x, y, z] = rk4Step(x, y, z, DT);
+                }
+
+                // 计算质心
+                let sumX = 0,
+                    sumY = 0,
+                    sumZ = 0;
+                for (const p of points) {
+                    sumX += p.x;
+                    sumY += p.y;
+                    sumZ += p.z;
+                }
+                centroidX = sumX / TOTAL_POINTS;
+                centroidY = sumY / TOTAL_POINTS;
+                centroidZ = sumZ / TOTAL_POINTS;
+            }
+
+            // ─────────────────────────────────────
+            // 颜色插值 (蓝 → 紫 → 洋红)
+            // ─────────────────────────────────────
+            function lerpColor(c1, c2, t) {
+                return {
+                    r: Math.round(c1.r + (c2.r - c1.r) * t),
+                    g: Math.round(c1.g + (c2.g - c1.g) * t),
+                    b: Math.round(c1.b + (c2.b - c1.b) * t),
+                };
+            }
+
+            const COLOR_BLUE = { r: 59, g: 130, b: 246 }; // #3b82f6
+            const COLOR_PURPLE = { r: 168, g: 85, b: 247 }; // #a855f7
+            const COLOR_MAGENTA = { r: 236, g: 72, b: 153 }; // #ec4899
+
+            function getColorForIndex(i, total) {
+                const t = i / (total - 1);
+                if (t < 0.5) {
+                    return lerpColor(COLOR_BLUE, COLOR_PURPLE, t * 2);
+                } else {
+                    return lerpColor(COLOR_PURPLE, COLOR_MAGENTA, (t - 0.5) * 2);
+                }
+            }
+
+            // ─────────────────────────────────────
+            // 预计算颜色查找表（分组用）
+            // ─────────────────────────────────────
+            const GROUP_SIZE = 60; // 每组约60个点
+            const NUM_GROUPS = Math.ceil(TOTAL_POINTS / GROUP_SIZE);
+            const groupColors = [];
+            const groupStartIndices = [];
+
+            function buildColorGroups() {
+                groupColors.length = 0;
+                groupStartIndices.length = 0;
+                for (let g = 0; g < NUM_GROUPS; g++) {
+                    const startIdx = g * GROUP_SIZE;
+                    const midIdx = Math.min(startIdx + Math.floor(GROUP_SIZE / 2), TOTAL_POINTS - 1);
+                    groupStartIndices.push(startIdx);
+                    groupColors.push(getColorForIndex(midIdx, TOTAL_POINTS));
+                }
+            }
+
+            // ─────────────────────────────────────
+            // Canvas 尺寸更新
+            // ─────────────────────────────────────
+            function updateCanvasSize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvasWidth = window.innerWidth;
+                canvasHeight = window.innerHeight;
+                canvas.width = Math.round(canvasWidth * dpr);
+                canvas.height = Math.round(canvasHeight * dpr);
+                canvas.style.width = canvasWidth + 'px';
+                canvas.style.height = canvasHeight + 'px';
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.scale(dpr, dpr);
+                centerScreenX = canvasWidth / 2;
+                centerScreenY = canvasHeight / 2;
+                focalLength = Math.min(canvasWidth, canvasHeight) * 0.58;
+            }
+
+            // ─────────────────────────────────────
+            // 3D 旋转 + 投影
+            // ─────────────────────────────────────
+            function rotateAndProject(px, py, pz, totalYaw, pitch, distance) {
+                // 先平移到质心
+                const cx = px - centroidX;
+                const cy = py - centroidY;
+                const cz = pz - centroidZ;
+
+                // 绕Y轴旋转 (totalYaw)
+                const cosY = Math.cos(totalYaw);
+                const sinY = Math.sin(totalYaw);
+                const rx = cx * cosY + cz * sinY;
+                const ry = cy;
+                const rz = -cx * sinY + cz * cosY;
+
+                // 绕X轴旋转 (pitch)
+                const cosP = Math.cos(pitch);
+                const sinP = Math.sin(pitch);
+                const rx2 = rx;
+                const ry2 = ry * cosP - rz * sinP;
+                const rz2 = ry * sinP + rz * cosP;
+
+                // 透视投影
+                const denom = rz2 + distance;
+                if (denom < 0.5) return null; // 点在相机后方
+                const projX = (rx2 / denom) * focalLength + centerScreenX;
+                const projY = -(ry2 / denom) * focalLength + centerScreenY; // Y轴翻转
+
+                return { x: projX, y: projY, z: rz2 };
+            }
+
+            // ─────────────────────────────────────
+            // 渲染一帧
+            // ─────────────────────────────────────
+            function render(timestamp) {
+                // 计算帧时间
+                const rawDt = (timestamp - lastFrameTime) / 1000;
+                lastFrameTime = timestamp;
+
+                // 更新FPS（指数移动平均）
+                if (rawDt > 0 && rawDt < 0.5) {
+                    const instantFps = 1.0 / rawDt;
+                    if (fpsSmooth === 0) {
+                        fpsSmooth = instantFps;
+                    } else {
+                        fpsSmooth = fpsSmooth * 0.88 + instantFps * 0.12;
+                    }
+                }
+
+                // FPS显示更新（每0.35秒更新UI）
+                fpsAccum += rawDt;
+                fpsUpdateCounter++;
+                if (fpsAccum > 0.35 && fpsUpdateCounter > 1) {
+                    fpsValEl.textContent = Math.round(fpsSmooth);
+                    fpsAccum = 0;
+                    fpsUpdateCounter = 0;
+                }
+
+                // 惯性衰减
+                if (!isDragging && !isPinching) {
+                    if (Math.abs(inertiaYawVel) > INERTIA_THRESHOLD || Math.abs(inertiaPitchVel) > INERTIA_THRESHOLD) {
+                        userYaw += inertiaYawVel;
+                        userPitch += inertiaPitchVel;
+                        inertiaYawVel *= INERTIA_DECAY;
+                        inertiaPitchVel *= INERTIA_DECAY;
+                        // 限制俯仰
+                        userPitch = Math.max(-1.3, Math.min(1.3, userPitch));
+                    } else {
+                        inertiaYawVel = 0;
+                        inertiaPitchVel = 0;
+                        // 自动旋转
+                        autoAngle += AUTO_ROTATE_SPEED;
+                    }
+                } else if (!isDragging && isPinching) {
+                    // 双指缩放时也进行自动旋转
+                    autoAngle += AUTO_ROTATE_SPEED * 0.3;
+                }
+
+                // 总旋转角度
+                const totalYaw = autoAngle + userYaw;
+                const distance = BASE_DISTANCE / zoomLevel;
+
+                // 清除画布
+                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+                // 绘制深色背景
+                ctx.fillStyle = '#0a0a0f';
+                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                // 预计算所有2D投影点
+                const projected = [];
+                for (let i = 0; i < TOTAL_POINTS; i++) {
+                    const p = points[i];
+                    const proj = rotateAndProject(p.x, p.y, p.z, totalYaw, userPitch, distance);
+                    projected.push(proj);
+                }
+
+                // ─────────────────────────────────────
+                // 光晕层绘制
+                // ─────────────────────────────────────
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = 4.5;
+
+                for (let g = 0; g < NUM_GROUPS; g++) {
+                    const startIdx = groupStartIndices[g];
+                    const endIdx = Math.min(startIdx + GROUP_SIZE, TOTAL_POINTS);
+                    const col = groupColors[g];
+
+                    ctx.beginPath();
+                    let firstInGroup = true;
+                    let anyValid = false;
+                    for (let i = startIdx; i < endIdx; i++) {
+                        const proj = projected[i];
+                        if (proj === null) {
+                            firstInGroup = true;
+                            continue;
+                        }
+                        if (firstInGroup) {
+                            ctx.moveTo(proj.x, proj.y);
+                            firstInGroup = false;
+                            anyValid = true;
+                        } else {
+                            ctx.lineTo(proj.x, proj.y);
+                        }
+                    }
+                    if (anyValid) {
+                        ctx.strokeStyle = `rgba(${col.r},${col.g},${col.b},0.22)`;
+                        ctx.stroke();
+                    }
+                }
+
+                // ─────────────────────────────────────
+                // 主线层绘制
+                // ─────────────────────────────────────
+                ctx.lineWidth = 1.1;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                for (let g = 0; g < NUM_GROUPS; g++) {
+                    const startIdx = groupStartIndices[g];
+                    const endIdx = Math.min(startIdx + GROUP_SIZE, TOTAL_POINTS);
+                    const col = groupColors[g];
+
+                    ctx.beginPath();
+                    let firstInGroup = true;
+                    let anyValid = false;
+                    for (let i = startIdx; i < endIdx; i++) {
+                        const proj = projected[i];
+                        if (proj === null) {
+                            firstInGroup = true;
+                            continue;
+                        }
+                        if (firstInGroup) {
+                            ctx.moveTo(proj.x, proj.y);
+                            firstInGroup = false;
+                            anyValid = true;
+                        } else {
+                            ctx.lineTo(proj.x, proj.y);
+                        }
+                    }
+                    if (anyValid) {
+                        ctx.strokeStyle = `rgb(${col.r},${col.g},${col.b})`;
+                        ctx.stroke();
+                    }
+                }
+
+                // ─────────────────────────────────────
+                // 更新面板信息
+                // ─────────────────────────────────────
+                const yawDeg = Math.round(((totalYaw % (2 * Math.PI)) * 180) / Math.PI);
+                const pitchDeg = Math.round((userPitch * 180) / Math.PI);
+                yawValEl.textContent = yawDeg + '°';
+                pitchValEl.textContent = pitchDeg + '°';
+                zoomValEl.textContent = zoomLevel.toFixed(1) + 'x';
+                pointsValEl.textContent = TOTAL_POINTS.toLocaleString();
+
+                // 继续动画循环
+                animationId = requestAnimationFrame(render);
+            }
+
+            // ─────────────────────────────────────
+            // 鼠标事件处理
+            // ─────────────────────────────────────
+            function onMouseDown(e) {
+                if (e.target === panel || panel.contains(e.target)) return;
+                isDragging = true;
+                isPinching = false;
+                dragPrevX = e.clientX;
+                dragPrevY = e.clientY;
+                dragYawStart = userYaw;
+                dragPitchStart = userPitch;
+                inertiaYawVel = 0;
+                inertiaPitchVel = 0;
+                canvas.style.cursor = 'grabbing';
+            }
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                const dx = e.clientX - dragPrevX;
+                const dy = e.clientY - dragPrevY;
+                const sensitivity = 0.006;
+                userYaw = dragYawStart + dx * sensitivity;
+                userPitch = dragPitchStart - dy * sensitivity;
+                userPitch = Math.max(-1.3, Math.min(1.3, userPitch));
+                // 记录速度用于惯性
+                inertiaYawVel = dx * sensitivity;
+                inertiaPitchVel = -dy * sensitivity;
+            }
+
+            function onMouseUp(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+                // 惯性速度已在onMouseMove中记录
+            }
+
+            function onWheel(e) {
+                if (e.target === panel || panel.contains(e.target)) return;
+                e.preventDefault();
+                const delta = -e.deltaY * 0.0015;
+                zoomLevel = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomLevel * (1 + delta)));
+                zoomValEl.textContent = zoomLevel.toFixed(1) + 'x';
+            }
+
+            // ─────────────────────────────────────
+            // 触摸事件处理
+            // ─────────────────────────────────────
+            function getTouchPos(touch) {
+                return { x: touch.clientX, y: touch.clientY };
+            }
+
+            function getTouchDistance(t1, t2) {
+                const dx = t1.clientX - t2.clientX;
+                const dy = t1.clientY - t2.clientY;
+                return Math.sqrt(dx * dx + dy * dy);
+            }
+
+            function onTouchStart(e) {
+                if (e.target === panel || panel.contains(e.target)) return;
+                e.preventDefault();
+                const touches = e.touches;
+                if (touches.length === 1) {
+                    // 单指拖拽
+                    isDragging = true;
+                    isPinching = false;
+                    const pos = getTouchPos(touches[0]);
+                    dragPrevX = pos.x;
+                    dragPrevY = pos.y;
+                    dragYawStart = userYaw;
+                    dragPitchStart = userPitch;
+                    inertiaYawVel = 0;
+                    inertiaPitchVel = 0;
+                } else if (touches.length === 2) {
+                    // 双指缩放
+                    isDragging = false;
+                    isPinching = true;
+                    touchPinchDist = getTouchDistance(touches[0], touches[1]);
+                    touchPinchZoomStart = zoomLevel;
+                    inertiaYawVel = 0;
+                    inertiaPitchVel = 0;
+                }
+            }
+
+            function onTouchMove(e) {
+                if (e.target === panel || panel.contains(e.target)) return;
+                e.preventDefault();
+                const touches = e.touches;
+                if (isDragging && touches.length === 1) {
+                    const pos = getTouchPos(touches[0]);
+                    const dx = pos.x - dragPrevX;
+                    const dy = pos.y - dragPrevY;
+                    const sensitivity = 0.006;
+                    userYaw = dragYawStart + dx * sensitivity;
+                    userPitch = dragPitchStart - dy * sensitivity;
+                    userPitch = Math.max(-1.3, Math.min(1.3, userPitch));
+                    inertiaYawVel = dx * sensitivity;
+                    inertiaPitchVel = -dy * sensitivity;
+                } else if (isPinching && touches.length === 2) {
+                    const newDist = getTouchDistance(touches[0], touches[1]);
+                    if (touchPinchDist > 0 && newDist > 0) {
+                        const scale = newDist / touchPinchDist;
+                        zoomLevel = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, touchPinchZoomStart * scale));
+                    }
+                } else if (touches.length === 2 && !isPinching && !isDragging) {
+                    // 切换到双指
+                    isDragging = false;
+                    isPinching = true;
+                    touchPinchDist = getTouchDistance(touches[0], touches[1]);
+                    touchPinchZoomStart = zoomLevel;
+                    inertiaYawVel = 0;
+                    inertiaPitchVel = 0;
+                }
+            }
+
+            function onTouchEnd(e) {
+                if (e.target === panel || panel.contains(e.target)) return;
+                const touches = e.touches;
+                if (touches.length === 0) {
+                    isDragging = false;
+                    isPinching = false;
+                    touchPinchDist = 0;
+                } else if (touches.length === 1 && isPinching) {
+                    // 从双指切换到单指
+                    isPinching = false;
+                    isDragging = true;
+                    const pos = getTouchPos(touches[0]);
+                    dragPrevX = pos.x;
+                    dragPrevY = pos.y;
+                    dragYawStart = userYaw;
+                    dragPitchStart = userPitch;
+                    inertiaYawVel = 0;
+                    inertiaPitchVel = 0;
+                }
+            }
+
+            // ─────────────────────────────────────
+            // 键盘快捷键
+            // ─────────────────────────────────────
+            function onKeyDown(e) {
+                switch (e.key.toLowerCase()) {
+                    case 'r':
+                        // 重置视角
+                        userYaw = 0;
+                        userPitch = 0.44;
+                        zoomLevel = 1.0;
+                        autoAngle = 0;
+                        inertiaYawVel = 0;
+                        inertiaPitchVel = 0;
+                        break;
+                    case 'f':
+                        // 俯视
+                        userPitch = Math.min(1.3, userPitch + 0.15);
+                        break;
+                    case 'g':
+                        // 仰视
+                        userPitch = Math.max(-1.3, userPitch - 0.15);
+                        break;
+                    case '+':
+                    case '=':
+                        zoomLevel = Math.min(ZOOM_MAX, zoomLevel * 1.12);
+                        break;
+                    case '-':
+                        zoomLevel = Math.max(ZOOM_MIN, zoomLevel / 1.12);
+                        break;
+                    case '0':
+                        zoomLevel = 1.0;
+                        break;
+                    case 'arrowleft':
+                        userYaw -= 0.12;
+                        break;
+                    case 'arrowright':
+                        userYaw += 0.12;
+                        break;
+                    case 'arrowup':
+                        userPitch = Math.min(1.3, userPitch + 0.08);
+                        break;
+                    case 'arrowdown':
+                        userPitch = Math.max(-1.3, userPitch - 0.08);
+                        break;
+                }
+            }
+
+            // ─────────────────────────────────────
+            // 窗口大小变化
+            // ─────────────────────────────────────
+            function onResize() {
+                updateCanvasSize();
+                focalLength = Math.min(canvasWidth, canvasHeight) * 0.58;
+                centerScreenX = canvasWidth / 2;
+                centerScreenY = canvasHeight / 2;
+            }
+
+            // ─────────────────────────────────────
+            // 初始化
+            // ─────────────────────────────────────
+            function init() {
+                updateCanvasSize();
+                generatePoints();
+                buildColorGroups();
+                pointsValEl.textContent = TOTAL_POINTS.toLocaleString();
+
+                // 事件监听
+                canvas.addEventListener('mousedown', onMouseDown);
+                window.addEventListener('mousemove', onMouseMove);
+                window.addEventListener('mouseup', onMouseUp);
+                window.addEventListener('wheel', onWheel, { passive: false });
+                canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+                window.addEventListener('touchmove', onTouchMove, { passive: false });
+                window.addEventListener('touchend', onTouchEnd);
+                window.addEventListener('touchcancel', onTouchEnd);
+                window.addEventListener('resize', onResize);
+                window.addEventListener('keydown', onKeyDown);
+
+                // 初始光标
+                canvas.style.cursor = 'grab';
+
+                // 开始渲染
+                lastFrameTime = performance.now();
+                animationId = requestAnimationFrame(render);
+            }
+
+            // ─────────────────────────────────────
+            // 启动
+            // ─────────────────────────────────────
+            init();
+
+            // 清理（SPA场景下可能需要）
+            window.addEventListener('beforeunload', () => {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>番茄钟 · Claude</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --border: rgba(0,0,0,0.06);
+  --text: #171717;
+  --text-sub: #737373;
+  --text-dim: #a3a3a3;
+  --work: #ef4444;
+  --short: #10b981;
+  --long: #3b82f6;
+  --accent: var(--work);
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  --bg: #0b0d12;
+  --surface: #1a1d26;
+  --border: rgba(255,255,255,0.08);
+  --text: #e5e7eb;
+  --text-sub: #9ca3af;
+  --text-dim: #6b7280;
+  --work: #f87171;
+  --short: #34d399;
+  --long: #60a5fa;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px;
+  transition: background 250ms ease, color 250ms ease;
+  -webkit-font-smoothing: antialiased;
+}
+header {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.brand {
+  font-size: 13px;
+  color: var(--text-sub);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.brand::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 8px;
+  vertical-align: middle;
+  transition: background 250ms;
+}
+#theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-sub);
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 250ms;
+}
+#theme-toggle:hover { border-color: var(--text-dim); color: var(--text); }
+
+main {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.phase {
+  font-size: 12.5px;
+  color: var(--text-sub);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color 250ms;
+}
+.phase.work { color: var(--work); }
+.phase.short { color: var(--short); }
+.phase.long { color: var(--long); }
+
+.ring-wrap {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+.ring-wrap svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.ring-bg { stroke: var(--border); fill: none; stroke-width: 4; }
+.ring-fg {
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke 250ms, stroke-dashoffset 950ms cubic-bezier(.4,0,.2,1);
+}
+.time-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.time-text {
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+}
+.round-count {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+.controls button {
+  background: transparent;
+  color: var(--text-sub);
+  border: 1px solid var(--border);
+  padding: 9px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms;
+  font-family: inherit;
+}
+.controls button:hover { border-color: var(--text-dim); color: var(--text); }
+.controls button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.controls button.primary:hover { opacity: 0.9; color: white; border-color: var(--accent); }
+
+.tasks {
+  width: 100%;
+  max-width: 540px;
+  margin-top: 8px;
+}
+.tasks-head {
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.task-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 200ms;
+  font-family: inherit;
+}
+.task-input:focus { border-color: var(--accent); }
+.task-list { list-style: none; margin-top: 10px; }
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  opacity: 0;
+  animation: fadeIn 250ms forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+.task-item .text { flex: 1; color: var(--text); transition: color 200ms; }
+.task-item.done .text { color: var(--text-dim); text-decoration: line-through; }
+.task-item .badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: center;
+}
+.task-item .del {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px 6px;
+  font-size: 13px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 200ms, color 200ms;
+  font-family: inherit;
+}
+.task-item:hover .del { opacity: 1; }
+.task-item .del:hover { color: var(--work); }
+.task-item.active {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  margin: 0 -10px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 8px;
+}
+.task-item .pick {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 200ms;
+  font-family: inherit;
+}
+.task-item .pick:hover { color: var(--accent); }
+.task-item.active .pick { color: var(--accent); font-weight: 600; }
+
+.empty {
+  text-align: center;
+  padding: 30px 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Pomodoro</div>
+  <button id="theme-toggle" title="切换主题">
+    <svg id="theme-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+</header>
+
+<main>
+  <div class="phase work" id="phase">专注时间</div>
+
+  <div class="ring-wrap">
+    <svg viewBox="0 0 200 200">
+      <circle class="ring-bg" cx="100" cy="100" r="94"/>
+      <circle class="ring-fg" id="ring" cx="100" cy="100" r="94" stroke-dasharray="590" stroke-dashoffset="0"/>
+    </svg>
+    <div class="time-center">
+      <div class="time-text" id="time">25:00</div>
+      <div class="round-count" id="rounds">第 1 轮 · 0/4</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="btn-start" class="primary">开始</button>
+    <button id="btn-skip">跳过</button>
+    <button id="btn-reset">重置</button>
+  </div>
+</main>
+
+<div class="tasks">
+  <div class="tasks-head">今日任务</div>
+  <input id="task-input" class="task-input" placeholder="输入新任务按回车添加…" maxlength="60">
+  <ul class="task-list" id="task-list"></ul>
+</div>
+
+<script>
+(function(){
+  const STORE = 'cl-pomo-v1';
+  const THEME_KEY = 'cl-pomo-theme';
+
+  const DURATIONS = { work: 25*60, short: 5*60, long: 15*60 };
+  const LABEL = { work: '专注时间', short: '短休息', long: '长休息' };
+
+  const state = {
+    phase: 'work',        // work | short | long
+    remaining: DURATIONS.work,
+    running: false,
+    round: 1,             // 当前第几个 work
+    completedPomos: 0,    // 累计完成 work 数（本次会话，不持久）
+    tasks: [],            // {id, text, count, done}
+    activeTaskId: null,
+  };
+
+  // 恢复任务
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || '{}');
+    if (saved.tasks) state.tasks = saved.tasks;
+    if (saved.activeTaskId) state.activeTaskId = saved.activeTaskId;
+  } catch(e) {}
+
+  // 恢复主题
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+  const $ = id => document.getElementById(id);
+  const phaseEl = $('phase');
+  const ring = $('ring');
+  const timeEl = $('time');
+  const roundsEl = $('rounds');
+  const btnStart = $('btn-start');
+  const btnSkip = $('btn-skip');
+  const btnReset = $('btn-reset');
+  const tlist = $('task-list');
+  const tinput = $('task-input');
+  const themeBtn = $('theme-toggle');
+
+  const RING_C = 2 * Math.PI * 94; // ≈ 590.6
+  ring.setAttribute('stroke-dasharray', RING_C);
+
+  function save() {
+    localStorage.setItem(STORE, JSON.stringify({
+      tasks: state.tasks, activeTaskId: state.activeTaskId,
+    }));
+  }
+
+  function fmt(sec) {
+    sec = Math.max(0, Math.round(sec));
+    const m = Math.floor(sec / 60).toString().padStart(2,'0');
+    const s = (sec % 60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  function setAccent() {
+    const color = state.phase === 'work' ? 'var(--work)'
+                : state.phase === 'short' ? 'var(--short)'
+                : 'var(--long)';
+    document.documentElement.style.setProperty('--accent', color);
+  }
+
+  function render() {
+    phaseEl.textContent = LABEL[state.phase];
+    phaseEl.className = 'phase ' + state.phase;
+    timeEl.textContent = fmt(state.remaining);
+    document.title = `${fmt(state.remaining)} · ${LABEL[state.phase]} · Pomodoro`;
+    const total = DURATIONS[state.phase];
+    const prog = 1 - state.remaining / total;
+    ring.setAttribute('stroke-dashoffset', (RING_C * prog).toFixed(2));
+    roundsEl.textContent = `第 ${state.round} 轮 · ${state.completedPomos}/4`;
+    btnStart.textContent = state.running ? '暂停' : '开始';
+    setAccent();
+    renderTasks();
+  }
+
+  function renderTasks() {
+    tlist.innerHTML = '';
+    if (!state.tasks.length) {
+      const li = document.createElement('li');
+      li.className = 'empty';
+      li.textContent = '还没有任务，加一个试试';
+      tlist.appendChild(li);
+      return;
+    }
+    for (const t of state.tasks) {
+      const li = document.createElement('li');
+      li.className = 'task-item' + (t.done ? ' done' : '') + (t.id === state.activeTaskId ? ' active' : '');
+      const pickBtn = document.createElement('button');
+      pickBtn.className = 'pick';
+      pickBtn.title = '设为当前任务';
+      pickBtn.textContent = t.id === state.activeTaskId ? '● 进行中' : '○';
+      pickBtn.addEventListener('click', () => {
+        state.activeTaskId = t.id === state.activeTaskId ? null : t.id;
+        save(); render();
+      });
+      const text = document.createElement('span');
+      text.className = 'text';
+      text.textContent = t.text;
+      text.addEventListener('click', () => {
+        t.done = !t.done; save(); render();
+      });
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = '🍅 ' + t.count;
+      const del = document.createElement('button');
+      del.className = 'del';
+      del.textContent = '×';
+      del.addEventListener('click', e => {
+        e.stopPropagation();
+        state.tasks = state.tasks.filter(x => x.id !== t.id);
+        if (state.activeTaskId === t.id) state.activeTaskId = null;
+        save(); render();
+      });
+      li.appendChild(pickBtn);
+      li.appendChild(text);
+      li.appendChild(badge);
+      li.appendChild(del);
+      tlist.appendChild(li);
+    }
+  }
+
+  // 计时循环
+  let lastTick = null;
+  function tick(t) {
+    if (state.running) {
+      if (lastTick != null) {
+        state.remaining -= (t - lastTick) / 1000;
+        if (state.remaining <= 0) {
+          state.remaining = 0;
+          onPhaseEnd();
+        }
+      }
+      render();
+    }
+    lastTick = t;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  function onPhaseEnd() {
+    state.running = false;
+    if (state.phase === 'work') {
+      state.completedPomos++;
+      const task = state.tasks.find(x => x.id === state.activeTaskId);
+      if (task) { task.count++; save(); }
+      if (state.completedPomos % 4 === 0) {
+        state.phase = 'long';
+      } else {
+        state.phase = 'short';
+      }
+    } else {
+      state.phase = 'work';
+      if (state.phase === 'work') state.round++;
+    }
+    state.remaining = DURATIONS[state.phase];
+    // 简单的结束提示音（不依赖外部资源）
+    try {
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.frequency.value = state.phase === 'work' ? 660 : 880;
+      g.gain.value = 0.06;
+      o.connect(g); g.connect(ac.destination);
+      o.start(); o.stop(ac.currentTime + 0.15);
+      setTimeout(()=>ac.close(), 200);
+    } catch(e) {}
+  }
+
+  btnStart.addEventListener('click', () => {
+    state.running = !state.running;
+    lastTick = null;
+    render();
+  });
+  btnSkip.addEventListener('click', () => {
+    state.remaining = 0;
+    onPhaseEnd();
+    render();
+  });
+  btnReset.addEventListener('click', () => {
+    state.running = false;
+    state.remaining = DURATIONS[state.phase];
+    render();
+  });
+
+  tinput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const text = tinput.value.trim();
+      if (!text) return;
+      state.tasks.push({ id: Date.now(), text, count: 0, done: false });
+      tinput.value = '';
+      save(); render();
+    }
+  });
+
+  themeBtn.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    if (cur === 'dark') {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem(THEME_KEY, 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem(THEME_KEY, 'dark');
+    }
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
