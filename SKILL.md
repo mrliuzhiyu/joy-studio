@@ -95,5 +95,5 @@ allowed-tools:
 
 - [design.md](./design.md) — 完整字体/字号/颜色/间距规范
 - [template.html](./template.html) — 空模板（起手式，直接改内容）
-- [refs/cankao-content.html](./refs/cankao-content.html) — 参考答案阅览室原始 HTML（design.md 抠样式的源）
-- [refs/cankao-judgment.html](./refs/cankao-judgment.html) / [cankao-sunyatsen.html](./refs/cankao-sunyatsen.html) — 范文样本，写新文章时可对照风格
+- [refs/cankao-style/cankao-content.html](./refs/cankao-style/cankao-content.html) — 参考答案阅览室原始 HTML（design.md 抠样式的源）
+- [refs/cankao-style/cankao-judgment.html](./refs/cankao-style/cankao-judgment.html) / [cankao-sunyatsen.html](./refs/cankao-style/cankao-sunyatsen.html) — 范文样本，写新文章时可对照风格
