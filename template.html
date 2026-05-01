@@ -14,7 +14,11 @@
 
 <!-- ================================================================ -->
 <!-- 正文容器 —— 单层 article，max-width 677 居中白底                -->
-<!-- 注意：article 的 padding 不会进入复制内容（因为 selectNodeContents 选的是子节点） -->
+<!-- 排版核心约定：                                                   -->
+<!--   1) 一句一段（任何段不超过 3 行手机宽 ~60 汉字）               -->
+<!--   2) 强调两级：<strong>=关键句（≤15 处）/ +underline=金句（≤6 处） -->
+<!--   3) 图片下方紧跟"数据来源 · ..."一行 12px 灰色居中图注          -->
+<!--   4) 底部精简：— 完 — + hr + 灰色注释 + hr + 参考资料分组       -->
 <!-- ================================================================ -->
 <article id="wx-body" style="max-width:677px;margin:0 auto;background:white;padding:40px 24px 60px;">
 
@@ -28,11 +32,14 @@
 
 
 <!-- ================================================================ -->
-<!-- 【块 2】导语段落（每段标准样式）—— 建议 2-4 段                   -->
+<!-- 【块 2】导语 —— 每个完整句子单独成段（手机阅读优先）             -->
+<!-- 一段 = 一句。两个句号之间不要塞两个 <p> 进同一段。              -->
 <!-- ================================================================ -->
-<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第一段导语，把主题点出来，用最朴素的话说清楚这篇文章要干什么。公众号文章首段非常重要，决定了读者是否滑下去。</span></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第一句导语，把主题点出来。</span></p>
 
-<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二段，提供背景。可以用 <strong>加粗</strong> 强调关键词，但不要整段加粗。</span></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px; color:rgb(34,34,34);">第二句话给一点背景，可以有一处 <strong>关键短语</strong> 加粗——这是一级强调。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第三句话点出全文最想让读者带走的一个判断，<strong style="text-decoration:underline;">这就是二级强调</strong>，全文只用 3-6 处。</span></p>
 
 
 <!-- ================================================================ -->
@@ -55,20 +62,25 @@
 </section>
 <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">章节中文小标题</span></strong></p>
 
-<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">章节正文第一段。</span></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">章节正文第一句，独立成段。</span></p>
 
-<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">章节正文第二段。</span></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二句紧承前面，<strong>句中加粗强调一个动作或定义</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第三句是金句，<strong style="text-decoration:underline;">这一句是全文核心，加粗+下划线</strong>，让眼睛在快速滑动时也能停一下。</span></p>
 
 
 <!-- ================================================================ -->
-<!-- 【块 5】图片 —— 替换 src 为真实地址，必须写 width / height 属性  -->
+<!-- 【块 5】图片 + 数据来源图注                                       -->
+<!-- 标准结构：图本体（margin-bottom 8px，紧贴图注）+ 图注（一行灰色居中 12px）-->
 <!-- ================================================================ -->
-<figure style="margin:0 8px 32px;text-align:center;">
+<figure style="margin:0 8px 8px;text-align:center;">
   <img src="图片URL" width="600" height="400" alt="图片说明" style="max-width:100%;height:auto;display:block;margin:0 auto;" />
 </figure>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">数据来源 · 论文 / 官方博客 / GitHub 仓库等出处一句话</span></p>
 
-<!-- 或者：灰色占位框（还没上传真图时） -->
-<div style="background:#f5f5f5;padding:72px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 32px;letter-spacing:0.5px;">[ 此处插入截图 · 文件名说明 ]</div>
+<!-- 还没上传真图时的占位（同样紧跟一行图注） -->
+<div style="background:#f5f5f5;padding:60px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 8px;letter-spacing:0.5px;">[ 配图 1 · 图说一句话 · 在公众号编辑器里替换为素材库图片 ]</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">数据来源 · ...</span></p>
 
 
 <!-- ================================================================ -->
@@ -101,23 +113,43 @@
 </section>
 <div style="margin:0 0 24px;"></div>
 
-<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">结语段落。</span></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">结语第一句。</span></p>
 
-<p style="margin:40px 8px 0;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(170,170,170);">— 完 —</span></p>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">结语第二句，可以是行动建议或留给读者的问题。</span></p>
 
 
 <!-- ================================================================ -->
-<!-- 【块 8】底部署名区 —— 贯穿灰线 + 左竖线 + 三行 | 分隔 + 作者提示  -->
+<!-- 【块 8】底部 —— 自由组合，唯一硬约束是 — 完 —                   -->
+<!-- 下面给一组常见示例：— 完 — + hr + 灰注释 + hr + 参考资料分组    -->
+<!-- 也可加署名块（编辑/出品/内容来源）、二维码、相关阅读，按需取用   -->
+<!-- 详见 design.md 第 11 节 A/B/C 三种范式                          -->
 <!-- ================================================================ -->
+<p style="margin:48px 8px 24px;text-align:center;line-height:1.5;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);letter-spacing:2px;">— 完 —</span></p>
+
 <hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
 
-<section style="border-left:2px solid rgb(200,200,200);padding:4px 0 4px 18px;margin:0 8px 18px;">
-<p style="margin:0 0 6px;line-height:1.9;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>编辑</strong><span style="color:rgb(180,180,180);margin:0 10px;">|</span>作者名</span></p>
-<p style="margin:0 0 6px;line-height:1.9;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>出品</strong><span style="color:rgb(180,180,180);margin:0 10px;">|</span>账号 / 团队名</span></p>
-<p style="margin:0;line-height:1.9;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>内容来源</strong><span style="color:rgb(180,180,180);margin:0 10px;">|</span>原创</span></p>
-</section>
+<p style="margin:0 8px 0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">一行灰色注释（直接陈述事实，不要"作者提示："前缀）。例如：文中所有事实都附了来源链接；数据时间戳：2026-XX-XX。</span></p>
 
-<p style="margin:20px 8px 0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">作者提示：数据来源 / 时间背景 / 引用规则等一句话说明</span></p>
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 24px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:18px;letter-spacing:0.5px;color:rgb(0,0,0);">参考资料</span></strong></p>
+
+<!-- 分组 1：官方资料 -->
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">官方资料</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.7;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· <a href="..." style="color:rgb(85,85,85);border-bottom:1px solid rgb(200,200,200);text-decoration:none;">条目标题 · 来源</a></span></p>
+<p style="margin:0 8px 4px;line-height:1.7;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· <a href="..." style="color:rgb(85,85,85);border-bottom:1px solid rgb(200,200,200);text-decoration:none;">条目标题 · 来源</a></span></p>
+
+<!-- 分组 2：学术论文 -->
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">学术论文</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.7;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· <a href="..." style="color:rgb(85,85,85);border-bottom:1px solid rgb(200,200,200);text-decoration:none;">论文标题 · arXiv:XXXX.XXXXX</a></span></p>
+
+<!-- 分组 3：GitHub -->
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">GitHub</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.7;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· <a href="..." style="color:rgb(85,85,85);border-bottom:1px solid rgb(200,200,200);text-decoration:none;">org/repo</a></span></p>
+
+<!-- 分组 4：第三方分析（可选）-->
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">第三方分析</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.7;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· <a href="..." style="color:rgb(85,85,85);border-bottom:1px solid rgb(200,200,200);text-decoration:none;">作者 · 文章标题</a></span></p>
 
 </article>
 <!-- ================================================================ -->
@@ -130,7 +162,7 @@
 <p style="margin:0 0 6px;font-weight:700;">粘贴到公众号：</p>
 <p style="margin:0 0 4px;">① 点右上角【复制正文（无白边）】按钮</p>
 <p style="margin:0 0 4px;">② 公众号图文编辑器 Ctrl+V 粘贴</p>
-<p style="margin:0 0 4px;">③ 图片占位替换为上传到素材库的真实 URL</p>
+<p style="margin:0 0 4px;">③ 图片占位替换为上传到素材库的真实 URL，下方"数据来源 · ..."一行保留作图注</p>
 <p style="margin:0;">④ 真实效果要在 iOS/Mac 微信里看（Windows 回退 YaHei 看不出 Optima 味道）</p>
 </div>
 

@@ -41,7 +41,11 @@ allowed-tools:
 3. **右上角浮动"复制正文（无白边）"按钮**（`position: fixed`），带 JS 实现 `selectNodeContents(article)` + `execCommand('copy')`
 4. **章节编号用 `<section display:inline-block; border-top:6px solid #000>` + Futura-Medium 36px**
 5. **所有样式 inline**——不要用 `<style>` 块、不要 CSS 变量、不要 class
-6. **粘贴说明框**放在 article **外面**（不参与复制）
+6. **断句**：每个完整句子单独成 `<p>`，任何段不超过 3 行手机宽（详见 design.md 第 5.5 节）
+7. **强调分两级**：`<strong>` 关键句（≤15 处）、`<strong style="text-decoration:underline;">` 金句（≤6 处）
+8. **图片下方紧跟一行图注**：12px 灰色居中"数据来源 · ..."（图本体下 margin 改 8px）
+9. **底部唯一硬约束**：保留 `— 完 —` 作为结束信号；其它模块（灰色注释、署名块、参考资料、二维码…）按文章性质自由组合（参见 design.md 第 11 节 A/B/C 三种范式）
+10. **粘贴说明框**放在 article **外面**（不参与复制）
 
 ### 必须避免
 - `<style>` 块 / `<link>` 外部 CSS / CSS 变量 `var(--x)` / `:root` / `@media` / `@keyframes`（都会被公众号编辑器剥）
