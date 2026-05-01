@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图片 → HTML 引用卡片工具</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 20px;
+    background: #f2f2f2;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: rgb(34, 34, 34);
+    line-height: 1.6;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  header {
+    background: white;
+    padding: 32px 40px;
+    margin-bottom: 24px;
+    border-top: 6px solid #000;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 8px;
+    color: #000;
+  }
+  .lead {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+    max-width: 780px;
+    margin: 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: white;
+    padding: 28px 32px;
+  }
+  .panel h2 {
+    font-size: 14px;
+    color: rgb(150, 150, 150);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+    padding-bottom: 8px;
+  }
+  .step-num {
+    display: inline-block;
+    background: #000;
+    color: white;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    font-size: 12px;
+    font-family: 'Futura', sans-serif;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  label {
+    display: block;
+    margin-bottom: 18px;
+  }
+  label .label-text {
+    font-size: 13px;
+    color: rgb(34, 34, 34);
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+  }
+  label .label-hint {
+    font-size: 11px;
+    color: rgb(150, 150, 150);
+    font-weight: normal;
+    margin-left: 6px;
+  }
+  input[type="text"], input[type="url"], textarea, select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 0;
+    font-size: 13px;
+    font-family: inherit;
+    color: rgb(34, 34, 34);
+    background: #fafafa;
+  }
+  input[type="text"]:focus, input[type="url"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #000;
+    background: white;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+  .file-area {
+    border: 2px dashed rgb(200, 200, 200);
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    background: #fafafa;
+    margin-bottom: 18px;
+  }
+  .file-area:hover { border-color: #000; }
+  .file-area.dragover { border-color: rgb(198, 97, 63); background: white; }
+  .file-area p {
+    margin: 0;
+    color: rgb(85, 85, 85);
+    font-size: 13px;
+  }
+  .file-area .hint {
+    color: rgb(150, 150, 150);
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  .file-area input { display: none; }
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  button {
+    flex: 1;
+    padding: 12px 18px;
+    border: 0;
+    background: #000;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  button:hover { background: rgb(60, 60, 60); }
+  button.secondary {
+    background: white;
+    color: #000;
+    border: 1px solid #000;
+  }
+  button.secondary:hover { background: #f0f0f0; }
+  button:disabled {
+    background: rgb(200, 200, 200);
+    cursor: not-allowed;
+  }
+  .preview-frame {
+    background: rgb(245, 245, 245);
+    padding: 24px;
+    min-height: 400px;
+  }
+  .preview-empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: rgb(150, 150, 150);
+    font-size: 13px;
+  }
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: white;
+    padding: 12px 24px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+  .help {
+    background: white;
+    padding: 24px 32px;
+    margin-top: 24px;
+    font-size: 13px;
+    color: rgb(85, 85, 85);
+    line-height: 1.8;
+  }
+  .help h3 {
+    font-size: 14px;
+    color: #000;
+    margin: 16px 0 8px;
+  }
+  .help h3:first-child { margin-top: 0; }
+  .help code {
+    background: #f0f0f0;
+    padding: 1px 6px;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 12px;
+  }
+  .help ol, .help ul { padding-left: 24px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>图片 → HTML 引用卡片工具</h1>
+    <p class="lead">把图片 + 标题 + 引文 + 出处链接打包成 self-contained HTML 卡片。图片用 base64 内嵌，HTML 文件本身就是完整素材。浏览器打开 → 截图 → 上传公众号素材库。</p>
+  </header>
+
+  <div class="grid">
+
+    <div class="panel">
+      <h2>编辑</h2>
+
+      <div>
+        <span class="label-text"><span class="step-num">1</span>选图片</span>
+        <label class="file-area" id="drop-area">
+          <input type="file" id="image-input" accept="image/*">
+          <p>点击选择 / 拖拽图片到这里</p>
+          <p class="hint">支持 PNG / JPG / WebP / SVG，建议 ≤ 2MB</p>
+        </label>
+      </div>
+
+      <span class="label-text"><span class="step-num">2</span>填内容</span>
+
+      <label>
+        <span class="label-text">卡片类型</span>
+        <select id="card-type">
+          <option value="quote">官方引用（图 + 引文 + 链接）</option>
+          <option value="figure">图示（图 + 说明 + 链接）</option>
+          <option value="banner">Banner（仅图 + 标题 + 链接）</option>
+        </select>
+      </label>
+
+      <label>
+        <span class="label-text">标题<span class="label-hint">通常是来源标识</span></span>
+        <input type="text" id="title" placeholder="例：OpenAI · Hello GPT-4o">
+      </label>
+
+      <label>
+        <span class="label-text">引文 / 说明文字<span class="label-hint">quote 类型必填</span></span>
+        <textarea id="body" placeholder="例：trained end-to-end across text, vision, and audio, all inputs and outputs are processed by the same neural network"></textarea>
+      </label>
+
+      <label>
+        <span class="label-text">图片说明<span class="label-hint">出现在图下方</span></span>
+        <input type="text" id="caption" placeholder="例：GPT-4o 官方博客 · 多模态接口示意">
+      </label>
+
+      <label>
+        <span class="label-text">出处链接</span>
+        <input type="url" id="link" placeholder="https://openai.com/index/hello-gpt-4o/">
+      </label>
+
+      <span class="label-text"><span class="step-num">3</span>导出</span>
+      <div class="actions">
+        <button class="secondary" id="copy-btn">复制 HTML 源码</button>
+        <button id="download-btn">下载 HTML 文件</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>预览</h2>
+      <div class="preview-frame">
+        <div id="preview" class="preview-empty">选完图片后这里出现卡片预览</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="help">
+    <h3>怎么从外部网址抓图</h3>
+    <ol>
+      <li><b>HTML 页面里的图（官方博客 / GitHub README）</b>：浏览器打开页面 → 右键图片 → 图片另存为</li>
+      <li><b>Chrome 抓不到原图（懒加载或动画）</b>：F12 打开开发者工具 → Network → Img 标签 → 刷新页面 → 找到图片 URL → 右键 Open in new tab → 另存为</li>
+      <li><b>arXiv 论文里的图</b>：下载 PDF → 用截图工具截图（推荐 ShareX / Snipping Tool）</li>
+      <li><b>动态加载的图</b>：F12 → Elements → 找到 <code>&lt;img&gt;</code> 标签 → 复制 src URL → 浏览器粘贴打开</li>
+    </ol>
+
+    <h3>版权注意</h3>
+    <ul>
+      <li>arXiv 论文里的架构图：学术使用可以引用，记得标来源</li>
+      <li>GitHub 仓库 README 里的图：开源项目自己提供，可使用，标来源</li>
+      <li>官方博客里的图：属于厂商版权，引用使用通常 OK 但要标明来源</li>
+      <li>所有卡片底部都有出处链接，本身就是合规引用的形式</li>
+    </ul>
+
+    <h3>整体素材工作流</h3>
+    <ol>
+      <li>浏览器右键下载 / 截图工具截图，保存图片到本地</li>
+      <li>本工具：拖图 + 填字 → 下载 self-contained HTML 卡片</li>
+      <li>浏览器打开卡片 → 截屏（推荐高分辨率屏幕）→ 保存 PNG</li>
+      <li>上传 PNG 到公众号素材库 → 拿到素材库 URL</li>
+      <li>在 wechat.html 里把图片占位符替换成素材库 URL</li>
+    </ol>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+const els = {
+  fileInput: document.getElementById('image-input'),
+  dropArea: document.getElementById('drop-area'),
+  cardType: document.getElementById('card-type'),
+  title: document.getElementById('title'),
+  body: document.getElementById('body'),
+  caption: document.getElementById('caption'),
+  link: document.getElementById('link'),
+  preview: document.getElementById('preview'),
+  copyBtn: document.getElementById('copy-btn'),
+  downloadBtn: document.getElementById('download-btn'),
+  toast: document.getElementById('toast'),
+};
+
+let imageDataURL = '';
+
+// 文件选择和拖拽
+els.fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+els.dropArea.addEventListener('dragover', e => {
+  e.preventDefault();
+  els.dropArea.classList.add('dragover');
+});
+els.dropArea.addEventListener('dragleave', () => els.dropArea.classList.remove('dragover'));
+els.dropArea.addEventListener('drop', e => {
+  e.preventDefault();
+  els.dropArea.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+function handleFile(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    showToast('请选择图片文件');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    imageDataURL = e.target.result;
+    render();
+  };
+  reader.readAsDataURL(file);
+}
+
+// 实时预览
+[els.cardType, els.title, els.body, els.caption, els.link].forEach(el => {
+  el.addEventListener('input', render);
+});
+
+function buildCardHTML(forExport) {
+  const type = els.cardType.value;
+  const title = els.title.value.trim();
+  const body = els.body.value.trim();
+  const caption = els.caption.value.trim();
+  const link = els.link.value.trim();
+
+  if (!imageDataURL) return null;
+
+  const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  let html = '';
+
+  // 顶部标题
+  if (title) {
+    html += `<p style="margin:0 0 14px; line-height:1.4; letter-spacing:0.578px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:13px; color:rgb(150,150,150); letter-spacing:1.2px; text-transform:uppercase;">${escape(title)}</span>
+</p>`;
+  }
+
+  // 引文 quote 类型
+  if (type === 'quote' && body) {
+    html += `<p style="margin:0 0 18px; line-height:1.7; letter-spacing:0.578px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; color:rgb(34,34,34); letter-spacing:0.5px;">${escape(body)}</span>
+</p>`;
+  }
+
+  // 图片
+  html += `<figure style="margin:0 0 14px;">
+  <img src="${imageDataURL}" alt="${escape(caption || title)}" style="display:block; width:100%; max-width:100%; height:auto;">`;
+  if (caption) {
+    html += `
+  <figcaption style="margin:8px 0 0; font-size:12px; color:rgb(150,150,150); letter-spacing:0.5px; line-height:1.5;">${escape(caption)}</figcaption>`;
+  }
+  html += `
+</figure>`;
+
+  // figure / banner 类型的说明文字
+  if (type === 'figure' && body) {
+    html += `<p style="margin:14px 0 0; line-height:1.7; letter-spacing:0.578px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:14px; color:rgb(85,85,85); letter-spacing:0.5px;">${escape(body)}</span>
+</p>`;
+  }
+
+  // 出处链接
+  if (link) {
+    html += `<p style="margin:14px 0 0; padding-top:12px; border-top:1px solid rgb(236,236,236); line-height:1.5;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:12px; color:rgb(150,150,150); letter-spacing:0.5px;">出处 · </span><a href="${escape(link)}" style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:12px; color:rgb(85,85,85); letter-spacing:0.5px; text-decoration:none; border-bottom:1px solid rgb(200,200,200);">${escape(link)}</a>
+</p>`;
+  }
+
+  // 卡片外壳
+  const card = `<section style="border-top:6px solid rgb(0,0,0); padding:20px 24px 22px; margin:0; background:white; max-width:677px; box-sizing:border-box; font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif;">
+${html}
+</section>`;
+
+  if (!forExport) return card;
+
+  // 完整 HTML 文档（导出用）
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>${escape(title || '引用卡片')}</title>
+<style>
+  body { margin:0; padding:40px 20px; background:#f2f2f2; font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif; }
+  .wrap { max-width:677px; margin:0 auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+${card}
+</div>
+</body>
+</html>`;
+}
+
+function render() {
+  const card = buildCardHTML(false);
+  if (!card) {
+    els.preview.className = 'preview-empty';
+    els.preview.innerHTML = '选完图片后这里出现卡片预览';
+    els.copyBtn.disabled = true;
+    els.downloadBtn.disabled = true;
+    return;
+  }
+  els.preview.className = '';
+  els.preview.innerHTML = card;
+  els.copyBtn.disabled = false;
+  els.downloadBtn.disabled = false;
+}
+
+// 复制 HTML
+els.copyBtn.addEventListener('click', async () => {
+  const html = buildCardHTML(true);
+  if (!html) return;
+  try {
+    await navigator.clipboard.writeText(html);
+    showToast('HTML 源码已复制到剪贴板');
+  } catch (e) {
+    showToast('复制失败，请用下载按钮');
+  }
+});
+
+// 下载 HTML
+els.downloadBtn.addEventListener('click', () => {
+  const html = buildCardHTML(true);
+  if (!html) return;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const safeTitle = (els.title.value || 'citation-card').replace(/[\\/:*?"<>|]/g, '-').slice(0, 40);
+  a.href = url;
+  a.download = `${safeTitle}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('HTML 文件已下载');
+});
+
+function showToast(msg) {
+  els.toast.textContent = msg;
+  els.toast.classList.add('show');
+  setTimeout(() => els.toast.classList.remove('show'), 1800);
+}
+
+render();
+</script>
+</body>
+</html>

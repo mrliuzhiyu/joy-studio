@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原生多模态大模型到底是什么</title>
+</head>
+<body style="margin:0; padding:0; background:#f2f2f2; font-family:system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei UI','Microsoft YaHei',Arial,sans-serif;">
+
+<!-- 浮动按钮 · 复制正文（不进 article，不参与复制） -->
+<button id="copy-btn" onclick="copyWxArticle()" style="position:fixed; top:20px; right:20px; padding:10px 20px; background:#111; color:white; border:0; border-radius:999px; cursor:pointer; font-family:system-ui,sans-serif; font-size:13px; font-weight:600; box-shadow:0 2px 12px rgba(0,0,0,0.15); z-index:999; transition:all .2s;">
+  复制正文（无白边）
+</button>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 主 article · 公众号正文（粘贴时只复制这部分） -->
+<!-- 排版风格：每个完整句子单独成段 · 关键句 <strong> · 金句 <strong>+underline -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<article id="wx-body" style="max-width:677px; margin:0 auto; background:white; padding:40px 24px 60px;">
+
+<!-- 标题 -->
+<p style="margin:0 8px 14px; line-height:1.3; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', 'Hiragino Sans GB', sans-serif; font-size:26px; letter-spacing:0.5px; color:rgb(0,0,0);">原生多模态大模型到底是什么</span>
+  </strong>
+</p>
+
+<!-- 日期 / 副信息 -->
+<p style="margin:0 8px 40px; line-height:1.5; letter-spacing:0.578px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:1px; color:rgb(170,170,170);">2026-04 · joy-studio</span>
+</p>
+
+<!-- ─── 开头 · 每一句单独成段 ─── -->
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">2022 年 11 月 30 日，ChatGPT 上线，第一周用户破百万，两个月破一亿。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">但有一个不太被大众讨论问题：它是个纯文字模型，无法直接处理图像和音频。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">接下来三年整个行业在解的最大问题，就是怎么让这个 AI 也能处理图像、音频、视频。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">解题过程一共走了三代。前两代不够好，<strong>到第三代才出现今天所有 AI 厂商发布会都在抢的那个词——原生多模态。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">原生多模态不是学术术语，是 Google 在 2023 年 12 月发布 Gemini 1.0 时造出来的营销词。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">在那之前，学界讨论的是 early fusion / late fusion 这些更技术化的概念。后来 OpenAI 用 GPT-4o 把它接过去，全行业开始卷多模态，到今天已经快成为行业标准了。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">它确实对应一类跟以往不同的模型架构。这篇文章讲清楚这件事——它从哪来、谁真做到、谁假装、为什么难。</span></p>
+
+<!-- ═══════════ 章节 01 ═══════════ -->
+<section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
+  <p style="margin:0;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:36px; font-family:Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif; line-height:1.1;">01</span>
+    </strong>
+  </p>
+</section>
+<p style="margin:0 8px 32px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:24px; letter-spacing:0.5px; color:rgb(0,0,0);">LLM 一开始只能处理文字</span>
+  </strong>
+</p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">LLM 全称 Large Language Model。它从训练第一天起，见过的所有数据都是离散的文字 token，工作方式是吃一串 token、预测下一个 token。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这是 2017 年 Transformer 论文（<a href="https://arxiv.org/abs/1706.03762" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Attention Is All You Need, arXiv:1706.03762</a>）打开的路。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">从 GPT-3 到 GPT-3.5 再到 GPT-4，每一代都是把读更多文字、预测得更准这条路压到极限。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这个范式在文字任务上太成功了。成功到一个程度——大家都差点忘了它本质：只能处理文字。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">客服系统接不进语音通话，用户的产品反馈截图还是要我自己复述一遍，会议录音想让 AI 总结得先转成文字。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这些不是边角料场景，是大量真实需求。一个只能处理文字的 AI，能做的事远比看上去窄。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">更关键的是这不是工程层面能解决的问题。LLM 范式从底层就只接受 token 序列。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">它的输入端连接收图像或音频的接口都没有。这是 LLM 范式的天花板，不是某个模型实现的小毛病。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">所以从 ChatGPT 火的那天起，整个行业就在解同一个问题：怎么让 LLM 处理文字以外的模态。</span></strong></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">三年里用了三种解法，每一种解法对应一种思路。</span></p>
+
+<!-- ═══════════ 章节 02 ═══════════ -->
+<section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
+  <p style="margin:0;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:36px; font-family:Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif; line-height:1.1;">02</span>
+    </strong>
+  </p>
+</section>
+<p style="margin:0 8px 32px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:24px; letter-spacing:0.5px; color:rgb(0,0,0);">第一代：图像识别 + 文字描述 + LLM</span>
+  </strong>
+</p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">最早的解法是在 LLM 前面接一个图像识别模型，<strong>把图片描述成一段文字，再把文字交给 LLM。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这种结构在 ChatGPT 出来之前就有。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">2022 年 Salesforce 发布的 BLIP（image captioning + visual question answering）是这个套路的典型——先给图生成一段描述，再用这段描述回答用户问题。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">为什么这条路注定不行。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">一张图里有几百万个像素，包含人物表情、空间位置、文字内容、光线氛围、构图角度、人物之间的眼神交互、物体细节、背景信息。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">压缩成三十字的描述，<strong style="text-decoration:underline;">绝大部分信息都在这一步被丢掉。</strong>LLM 接到的不是图像，是一段干瘪的描述。模型回答得再好，也只是基于这段描述在推理，跟图本身关系不大。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">我读到过一个真实的 demo 翻车例子。某个早期图文系统给一张照片生成的描述是 a man in a suit holding a phone。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">用户问：照片里的人在干什么？模型一本正经回答：他在打电话。其实照片里那位西装男士正举起手机自拍，旁边还有三个人。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">模型从来没见过照片，只见过那段描述，它说的话听上去合理但跟现实没关系。</span></strong></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">错误是结构性的，不是模型参数堆得不够大就能解决的。LLM 永远卡在那段描述本身的精度上。描述里没写的细节，无论参数多大它都补不回来。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这一代在 2022 到 2023 年那批早期图文模型上有过尝试，效果都很尴尬：能识别图里有什么物体，涉及空间关系、复杂文字、构图判断、跨物体的语义关联，几乎全错。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">行业里没有人正式宣布放弃这条路，因为也没人正式拥抱过它。它只是悄悄被下一代解法取代。下一代的核心想法是：拿掉文字描述这个中间层。</span></p>
+
+<!-- 配图 1 占位 + 数据来源注释 -->
+<div style="background:#f5f5f5; padding:60px 20px; text-align:center; margin:0 8px 8px; letter-spacing:0.5px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; color:rgb(170,170,170); line-height:1.6;">[ 配图 1 · 四代多模态架构演进示意图 · 在公众号编辑器里替换为素材库图片 ]</span>
+</div>
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:12px; letter-spacing:0.5px; color:rgb(150,150,150);">数据来源 · Chameleon / Gemini / GPT-4o / LLaVA 论文与官方博客</span></p>
+
+<!-- ═══════════ 章节 03 ═══════════ -->
+<section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
+  <p style="margin:0;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:36px; font-family:Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif; line-height:1.1;">03</span>
+    </strong>
+  </p>
+</section>
+<p style="margin:0 8px 32px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:24px; letter-spacing:0.5px; color:rgb(0,0,0);">第二代：视觉编码器接入 LLM</span>
+  </strong>
+</p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第二代的思路是给 LLM 配一个视觉编码器。编码器把图像转成一组高维数学向量，通过一个连接器送进 LLM 的隐藏层。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">视觉信息不再被压缩成文字，而是以向量形式直接进入。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这一代真正打开局面的是 OpenAI 在 2021 年发布的 CLIP（<a href="https://arxiv.org/abs/2103.00020" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Learning Transferable Visual Models From Natural Language Supervision, arXiv:2103.00020</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">CLIP 的核心方法是用对比学习把图像和文字对齐到同一个向量空间。具体做法是给它 4 亿对图文配对（一张图 + 它的文字描述），<strong>训练目标是让正确配对的图文在向量空间里距离近，错配的距离远。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">训练完成后，一张狗的照片和狗这个词，在 CLIP 的数学空间里距离很近。CLIP 通过这种方式学会了一种跨模态的图像表征。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">CLIP 出来后整整两年，开源界几乎所有视觉语言模型都建立在它之上。LLaVA（<a href="https://openreview.net/forum?id=w0H2xGHlkw" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Visual Instruction Tuning, OpenReview</a>）用 CLIP ViT-L/14 加一个简单的线性投影层，再接 Vicuna 这个开源 LLM，仅训练投影层就做出了相当不错的视觉对话能力。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">LLaVA 论文里只用了 595K 条 instruction 样本，就把模型做到了当时 GPT-4V 大约 70% 的水平。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这个数字在开源圈是个分水岭——它说明 adapter 路线在数据量很小的情况下也能走得相当远。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">后续路线还有 BLIP-2（用 Q-Former 适配器连接冻结的图像编码器和冻结的 LLM，把训练成本压到很低）和 DeepMind 的 Flamingo（<a href="https://arxiv.org/abs/2204.14198" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">arXiv:2204.14198</a>，用 cross-attention 机制让 LLM 在生成每个 token 时主动查询视觉信息）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">今天 GitHub 上能下载到的大部分开源 VLM，本质都是这个架构家族的变体。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这条路保留了远多于文字描述的视觉信息，但有一个根本问题：视觉编码器和 LLM 是分开训练的。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">视觉模块在它自己的图像数据上学，LLM 在它自己的文本数据上学。两个模块拼到一起后协作不充分——视觉编码器提取出的细节，LLM 不一定用得上；LLM 想做空间或位置层面的推理，视觉编码器给的信息又不够细。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">表现就是：<strong>识别图里的物体可以做得不错，但涉及位置关系、复杂文字、构图判断这类任务上，模型仍然容易出错。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">后来这条路又做了一步改进：把视觉编码器和 LLM 放在一起继续训练，让两个模块逐步对齐。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这一步叫联合微调或视觉指令微调，LLaVA-1.5 是其中代表。配合好了很多，但绕不过去一个事实——文字依然是绝对主角。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">所有推理都通过文字层面的表征完成，图像信息只是输入端的一个补充。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">具体什么意思？你给 GPT-4V 看一张复杂图，它能告诉你图里有什么、能描述构图、能识别 OCR 出来的文字。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">但你让它做更深的视觉推理——比如根据图里几个人的眼神判断他们的社交关系、根据建筑细节推断照片拍摄年代——它内部的处理路径仍然是先把图转成文本表征再推理。视觉是个补充输入，推理还是文本层面的。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">今天大量主流的多模态产品仍然停在这一代。包括阿里的 Qwen2.5-VL（<a href="https://arxiv.org/abs/2502.13923" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">arXiv:2502.13923</a>）、智谱的 GLM-4.5V 和 GLM-4.6V（<a href="https://arxiv.org/abs/2507.01006" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">arXiv:2507.01006</a>）、面壁智能的 MiniCPM-V（<a href="https://arxiv.org/abs/2408.01800" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">arXiv:2408.01800</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这不是说它们做得不好——很多任务上它们就是好用。是说架构属于这一代。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这里有一个反例值得单独讲清楚：Anthropic 的 Claude。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Claude 4.7 仍然只支持图像输入加文字输出，没有音频、没有图像生成、没有视频（<a href="https://platform.claude.com/docs/en/about-claude/models/overview" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Claude Models 总览</a>、<a href="https://www.anthropic.com/news/claude-opus-4-7" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Introducing Claude Opus 4.7</a>）。架构上属于这一代。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">但 Anthropic 的官方文档从来没用过 native multimodal 这个说法，措辞一直是 vision、image input、multimodal understanding。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">所有竞品都在抢一个营销词的时候，Claude 选择不蹭。这个克制大概率不是偶然——Anthropic 是从 OpenAI 离开的安全派别建立的，整个公司的调性是强调可控性、强调 RLHF 的可解释性、强调 constitutional AI。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这种基因决定了他们对扩展模型能力的态度比同行保守。每增加一个新模态就是一个新的失败模式、一个新的越狱入口、一个新的不可控来源。Anthropic 选择在还没想清楚的时候不铺开。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">从商业角度看，这个判断也合理。Claude 主打的是企业市场，企业客户更需要可控、稳定、推理能力强的 AI 助手，不是音频生成这类消费级花活。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Claude 的强项是推理，推理任务上原生多模态没有显著优势。能做更激进的事不代表必须做。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">在所有人都抢一个词的氛围里，老老实实说自己只是 vision-augmented 反而成了行业里最诚实的描述。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">我对这个判断的态度是：长期会被验证为对的。如果原生多模态在推理任务上没有压倒性优势，Anthropic 就是节省了大量资源做了对的取舍。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">下一代解法把上面所有的局限一起重新处理了一遍。</span></p>
+
+<!-- ═══════════ 章节 04 ═══════════ -->
+<section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
+  <p style="margin:0;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:36px; font-family:Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif; line-height:1.1;">04</span>
+    </strong>
+  </p>
+</section>
+<p style="margin:0 8px 32px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:24px; letter-spacing:0.5px; color:rgb(0,0,0);">第三代真原生：所有模态在 token 层统一</span>
+  </strong>
+</p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第三代的思路彻底改变。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">前两代的本质都是给 LLM 加装一个独立模块：图像识别是独立模块、视觉编码器是独立模块、连接器是独立模块。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">LLM 本身仍然是文字模型，独立模块帮它把图像转成它能消化的形式。无论独立模块做得多好，LLM 的核心架构从来没接受过图像作为输入。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第三代的做法是：既然文字在 LLM 里是离散 token，<strong style="text-decoration:underline;">那就把图像和音频也切成 token，让所有模态用同一种格式从输入第一层进同一个模型。不再有独立的视觉模块，模型从训练第一天起就同时看到所有模态的 token。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">怎么把连续的图像变成离散 token？常用技术是 VQ-VAE 和它的改进版本残差量化（RVQ）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>先把图像压缩成低维的连续向量，再把这些向量量化到一个固定的码本里。</strong>这个码本是预先定义的，比如 8192 个或 16384 个条目，每个条目是一个固定的向量。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">每张图像被切成若干 patch，每个 patch 找到码本里跟它最接近的那个条目，整张图就变成一串码本编号。这串编号就是 LLM 接收的 token 序列。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">为什么必须离散化，不直接用连续 embedding？因为 LLM 的训练目标是预测下一个 token，需要一个有限的预测空间用 softmax 输出概率分布。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">连续 embedding 没有这种离散结构，没法跟 LLM 的训练范式对齐。这个工程约束决定了真原生路线的所有架构选择。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">音频用类似的办法处理。Google 在 2021 年发布的音频压缩模型 SoundStream 是这个方向的代表，把音频波形量化成离散 token。今天主流的真原生模型基本都用这套思路。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">一份系统综述见 2025 年的这篇（<a href="https://arxiv.org/pdf/2507.22920" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Discrete Tokenization for Multimodal LLMs Survey, arXiv:2507.22920</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">文字、图像、音频被映射到同一个数学空间。在这个空间里，红色这个词的向量和红色色块图像 token 的向量距离很近，狗这个词的向量和狗叫声音频 token 的向量距离也很近。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">模型不需要任何形式的翻译，可以直接在数学层面计算跨模态的关联。</span></p>
+
+<!-- 配图 2 占位 + 数据来源注释 -->
+<div style="background:#f5f5f5; padding:60px 20px; text-align:center; margin:0 8px 8px; letter-spacing:0.5px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; color:rgb(170,170,170); line-height:1.6;">[ 配图 2 · token 化原理：所有模态映射到同一个数学空间 · 在公众号编辑器里替换为素材库图片 ]</span>
+</div>
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:12px; letter-spacing:0.5px; color:rgb(150,150,150);">数据来源 · Chameleon / Gemini / GPT-4o / LLaVA 论文与官方博客</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>到这一代，LLM 的输入不再只有文字。模型可以直接在视觉、听觉对应的 token 序列上做推理，不需要先把它们转成文本表征。</strong><strong style="text-decoration:underline;">跨模态的推理才真正成为可能。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这是真原生跟前两代最根本的区别。前两代是给文字模型外接一个视觉模块，无论外接做得多好，模型推理依赖的还是文字层面的表征。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这一代是把所有模态都变成模型能直接处理的输入形式，模型在视觉、听觉的层面就能直接做推理。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">公开承认走这条路并且权重开源的代表是 Meta 的 Chameleon（<a href="https://arxiv.org/abs/2405.09818" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Chameleon: Mixed-Modal Early-Fusion Foundation Models, arXiv:2405.09818</a>、<a href="https://github.com/facebookresearch/chameleon" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">GitHub</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">论文里把这种架构叫 mixed-modal early-fusion，明确写到所有模态从输入开始就投射到同一个表征空间。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">后续开源的真原生模型还有 DeepSeek 的 Janus 和 Janus-Pro（<a href="https://arxiv.org/abs/2410.13848" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Janus arXiv:2410.13848</a>、<a href="https://arxiv.org/abs/2501.17811" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Janus-Pro arXiv:2501.17811</a>、<a href="https://github.com/deepseek-ai/Janus" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">GitHub</a>），阿里 Qwen 的 Qwen2.5-Omni（<a href="https://arxiv.org/abs/2503.20215" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">arXiv:2503.20215</a>、<a href="https://github.com/QwenLM/Qwen2.5-Omni" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">GitHub</a>），智源研究院的 Emu3（<a href="https://arxiv.org/abs/2409.18869" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">arXiv:2409.18869</a>、<a href="https://github.com/baaivision/Emu3" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">GitHub</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这四个是真原生在开源世界唯一的硬证据。你能下载权重、能读论文、能看到训练细节、能验证厂商说的是不是真的。下面的章节会详细讲第一个。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">闭源里 OpenAI 的 GPT-4o 和 Google 的 Gemini 都声称走这条路。GPT-4o 官方博客原话：trained end-to-end across text, vision, and audio，all inputs and outputs are processed by the same neural network（<a href="https://openai.com/index/hello-gpt-4o/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Hello GPT-4o</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Gemini 1.0 官方博客原话：built from the ground up to be multimodal（<a href="https://blog.google/technology/ai/google-gemini-ai/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Introducing Gemini</a>）。但他们的权重不公开、训练流程不透明，外界无法独立验证。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Interconnects 主笔 Nathan Lambert 在去年的一篇分析里直接写到：原生多模态在大模型 scaling 上是否真有根本优势，仍然是一个最大的开放问题（<a href="https://www.interconnects.ai/p/gpt-4os-images-and-lessons-from-native" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">GPT-4o's images and lessons from native input-output multimodality</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Nathan 是西方 AI 圈最有影响力的独立分析师之一。他这句话的意思是：连这件事是不是值得做、连原生比嫁接式到底好多少，连学术界都没有定论。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">对消费者意味着什么？<strong style="text-decoration:underline;">意味着原生多模态在闭源世界里无法被独立验证。你买的不是真原生，是厂商关于真原生的承诺。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">GPT-4o 的演示视频很惊艳，但你没法证明它跟一个工程做得很好的嫁接式模型有本质区别。当一件事既无法被验证又被全行业反复声称的时候，它正在变成一种营销话术。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这就是为什么开源的真原生四件套（Chameleon / Janus-Pro / Qwen2.5-Omni / Emu3）格外重要——它们是这个领域唯一可以独立验证的参照基准。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">没有它们，所有"我们是真原生"的发布会声明都飘在云上，所有人只能选择相信厂商。</span></p>
+
+<!-- ═══════════ 章节 05 ═══════════ -->
+<section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
+  <p style="margin:0;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:36px; font-family:Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif; line-height:1.1;">05</span>
+    </strong>
+  </p>
+</section>
+<p style="margin:0 8px 32px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:24px; letter-spacing:0.5px; color:rgb(0,0,0);">真原生的工程难度</span>
+  </strong>
+</p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">把这件事真正做出来，工程难度远比概念上说的要大。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">最有说服力的例子来自 Chameleon 论文的第 2.4 节。Meta 的 FAIR 团队在训练 7B 模型时，发现训练过程极度不稳定，损失函数会突然剧烈震荡，有时候直接发散。诊断了很久才搞清楚原因。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">原因是文本 token 和图像 token 的统计特性差异极大。文本 token 之间区分度低、熵低，因为人类语言的每个词在向量空间里跟其他词的距离都不会太远。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">图像 token 之间区分度高、熵高，因为视觉信号本身就比文字噪声多。两种 token 混在同一个序列里训练时，注意力机制里的 softmax 计算会数值溢出——<strong>具体说就是 query 和 key 向量相乘的结果太大，超出浮点数表示范围，梯度炸掉。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">解法是一个叫 QK-Norm 的小技巧：<strong>在算注意力之前，对 query 向量和 key 向量分别做一次 LayerNorm，把数值范围压回正常区间。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Chameleon 7B 还需要额外加 dropout 和 z-loss 才能跑稳。到了 34B 规模，这些都不够，必须把所有 LayerNorm 从注意力之后移到注意力之前——这是对 Transformer 基础架构的小改动。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这一节在论文里只占两页，行文淡淡几行字。背后是 FAIR 团队几个月的训练失败、调代码、看 loss 曲线、推翻假设、重新尝试。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">把不同模态融合到同一个 token 空间里，看上去是数据格式问题，实际是数值稳定性问题。这种问题在前两代不会出现——前两代的视觉模块和 LLM 是分开训练的，各自的训练动态成熟可控。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第三代把它们硬塞在一起，带来了大量从未见过的训练故障模式。</span></p>
+
+<!-- 配图 3 占位 + 数据来源注释 -->
+<div style="background:#f5f5f5; padding:60px 20px; text-align:center; margin:0 8px 8px; letter-spacing:0.5px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; color:rgb(170,170,170); line-height:1.6;">[ 配图 3 · MiniCPM-o 模块化拼接 vs Chameleon 真原生融合 · 在公众号编辑器里替换为素材库图片 ]</span>
+</div>
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:12px; letter-spacing:0.5px; color:rgb(150,150,150);">数据来源 · MiniCPM-o GitHub · Chameleon arXiv:2405.09818 · stars 取自 GitHub API 2026-04</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第二个例子是 MiniCPM-o。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这个模型在 GitHub 上有 2.4 万 stars（<a href="https://github.com/OpenBMB/MiniCPM-o" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">OpenBMB/MiniCPM-o</a>），定位是端侧端到端全模态。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">乍看跟 Qwen2.5-Omni 在同一个赛道——都说自己端到端、都说自己处理全模态。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">但严格看架构，它其实是四个模型组装：SigLip 负责视觉编码（400M 参数），Whisper 负责音频输入（300M），ChatTTS 负责语音输出（200M），Qwen2.5-7B 是文本主干。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这四个模型分别由不同团队、用不同数据预训练好，再串成一条 pipeline。这种结构可以叫端到端编排，但跟 Chameleon、Emu3、Janus-Pro 那种 token 级别统一的真原生融合，本质上不是同一件事。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">我提这个例子不是说 MiniCPM-o 不好。从端侧用户体验角度看，组装路线反而是聪明的——四个模块各自参数小、可以独立优化、容易在手机或 PC 上部署、坏了哪一块换一个就行。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">学术上它不是真原生，产品上它跑得很顺。这两个判断不冲突。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">但它说明端到端这三个字现在已经被营销过度。看到一个项目说自己端到端全模态，先别激动，先问一句它的 token 是不是从输入第一层就在同一个空间里。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第三个值得记住的时间点：Meta 在 2025 年 4 月 5 日发布 Llama 4 Scout 和 Maverick 时，官方原话是 first natively multimodal Llama（<a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Llama 4 multimodal intelligence</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这句话的弦外之音很有意思。意思是此前所有版本的 Llama 都不算。从 2023 年的 Llama 1 到 2024 年的 Llama 3.2，包括所有第三方基于 Llama 做的多模态变体，都是嫁接式。Meta 自己用了三年才把这件事做出来。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这个三年是怎么算的。Chameleon 论文是 2024 年 5 月发布，意味着 Meta FAIR 内部的早期探索更早，可能是 2023 年。从 Chameleon 到 Llama 4 又是接近一年。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">Meta 这样的公司——有顶尖团队、几乎无限的算力、公开承认走这条路的内部探索——把真原生从概念做到旗舰模型，仍然花了大约三年。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">那当一家公司告诉你"我们三个月前发布了一个真原生多模态模型"的时候，应该问什么？至少应该问：训练数据混合比例是多少？训练崩了多少次？怎么解决数值不稳定的？是不是把 LayerNorm 从 post-norm 改到 pre-norm 了？</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">把这三个例子放一起，我的判断是：<strong>原生多模态的工程门槛被严重低估了。</strong></span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">它在发布会上是一个箭头加一个 token 化模块就能讲清楚的事，在工程实践里是几个月的训练失败、几次架构重构、对 Transformer 内部组件的精细调整。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34); text-decoration:underline;">这也是为什么真正做出真原生模型的团队，目前全球还是个位数。</span></p>
+
+<!-- ═══════════ 章节 06 ═══════════ -->
+<section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
+  <p style="margin:0;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:36px; font-family:Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif; line-height:1.1;">06</span>
+    </strong>
+  </p>
+</section>
+<p style="margin:0 8px 32px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:24px; letter-spacing:0.5px; color:rgb(0,0,0);">现在主流多模态模型怎么分类</span>
+  </strong>
+</p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">把目前主流的多模态模型按这个标准分类，大致是三层。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第一层，自称原生且公开承认走 token 级融合路线。</span></strong></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">代表：OpenAI GPT-4o（<a href="https://openai.com/index/hello-gpt-4o/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Hello GPT-4o</a>）、Google Gemini 1.0 起的整个系列（<a href="https://blog.google/technology/ai/google-gemini-ai/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Introducing Gemini</a>、<a href="https://arxiv.org/abs/2403.05530" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Gemini 1.5 技术报告</a>、<a href="https://blog.google/technology/google-deepmind/google-gemini-ai-update-december-2024/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Gemini 2.0 公告</a>）、Meta Llama 4（<a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Llama 4 blog</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这些是西方主流真原生阵营。可信度来自厂商技术力背书 + 长期演示一致性，但严格说仍然是承诺。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第二层，国内厂商自称原生、外界无法独立验证。</span></strong></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">代表：字节豆包 Seedance（<a href="https://en.tmtpost.com/post/7645516" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">TMTPost 报道</a>）、月之暗面 Kimi K2.5（<a href="https://github.com/datawhalechina/self-llm/blob/master/models/Kimi-K2.5/01-Kimi-K2.5-%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB.md" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Kimi K2.5 论文解读</a>）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这些模型从厂商描述看都属于真原生，但权重不开源、训练细节不公开。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">国内厂商的发布会修辞通常更激进——你会看到原生多模态、全模态、端到端这些词高频出现，但当你想验证的时候，能拿到的资料比西方厂商更少。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这跟资本市场和"赶上 OpenAI"的焦虑有关。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第三层，公开承认是嫁接式视觉语言模型。</span></strong></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">代表：阿里 Qwen2.5-VL、智谱 GLM-4.5V/4.6V、面壁 MiniCPM-V。这些都是好模型，只是不属于原生多模态那个定义。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">把它们叫多模态没问题，叫原生多模态就跟事实不符。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">几个特殊位置值得单独说：</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>Anthropic Claude</strong> · 架构上属于嫁接式那一层，但官方从未声称自己是原生多模态。是行业里少见的、不蹭这个词的旗舰。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">我认为这是个长期会被验证为正确的判断——如果原生多模态在推理任务上没有压倒性优势，Claude 这种克制就是节省了大量资源做了对的取舍。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>DeepSeek</strong> · DeepSeek-V3 本体（<a href="https://arxiv.org/abs/2412.19437" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">DeepSeek-V3 技术报告</a>）是纯文本 MoE 模型，根本不在多模态赛道上。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">DeepSeek 把多模态拆出来由 Janus 系列单独承担。这是一个资源约束下的精明决策——DeepSeek 没有 OpenAI、Google 那么多算力，与其搞一个什么都做的全能模型，不如把文本和多模态分两条线各自做扎实。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">结果是 DeepSeek-V3 是当前最好的开源文本模型之一，Janus-Pro 是当前最好的开源真原生多模态模型之一。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>真原生开源四件套</strong> · Chameleon、Janus-Pro、Qwen2.5-Omni、Emu3。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这是这个领域唯一能让你独立验证的参照基准。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">如果没有它们，所有闭源公司的"我们是真原生"声明，都没有可对照的参考物。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">闭源真原生跟开源真原生的本质差别在于可验证性。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>闭源演示再惊艳，你买的还是承诺；开源演示也许没那么炫，但你能下载权重、能跑模型、能读论文。</strong>这两件事在投资逻辑上是一样的——前者要相信团队，后者可以独立尽调。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">辨别口诀：自称原生不重要，要看两件事——图像和音频是否被切成 token、是否在预训练阶段就跟文字一起被喂进同一个模型。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">能给出这两个证据的，是真原生；只说自己端到端、自己全模态、自己原生但拿不出具体证据的，要打个问号。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">我自己日常用模型的分工是这样的：<strong>文字推理（写代码、读论文、做长文档总结）用 Claude</strong>——它在这件事上是最好的选择之一，跟原不原生多模态没关系；</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);"><strong>需要看图、听声、生图的任务用 GPT-4o</strong>——这是目前真原生体验最完整的产品；偶尔在本地跑 Janus-Pro 做一些对比实验，验证开源真原生跟闭源旗舰的差距到底有多大（差距是有的，但比想象中小）。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">下一年这个赛道我最关心两件事。第一，Llama 4 之后会不会有更多团队走真原生路线，把这件事从一个旗舰才能玩的事，变成开源中等规模团队也能做的事。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">如果会，开源真原生就会从四件套变成一片森林，整个生态会被撬动。第二，原生多模态在推理任务上到底比嫁接式有多大差别。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">如果差别不大，Anthropic 的克制选择就被验证；如果差别很大——具体说就是真原生模型在视觉推理、跨模态推理这些任务上系统性地超过最好的嫁接式模型——那 Claude 就要回头补课了。</span></p>
+
+<p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, 'PingFang SC', sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">下次再听到某个新模型自称原生多模态，你至少知道该问什么。</span></p>
+
+<!-- — 完 — -->
+<p style="margin:48px 8px 24px; text-align:center; line-height:1.5;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:12px; color:rgb(170,170,170); letter-spacing:2px;">— 完 —</span>
+</p>
+
+<!-- 贯穿式灰色细线 -->
+<hr style="border:0; border-top:1px solid rgb(220,220,220); margin:48px 8px 24px;" />
+
+<!-- 数据来源 / 时间戳一句话注释（无前缀）-->
+<p style="margin:0 8px 0; line-height:1.75em; letter-spacing:0.578px;">
+  <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13.5px; letter-spacing:0.5px; color:rgb(150,150,150);">文中所有事实都附了可点击来源链接（论文、官方博客、GitHub 仓库），文末有完整参考资料分组列表。数据时间戳：2026-04-26。</span>
+</p>
+
+<!-- ─── 参考资料 ─── -->
+<hr style="border:0; border-top:1px solid rgb(220,220,220); margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 24px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:18px; letter-spacing:0.5px; color:rgb(0,0,0);">参考资料</span>
+  </strong>
+</p>
+
+<p style="margin:24px 8px 8px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:14px; letter-spacing:1px; color:rgb(0,0,0);">官方资料</span>
+  </strong>
+</p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://blog.google/technology/ai/google-gemini-ai/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Introducing Gemini · Google blog (2023-12-06)</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2312.11805" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Gemini 1.0 Technical Report · arXiv:2312.11805</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2403.05530" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Gemini 1.5 Technical Report · arXiv:2403.05530</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://blog.google/technology/google-deepmind/google-gemini-ai-update-december-2024/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Google introduces Gemini 2.0 · Google blog</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://openai.com/index/hello-gpt-4o/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Hello GPT-4o · OpenAI blog (2024-05-13)</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://openai.com/index/introducing-gpt-realtime/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Introducing gpt-realtime · OpenAI</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://platform.claude.com/docs/en/about-claude/models/overview" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Claude Models Overview · Anthropic 平台文档</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://www.anthropic.com/news/claude-opus-4-7" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Introducing Claude Opus 4.7 · Anthropic</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Llama 4 multimodal intelligence · Meta AI blog</a></span></p>
+
+<p style="margin:24px 8px 8px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:14px; letter-spacing:1px; color:rgb(0,0,0);">学术论文</span>
+  </strong>
+</p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/1706.03762" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Attention Is All You Need · arXiv:1706.03762</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2103.00020" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">CLIP · arXiv:2103.00020</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2204.14198" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Flamingo · arXiv:2204.14198</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://openreview.net/forum?id=w0H2xGHlkw" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">LLaVA / Visual Instruction Tuning · OpenReview</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2405.09818" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Chameleon · arXiv:2405.09818</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2410.13848" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Janus · arXiv:2410.13848</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2501.17811" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Janus-Pro · arXiv:2501.17811</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2503.20215" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Qwen2.5-Omni · arXiv:2503.20215</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2502.13923" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Qwen2.5-VL · arXiv:2502.13923</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2408.01800" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">MiniCPM-V · arXiv:2408.01800</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2409.18869" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Emu3 · arXiv:2409.18869</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2507.01006" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">GLM-4.5V/4.1V-Thinking · arXiv:2507.01006</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/abs/2412.19437" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">DeepSeek-V3 Technical Report · arXiv:2412.19437</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://arxiv.org/pdf/2507.22920" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Discrete Tokenization for Multimodal LLMs Survey · arXiv:2507.22920</a></span></p>
+
+<p style="margin:24px 8px 8px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:14px; letter-spacing:1px; color:rgb(0,0,0);">GitHub</span>
+  </strong>
+</p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/facebookresearch/chameleon" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">facebookresearch/chameleon</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/meta-llama/llama-models" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">meta-llama/llama-models</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/deepseek-ai/Janus" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">deepseek-ai/Janus</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/QwenLM/Qwen2.5-Omni" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">QwenLM/Qwen2.5-Omni</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/OpenBMB/MiniCPM-o" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">OpenBMB/MiniCPM-o</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/baaivision/Emu3" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">baaivision/Emu3</a></span></p>
+
+<p style="margin:24px 8px 8px; line-height:1.5; letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:14px; letter-spacing:1px; color:rgb(0,0,0);">第三方分析</span>
+  </strong>
+</p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://www.interconnects.ai/p/gpt-4os-images-and-lessons-from-native" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Nathan Lambert · GPT-4o's images and lessons from native input-output multimodality</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://venturebeat.com/technology/z-ai-debuts-open-source-glm-4-6v-a-native-tool-calling-vision-model-for" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Z.ai GLM-4.6V · VentureBeat</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://github.com/datawhalechina/self-llm/blob/master/models/Kimi-K2.5/01-Kimi-K2.5-%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB.md" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">Kimi K2.5 论文解读 · datawhalechina</a></span></p>
+<p style="margin:0 8px 4px; line-height:1.7; letter-spacing:0.578px;"><span style="font-family:Optima-Regular, PingFangTC-light, sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(85,85,85);">· <a href="https://en.tmtpost.com/post/7645516" style="color:rgb(85,85,85); border-bottom:1px solid rgb(200,200,200); text-decoration:none;">豆包多模态 · TMTPost</a></span></p>
+
+</article>
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 以下是 article 外，不参与"复制正文" -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<!-- 封面图区 -->
+<section style="max-width:677px; margin:60px auto 0; background:white; padding:32px 28px;">
+  <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:11px; color:rgb(150,150,150); letter-spacing:1.5px; text-transform:uppercase;">📷 封面图 · 不参与复制</p>
+  <p style="margin:0 0 24px; font-family:system-ui,'PingFang SC',sans-serif; font-size:20px; color:#000; font-weight:700; line-height:1.4;">公众号头条封面 · 900×383 母图（自动裁 1:1 方卡）</p>
+
+  <p style="margin:0 0 14px; font-family:system-ui,'PingFang SC',sans-serif; font-size:13px; color:rgb(85,85,85); line-height:1.7;">封面图生成器内置 3 个变体可切换：A 只标题版 / B 标题 + 三代演进 / C 标题 + 金句。点击下载 @2x 高清 PNG，上传到公众号编辑器顶部"封面"位置。</p>
+
+  <p style="margin:0;">
+    <a href="../assets/cover-gen.html" target="_blank" style="display:inline-block; padding:10px 20px; background:rgb(198,97,63); color:white; font-family:system-ui,sans-serif; font-size:13px; text-decoration:none; font-weight:600;">→ 打开封面图生成器</a>
+  </p>
+</section>
+
+<!-- 配图素材下载区 -->
+<section style="max-width:677px; margin:24px auto 0; background:white; padding:32px 28px;">
+  <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:11px; color:rgb(150,150,150); letter-spacing:1.5px; text-transform:uppercase;">📥 正文配图 · 不参与复制</p>
+  <p style="margin:0 0 24px; font-family:system-ui,'PingFang SC',sans-serif; font-size:20px; color:#000; font-weight:700; line-height:1.4;">3 张配图 · 浏览器打开 → 截图 → 上传公众号素材库</p>
+
+  <!-- 配图 1 -->
+  <div style="border-top:3px solid #000; padding:18px 0; margin-bottom:0;">
+    <p style="margin:0 0 6px; font-family:'Futura',sans-serif; font-size:12px; color:rgb(198,97,63); letter-spacing:1.5px;">FIGURE 01</p>
+    <p style="margin:0 0 8px; font-family:system-ui,'PingFang SC',sans-serif; font-size:16px; color:#000; font-weight:600;">四代多模态架构演进示意图</p>
+    <p style="margin:0 0 14px; font-family:system-ui,'PingFang SC',sans-serif; font-size:13px; color:rgb(85,85,85); line-height:1.6;">嵌入位置：02 章末 · 横向对比第一代、第二代、第二代+联合训练、第三代真原生四种架构。</p>
+    <p style="margin:0;">
+      <a href="../assets/diagram-1-evolution.html" target="_blank" style="display:inline-block; padding:8px 16px; background:#000; color:white; font-family:system-ui,sans-serif; font-size:13px; text-decoration:none; font-weight:600;">→ 在新窗口打开 diagram-1-evolution.html</a>
+    </p>
+  </div>
+
+  <!-- 配图 2 -->
+  <div style="border-top:1px solid rgb(220,220,220); padding:18px 0;">
+    <p style="margin:0 0 6px; font-family:'Futura',sans-serif; font-size:12px; color:rgb(198,97,63); letter-spacing:1.5px;">FIGURE 02</p>
+    <p style="margin:0 0 8px; font-family:system-ui,'PingFang SC',sans-serif; font-size:16px; color:#000; font-weight:600;">token 化原理 · 跨模态共享数学空间</p>
+    <p style="margin:0 0 14px; font-family:system-ui,'PingFang SC',sans-serif; font-size:13px; color:rgb(85,85,85); line-height:1.6;">嵌入位置：04 章中 · 三种模态如何被映射到同一个数学坐标系，红色词与红色光波坐标接近。</p>
+    <p style="margin:0;">
+      <a href="../assets/diagram-2-token-space.html" target="_blank" style="display:inline-block; padding:8px 16px; background:#000; color:white; font-family:system-ui,sans-serif; font-size:13px; text-decoration:none; font-weight:600;">→ 在新窗口打开 diagram-2-token-space.html</a>
+    </p>
+  </div>
+
+  <!-- 配图 3 -->
+  <div style="border-top:1px solid rgb(220,220,220); padding:18px 0;">
+    <p style="margin:0 0 6px; font-family:'Futura',sans-serif; font-size:12px; color:rgb(198,97,63); letter-spacing:1.5px;">FIGURE 03</p>
+    <p style="margin:0 0 8px; font-family:system-ui,'PingFang SC',sans-serif; font-size:16px; color:#000; font-weight:600;">MiniCPM-o 模块化拼接 vs Chameleon 真原生融合</p>
+    <p style="margin:0 0 14px; font-family:system-ui,'PingFang SC',sans-serif; font-size:13px; color:rgb(85,85,85); line-height:1.6;">嵌入位置：05 章中 · 同样叫端到端，架构差一代——左侧 4 模块串联，右侧 1 个统一 Transformer。</p>
+    <p style="margin:0;">
+      <a href="../assets/diagram-3-architecture-compare.html" target="_blank" style="display:inline-block; padding:8px 16px; background:#000; color:white; font-family:system-ui,sans-serif; font-size:13px; text-decoration:none; font-weight:600;">→ 在新窗口打开 diagram-3-architecture-compare.html</a>
+    </p>
+  </div>
+
+  <!-- 备选素材 -->
+  <div style="border-top:1px solid rgb(220,220,220); padding:18px 0 0; margin-top:0;">
+    <p style="margin:0 0 8px; font-family:system-ui,'PingFang SC',sans-serif; font-size:13px; color:rgb(85,85,85); line-height:1.7;">需要更多素材？128 张图（来自正文 33 个引用链接，包括 arXiv 论文、官博 banner、GitHub README）已经爬下来了：</p>
+    <p style="margin:0;">
+      <a href="../assets/extracted/index.html" target="_blank" style="display:inline-block; padding:8px 16px; background:white; color:#000; border:1px solid #000; font-family:system-ui,sans-serif; font-size:13px; text-decoration:none; font-weight:600;">→ 浏览 extracted/index.html</a>
+    </p>
+  </div>
+</section>
+
+<!-- 使用说明区 -->
+<section style="max-width:677px; margin:24px auto 80px; background:white; padding:32px 28px;">
+  <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:11px; color:rgb(150,150,150); letter-spacing:1.5px; text-transform:uppercase;">📋 怎么用 · 不参与复制</p>
+  <p style="margin:0 0 24px; font-family:system-ui,'PingFang SC',sans-serif; font-size:20px; color:#000; font-weight:700; line-height:1.4;">从这个 HTML 到公众号发布的 5 步流程</p>
+
+  <ol style="padding-left:20px; margin:0; font-family:system-ui,'PingFang SC',sans-serif; font-size:14px; color:rgb(34,34,34); line-height:1.85;">
+    <li style="margin-bottom:12px;"><b>生成封面图</b><br><span style="color:rgb(85,85,85); font-size:13px;">点击上方"打开封面图生成器" → 切换 3 个变体看效果 → 选定后点"下载 @2x 高清版"。这是公众号头条文章顶部的封面，也是消息列表/分享卡片显示的图（公众号自动从中央裁 1:1）。</span></li>
+    <li style="margin-bottom:12px;"><b>截图保存 3 张正文配图</b><br><span style="color:rgb(85,85,85); font-size:13px;">浏览器打开上方 3 个 diagram 链接，每张都用截图工具（Win+Shift+S / 微信 Alt+A / ShareX）截全图，保存为 PNG。建议截图分辨率 ≥ 1500px 宽，公众号显示后清晰。</span></li>
+    <li style="margin-bottom:12px;"><b>上传到公众号素材库</b><br><span style="color:rgb(85,85,85); font-size:13px;">登录公众号后台 → 素材管理 → 新建图片素材 → 上传封面图 + 3 张配图。每张图记下名字（待会插入文章用）。</span></li>
+    <li style="margin-bottom:12px;"><b>点右上角"复制正文（无白边）"按钮</b><br><span style="color:rgb(85,85,85); font-size:13px;">按钮调用 JS 选中 article 内的所有内容（不包括 article 之外、也不包括 body 的任何 padding/background），所以粘贴到公众号编辑器不会带左右白边错位。</span></li>
+    <li style="margin-bottom:12px;"><b>切换到公众号图文编辑器，Ctrl+V 粘贴</b><br><span style="color:rgb(85,85,85); font-size:13px;">字体、字号、颜色、章节编号 + 6px 黑线、链接、署名块都会保留。配图位置是灰色框 [ 配图 X · ... ]，下方一行小灰字"数据来源 · ..."。</span></li>
+    <li style="margin-bottom:12px;"><b>设置封面图 + 替换正文配图占位</b><br><span style="color:rgb(85,85,85); font-size:13px;">编辑器顶部"封面"位置上传封面 PNG。正文里：删掉灰色 [ 配图 X ] 框 → 点"插入图片" → 从素材库选择对应 diagram 图。"数据来源 · ..."那一行保留作图注。</span></li>
+    <li style="margin-bottom:0;"><b>iOS 微信预览验证</b><br><span style="color:rgb(85,85,85); font-size:13px;">公众号编辑器自带的预览不准。Optima-Regular / PingFangTC-light 在 Windows / Android 会回退到系统字体，真实效果只在 iOS / Mac 微信里看得到。发预览到自己手机看一眼再正式发。</span></li>
+  </ol>
+</section>
+
+<!-- 复制按钮的 JS -->
+<script>
+function copyWxArticle() {
+  var target = document.getElementById('wx-body');
+  if (!target) return;
+  var range = document.createRange();
+  range.selectNodeContents(target);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  sel.removeAllRanges();
+  var btn = document.getElementById('copy-btn');
+  btn.textContent = ok ? '已复制 ✓' : '复制失败';
+  btn.style.background = ok ? '#10b981' : '#dc2626';
+  setTimeout(function(){
+    btn.textContent = '复制正文（无白边）';
+    btn.style.background = '#111';
+  }, 2200);
+}
+</script>
+
+</body>
+</html>

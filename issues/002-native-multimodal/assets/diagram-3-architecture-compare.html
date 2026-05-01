@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>原生编排 vs 原生融合 · 架构对比</title>
+<style>
+  body {
+    margin: 0;
+    padding: 60px 40px;
+    background: #f2f2f2;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: rgb(34, 34, 34);
+  }
+  .canvas {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: white;
+    padding: 60px 50px;
+  }
+  .title-block {
+    border-top: 6px solid #000;
+    display: inline-block;
+    padding-top: 8px;
+    margin-bottom: 8px;
+  }
+  .title-num {
+    font-family: 'Futura', 'Helvetica Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    line-height: 1;
+  }
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 24px 0;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 800px;
+  }
+  .compare {
+    display: flex;
+    gap: 24px;
+  }
+  .side {
+    flex: 1;
+    background: #fafafa;
+    padding: 28px 24px;
+    border-top: 3px solid #000;
+  }
+  .side.right-side {
+    border-top-color: rgb(198, 97, 63);
+  }
+  .side-tag {
+    font-size: 11px;
+    color: rgb(150, 150, 150);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .side-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 4px;
+  }
+  .side-stars {
+    font-size: 12px;
+    color: rgb(150, 150, 150);
+    margin-bottom: 24px;
+  }
+  .arch-area {
+    background: white;
+    padding: 24px 16px;
+    margin-bottom: 18px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .module {
+    background: rgb(236, 236, 236);
+    color: rgb(34, 34, 34);
+    padding: 10px 14px;
+    font-size: 12px;
+    border-radius: 2px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .module.dark {
+    background: #000;
+    color: white;
+  }
+  .module.brand {
+    background: rgb(198, 97, 63);
+    color: white;
+  }
+  .module-label {
+    font-size: 10px;
+    color: rgb(150, 150, 150);
+    margin-top: -2px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .arrow {
+    color: rgb(150, 150, 150);
+    font-size: 16px;
+  }
+  .row-modules {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .verdict {
+    font-size: 13px;
+    color: rgb(85, 85, 85);
+    line-height: 1.7;
+    border-top: 1px solid rgb(220, 220, 220);
+    padding-top: 14px;
+  }
+  .verdict b {
+    color: #000;
+    font-weight: 700;
+  }
+  .footer {
+    margin-top: 36px;
+    font-size: 12px;
+    color: rgb(150, 150, 150);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="title-block">
+    <div class="title-num">03</div>
+  </div>
+  <div class="title">同样叫端到端 · 但架构差一代</div>
+  <div class="subtitle">MiniCPM-o 是端到端编排，四个独立模型串联；Chameleon 是原生融合，所有模态在 token 层面统一进同一个 Transformer。这是真原生跟拼装的本质区别。</div>
+
+  <div class="compare">
+
+    <!-- 左：MiniCPM-o -->
+    <div class="side">
+      <div class="side-tag">端到端编排 · 拼装</div>
+      <div class="side-name">MiniCPM-o</div>
+      <div class="side-stars">OpenBMB · 24.4k stars · 8B 参数</div>
+
+      <div class="arch-area">
+        <div class="row-modules">
+          <div class="module">图像输入</div>
+          <div class="module">音频输入</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="row-modules">
+          <div class="module dark">SigLip<br><span style="font-size:9px;opacity:0.7;">视觉编码 400M</span></div>
+          <div class="module dark">Whisper<br><span style="font-size:9px;opacity:0.7;">音频编码 300M</span></div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="module dark" style="min-width:200px;">Qwen2.5-7B<br><span style="font-size:9px;opacity:0.7;">文本主干 LLM</span></div>
+        <div class="arrow">↓</div>
+        <div class="module dark">ChatTTS<br><span style="font-size:9px;opacity:0.7;">语音生成 200M</span></div>
+        <div class="arrow">↓</div>
+        <div class="module">语音输出</div>
+      </div>
+
+      <div class="verdict">
+        <b>4 个独立预训练模型组装。</b>每个模块用各自团队各自数据训练，再串成一条 pipeline。能做端到端语音交互，但模态信息在跨模块传递时仍要经过隐式翻译。
+      </div>
+    </div>
+
+    <!-- 右：Chameleon -->
+    <div class="side right-side">
+      <div class="side-tag" style="color: rgb(198, 97, 63);">原生融合 · NATIVE</div>
+      <div class="side-name">Chameleon</div>
+      <div class="side-stars">Meta FAIR · 2.1k stars · 7B / 34B 参数</div>
+
+      <div class="arch-area">
+        <div class="row-modules">
+          <div class="module">文字</div>
+          <div class="module">图像</div>
+          <div class="module">音频</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="module-label">全部切成离散 token</div>
+        <div class="row-modules">
+          <div class="module">文字 token</div>
+          <div class="module">图像 token</div>
+          <div class="module">音频 token</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="module brand" style="min-width:240px; padding:18px 14px;">
+          统一 Transformer<br>
+          <span style="font-size:10px; opacity:0.85;">所有模态从训练第一天联合预训练<br>QK-Norm 解决数值不稳定</span>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="row-modules">
+          <div class="module">文字 / 图像 / 任意模态输出</div>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <b>1 个统一模型，所有模态在 token 层面平等参与预训练。</b>不需要在模块间做任何翻译，模型直接在数学层面理解跨模态关联。代价是工程难度高得多——Chameleon 论文里专门有一节讲怎么解决训练崩溃。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">数据来源 · MiniCPM-o GitHub · Chameleon arXiv:2405.09818 · stars 取自 GitHub API 2026-04</div>
+
+</div>
+</body>
+</html>

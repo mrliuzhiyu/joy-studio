@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>封面图生成器 · 原生多模态大模型到底是什么</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 28px 24px 60px;
+  background: #f0f0f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: #333;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+h1 {
+  font-size: 15px; margin: 0 0 4px; color: #111; font-weight: 700;
+}
+h1 small { color: #888; font-weight: 400; font-size: 12.5px; margin-left: 8px; }
+.hint { color: #666; font-size: 12.5px; line-height: 1.75; margin: 6px 0 18px; }
+.hint code { background: white; padding: 1px 6px; border-radius: 3px; font-family: 'SF Mono',Consolas,monospace; font-size: 11.5px; }
+
+.variants {
+  display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 16px;
+}
+.variants button {
+  padding: 8px 14px; background: white; border: 1px solid #ddd;
+  border-radius: 999px; cursor: pointer; font-size: 12.5px; color: #555;
+  font-family: inherit; transition: all .15s;
+}
+.variants button.active { background: #111; color: white; border-color: #111; }
+
+.stage {
+  background: white; padding: 24px; border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  margin: 0 0 14px;
+  position: relative;
+}
+.canvas-wrap { position: relative; display: inline-block; width: 100%; }
+canvas {
+  background: white; box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  display: block; margin: 0 auto; max-width: 100%; height: auto;
+}
+.crop-indicator {
+  position: absolute; top: 0; height: 100%;
+  border-left: 2px dashed rgba(220,80,80,0.6);
+  border-right: 2px dashed rgba(220,80,80,0.6);
+  pointer-events: none;
+  display: none;
+}
+.crop-indicator.show { display: block; }
+.crop-indicator::after {
+  content: '公众号 1:1 裁切区';
+  position: absolute; top: -20px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px; color: rgb(190,60,60); font-weight: 600;
+  white-space: nowrap;
+}
+
+.toggle-row {
+  display: flex; gap: 10px; align-items: center; margin: 12px 0 0;
+  font-size: 12.5px; color: #666;
+}
+.toggle-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+.ctrls {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  margin: 18px 0 0;
+}
+.ctrls button {
+  border: 0; border-radius: 999px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  transition: all .2s;
+}
+.ctrls button.primary { padding: 11px 22px; background: #111; color: white; }
+.ctrls button.primary:hover { background: #333; }
+.ctrls button.ghost {
+  padding: 11px 22px; background: transparent; color: #555;
+  border: 1px solid #ccc;
+}
+
+.note {
+  font-size: 12.5px; color: #666; line-height: 1.8;
+  margin: 14px 0 0; padding: 12px 16px;
+  background: #fafafa; border-radius: 6px;
+}
+.note code {
+  background: white; padding: 1px 6px; border-radius: 3px;
+  font-family: 'SF Mono',Consolas,monospace; font-size: 12px;
+}
+.note strong { color: #111; }
+
+.schema {
+  display: flex; gap: 12px; margin: 10px 0 0;
+  font-size: 11.5px; color: #888;
+}
+.schema .chip {
+  padding: 4px 10px; border-radius: 999px; background: white; border: 1px solid #e5e5e5;
+}
+.schema .chip.red { border-color: #e8a0a0; color: #c04040; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>封面图生成器 <small>900 × 383 母图 · 公众号自动从中央裁 1:1 方卡</small></h1>
+  <p class="hint">公众号头条文章只需上传一张 <code>2.35:1</code>（900×383）母图，消息列表按原比例显示，主页/分享卡片由微信<strong>从中央自动裁出 383×383 方形</strong>。所以核心信息必须全放在中央虚线框内，两侧只放补充 meta。</p>
+
+  <div class="schema">
+    <span class="chip">两侧（0–258 / 642–900）：仅消息列表可见</span>
+    <span class="chip red">中央（259–641）：1:1 方卡裁切区，必须放核心信息</span>
+  </div>
+
+  <div class="variants" style="margin-top:18px;">
+    <button class="active" data-variant="title" onclick="setVariant('title')">A · 只标题版</button>
+    <button data-variant="numbers" onclick="setVariant('numbers')">B · 标题 + 三代演进</button>
+    <button data-variant="statement" onclick="setVariant('statement')">C · 标题 + 金句</button>
+  </div>
+
+  <div class="stage">
+    <div class="canvas-wrap" id="cw">
+      <canvas id="cover"></canvas>
+      <div class="crop-indicator" id="crop"></div>
+    </div>
+    <div class="toggle-row">
+      <label><input type="checkbox" id="show-crop" checked onchange="toggleCrop(this.checked)"> 显示 1:1 裁切区指示（仅预览，不会进 PNG）</label>
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <button class="primary" onclick="downloadPng(2)">下载 @2x 高清版（1800×766）</button>
+    <button class="ghost" onclick="downloadPng(1)">下载 @1x 标清版（900×383）</button>
+  </div>
+
+  <div class="note">
+    <strong>操作建议</strong>：切换三个版本看对比，下载你觉得最合适的。推荐 @2x，公众号上传压缩后字形仍锐利。<br>
+    <strong>字体</strong>：Optima + PingFangTC-light（iOS / macOS 精致），其他平台优雅降级到 PingFang SC / Microsoft YaHei。<br>
+    <strong>颜色</strong>：黑 <code>#111</code> 主标题 / 灰阶 <code>#666 / #888 / #aaa</code> / 暖铜 <code>#C6613F</code> 点缀。
+  </div>
+</div>
+
+<script>
+const W = 900, H = 383;
+const fontStack = '"Optima-Regular","PingFangTC-light","PingFang SC","Hiragino Sans GB","Helvetica Neue",Arial,sans-serif';
+const futuraStack = '"Futura-Medium","Futura","Helvetica Neue",Arial,sans-serif';
+
+let currentVariant = 'title';
+
+// 1:1 裁切区 x 范围：居中，宽度 383
+const CROP_X1 = 259;
+const CROP_X2 = 641;
+const CROP_CENTER = 450;
+
+function pickFontSize(ctx, lines, maxWidth, baseSize, minSize, family, weight) {
+  let size = baseSize;
+  while (size >= minSize) {
+    ctx.font = `${weight} ${size}px ${family}`;
+    if (lines.every(l => ctx.measureText(l).width <= maxWidth)) return size;
+    size -= 1;
+  }
+  return minSize;
+}
+
+function drawCommon(ctx) {
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+  ctx.textBaseline = 'alphabetic';
+
+  // 核心信息必须在 [259, 641] 裁切区内（宽 383），两侧各留 8px 安全边
+  const SAFE_WIDTH = 367;
+
+  // 主标题（居中，两行）· 动态字号
+  const titleLines = ['原生多模态大模型', '到底是什么'];
+  const titleSize = pickFontSize(ctx, titleLines, SAFE_WIDTH, 36, 24, fontStack, 700);
+  const lineGap = Math.round(titleSize * 1.32);
+
+  ctx.fillStyle = '#111';
+  ctx.font = `700 ${titleSize}px ${fontStack}`;
+  ctx.textAlign = 'center';
+
+  const titleStartY = 158;
+  ctx.fillText(titleLines[0], CROP_CENTER, titleStartY);
+  ctx.fillText(titleLines[1], CROP_CENTER, titleStartY + lineGap);
+
+  // accent line
+  const accentY = titleStartY + lineGap + 26;
+  ctx.fillStyle = '#111';
+  ctx.fillRect(CROP_CENTER - 24, accentY, 48, 3);
+
+  // 副标
+  const subText = '三代解法 · 一个营销词';
+  const subSize = pickFontSize(ctx, [subText], SAFE_WIDTH, 14, 11, fontStack, 400);
+  ctx.fillStyle = '#666';
+  ctx.font = `400 ${subSize}px ${fontStack}`;
+  ctx.fillText(subText, CROP_CENTER, accentY + 30);
+
+  ctx.textAlign = 'left';
+}
+
+function drawTitle(ctx) {
+  drawCommon(ctx);
+
+  // 左侧（仅消息列表可见）：日期 + hint
+  ctx.fillStyle = '#aaa';
+  ctx.font = `600 11px ${fontStack}`;
+  ctx.fillText('2026 · 04 · 26', 60, 60);
+  ctx.fillStyle = '#9a9a9a';
+  ctx.font = `400 11px ${fontStack}`;
+  ctx.fillText('AI 技术深度', 60, 78);
+
+  // 右侧（仅消息列表可见）：tag
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#9a9a9a';
+  ctx.font = `500 11px ${fontStack}`;
+  ctx.fillText('AI · 多模态', W - 60, 60);
+  ctx.textAlign = 'left';
+}
+
+function drawNumbers(ctx) {
+  drawCommon(ctx);
+
+  // 左侧 日期
+  ctx.fillStyle = '#aaa';
+  ctx.font = `600 11px ${fontStack}`;
+  ctx.fillText('2026 · 04 · 26', 60, 60);
+
+  // 左侧大数字 01
+  ctx.fillStyle = '#111';
+  ctx.font = `700 56px ${futuraStack}`;
+  ctx.fillText('01', 60, 220);
+  ctx.fillStyle = '#888';
+  ctx.font = `500 11px ${fontStack}`;
+  ctx.fillText('图像 → 文字 → LLM', 60, 245);
+
+  // 右侧大数字 03
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#C6613F';
+  ctx.font = `700 56px ${futuraStack}`;
+  ctx.fillText('03', W - 60, 220);
+  ctx.fillStyle = '#888';
+  ctx.font = `500 11px ${fontStack}`;
+  ctx.fillText('真原生 · token 级融合', W - 60, 245);
+
+  // 右侧顶部 tag
+  ctx.fillStyle = '#9a9a9a';
+  ctx.font = `500 11px ${fontStack}`;
+  ctx.fillText('AI · 多模态', W - 60, 60);
+  ctx.textAlign = 'left';
+
+  // 中间小箭头连接 01 → 03
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(135, 215);
+  ctx.lineTo(180, 215);
+  ctx.stroke();
+  ctx.strokeStyle = '#ddd';
+  ctx.beginPath();
+  ctx.moveTo(W - 135, 215);
+  ctx.lineTo(W - 180, 215);
+  ctx.stroke();
+}
+
+function drawStatement(ctx) {
+  drawCommon(ctx);
+
+  // 左侧 日期
+  ctx.fillStyle = '#aaa';
+  ctx.font = `600 11px ${fontStack}`;
+  ctx.fillText('2026 · 04 · 26', 60, 60);
+
+  // 左侧 短句（多行）
+  ctx.fillStyle = '#555';
+  ctx.font = `italic 400 13.5px ${fontStack}`;
+  ctx.textAlign = 'left';
+  ctx.fillText('"原生" 这个词', 60, 195);
+  ctx.fillText('不到两年前', 60, 215);
+  ctx.fillText('才被发明', 60, 235);
+
+  // 右侧 短句
+  ctx.fillStyle = '#444';
+  ctx.font = `italic 400 13.5px ${fontStack}`;
+  ctx.textAlign = 'right';
+  ctx.fillText('全行业都在抢', W - 60, 195);
+  ctx.fillText('但能验证的', W - 60, 215);
+  ctx.fillText('真原生很少', W - 60, 235);
+
+  // 右侧顶部 tag
+  ctx.fillStyle = '#9a9a9a';
+  ctx.font = `500 11px ${fontStack}`;
+  ctx.fillText('AI · 多模态', W - 60, 60);
+  ctx.textAlign = 'left';
+}
+
+function render(scale) {
+  const c = document.getElementById('cover');
+  c.width = W * scale;
+  c.height = H * scale;
+  const ctx = c.getContext('2d');
+  ctx.scale(scale, scale);
+
+  if (currentVariant === 'numbers')   drawNumbers(ctx);
+  else if (currentVariant === 'statement') drawStatement(ctx);
+  else drawTitle(ctx);
+
+  updateCropIndicator();
+}
+
+function updateCropIndicator() {
+  const c = document.getElementById('cover');
+  const crop = document.getElementById('crop');
+  const rect = c.getBoundingClientRect();
+  const wrap = document.getElementById('cw').getBoundingClientRect();
+  const ratio = rect.width / W;
+  crop.style.left = (rect.left - wrap.left + CROP_X1 * ratio) + 'px';
+  crop.style.width = ((CROP_X2 - CROP_X1) * ratio) + 'px';
+}
+
+window.addEventListener('resize', () => updateCropIndicator());
+
+function setVariant(v) {
+  currentVariant = v;
+  document.querySelectorAll('.variants button').forEach(b => {
+    b.classList.toggle('active', b.dataset.variant === v);
+  });
+  render(2);
+}
+
+function toggleCrop(show) {
+  document.getElementById('crop').classList.toggle('show', show);
+}
+
+function downloadPng(scale) {
+  render(scale);
+  const c = document.getElementById('cover');
+  const a = document.createElement('a');
+  const suffix = scale === 2 ? '@2x' : '';
+  a.download = `cover-native-multimodal-${currentVariant}${suffix}-900x383.png`;
+  a.href = c.toDataURL('image/png');
+  a.click();
+  setTimeout(() => render(2), 50);
+}
+
+// 初始渲染
+render(2);
+toggleCrop(true);
+</script>
+
+</body>
+</html>
