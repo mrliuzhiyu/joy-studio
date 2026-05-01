@@ -1,6 +1,15 @@
 # 临时文件（用完即删，不入库）
 .tmp/
 
+# 爬虫抓取的图片素材（可随时重新生成，不入库；最终用的图走公众号素材库 URL）
+**/assets/extracted/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
 # 系统
 .DS_Store
 Thumbs.db
