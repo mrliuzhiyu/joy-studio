@@ -8,7 +8,7 @@
 
 让流水线塌方的不是 AI 本身。AI 写代码这件事已经发生了三四年——从 2021 年 GitHub Copilot 公测，到 2023 年 ChatGPT 引爆 vibe coding，到 2024 年 Cursor 成为很多团队的标配——这中间前端没塌、后端没塌、PM 也没塌。AI 生成代码的能力是连续提升的，但流水线的塌方是离散的，发生在 2025 到 2026 这个窗口期。
 
-让流水线塌的是一种 2026 年才真正成形的新开发范式，叫 SDD（Spec-Driven Development，规范驱动开发）。GitHub 在 2025 年发布的同名工具集 Spec Kit 已经有 92k star（[github/spec-kit](https://github.com/github/spec-kit)），AWS 把它做成了一个独立 IDE 叫 Kiro（[Kiro 官网](https://kiro.dev/)），阿里 2025 年 8 月发布的 Qoder 内置了同样的工作流（[Qoder 负责人揭秘](https://www.cnblogs.com/alisystemsoftware/p/19121515)），腾讯云的 CloudBase AI Toolkit 直接复刻了 Kiro 的命令格式（[Spec 工作流文档](https://docs.cloudbase.net/en/ai/cloudbase-ai-toolkit/spec-workflow)）。半年内这条赛道从一个 GitHub 实验变成了行业默认配置。
+让它塌的是 SDD（Spec-Driven Development，规范驱动开发）——一种 2026 年才真正成形的新开发范式。GitHub 在 2025 年发布的同名工具集 Spec Kit 已经有 92k star（[github/spec-kit](https://github.com/github/spec-kit)），AWS 把它做成了一个独立 IDE 叫 Kiro（[Kiro 官网](https://kiro.dev/)），阿里 2025 年 8 月发布的 Qoder 内置了同样的工作流（[Qoder 负责人揭秘](https://www.cnblogs.com/alisystemsoftware/p/19121515)），腾讯云的 CloudBase AI Toolkit 直接复刻了 Kiro 的命令格式（[Spec 工作流文档](https://docs.cloudbase.net/en/ai/cloudbase-ai-toolkit/spec-workflow)）。半年内这条赛道从一个 GitHub 实验变成了行业默认配置。
 
 这篇文章把四件事讲清楚：SDD 到底是什么、为什么过去 12 个月所有大厂都在押注它、它会不会变成下一个失败的方法论（已经有不少人在指控它就是瀑布回潮）、以及最后一个落地的问题——你现在该怎么做。
 
@@ -54,7 +54,7 @@ SPEC 是规范，目的是让 AI agent 不带歧义地把一个意图落实成�
 
 PRD 写完会被存进语雀或者 Confluence，主要供后人查阅。SPEC 写完会被 AI agent 拿去执行，生成代码、跑测试、改了再生成。它跟代码的关系，更接近源码跟编译产物的关系。
 
-SDD（Spec-Driven Development）就是基于这个区分的开发范式。一篇 2026 年 1 月发表的立场论文（[Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants, arXiv:2602.00180](https://arxiv.org/abs/2602.00180)）把这个范式的核心定义为：把规范当成单一真源，代码作为生成或验证的次级产物。
+SDD（Spec-Driven Development）就是基于这个区分的开发范式。一篇 2026 年 2 月发表的立场论文（[Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants, arXiv:2602.00180](https://arxiv.org/abs/2602.00180)）把这个范式的核心定义为：把规范当成单一真源，代码作为生成或验证的次级产物。
 
 跟传统流程比，这是一种反转。
 
@@ -70,7 +70,7 @@ SDD（Spec-Driven Development）就是基于这个区分的开发范式。一篇
 
 **spec-as-source**：规范本身就是源文件，代码是从规范自动生成的产物，理论上不应该被人手动编辑。这一层最激进，目前只有 Tessl 等少数厂商在认真追求。
 
-鄙视链从左到右递增，工程难度也是。但 Martin Fowler 那篇文章里有一句话冷得让人后背发凉：模型驱动开发（MDD）二十年前就尝试过把规范作为源文件，惨败收场——规范在工业界从来没能真正取代代码。如今把 LLM 的非确定性叠加上 spec-as-source，可能同时继承 MDD 和 LLM 双方的缺点。这个警告很真实，第 5 章会回来处理。
+鄙视链从左到右递增，工程难度也是。但 Martin Fowler 那篇文章里有一句话冷得让人后背发凉：模型驱动开发（MDD）二十年前就尝试过把规范作为源文件，惨败收场——规范在工业界从来没能真正取代代码。如今把 LLM 的非确定性叠加上 spec-as-source，可能同时继承 MDD 和 LLM 双方的缺点。这个警告很真实，第 6 章会回来处理。
 
 ![传统 PRD-前端-后端 流水线 vs SDD 流程对比图（占位 · 见 assets/diagram-1-traditional-vs-sdd.html）](assets/diagram-1-traditional-vs-sdd.html)
 
@@ -145,7 +145,7 @@ Spec Kit 不绑定具体 IDE，支持 30 多种 AI agent，包括 Claude Code、
 
 社区层面有两个值得记住的项目。
 
-一个是 OpenSpec（[Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec)），核心理念叫 delta isolation——每次需求变更不重写整个 spec，只描述本次的 ADDED / MODIFIED / REMOVED Requirements，把每次变更隔离成一个独立的 mini-project，最后合并。这个设计精明地避开了瀑布最大的 BDUF（Big Design Up Front）陷阱，第 6 章会回来讨论它的意义。
+一个是 OpenSpec（[Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec)），核心理念叫 delta isolation——每次需求变更不重写整个 spec，只描述本次的 ADDED / MODIFIED / REMOVED Requirements，把每次变更隔离成一个独立的 mini-project，最后合并。这个设计精明地避开了瀑布最大的 BDUF（Big Design Up Front）陷阱，第 7 章会回来讨论它的意义。
 
 另一个是 cc-sdd（[gotalab/cc-sdd](https://github.com/gotalab/cc-sdd)），日本开发者 gotalab 做的，3.2k star。它不是新工具，是一个适配层——把 Kiro 风格的 SDD 工作流打包成可在 Claude Code、Codex、Cursor、Copilot、Windsurf、OpenCode、Gemini CLI、Antigravity 这八种 agent 上一键启用的 skill 集合。换句话说，你不必装 Kiro IDE，也能在你已经在用的 agent 里跑同样的 SDD 工作流。
 
@@ -161,7 +161,54 @@ Gartner 那条 1/4 生产缺陷将源于 AI 生成代码 的预测，正在以�
 
 ---
 
-## 05 SDD 是不是又一次瀑布
+## 05 SDD 不是普世工作流
+
+我用 SDD 跑过几次之后的判断很清楚：它不是新一代默认开发范式，是给特定象限准备的工具。错的象限上硬用，要么仪式过载、要么变成 markdown 形态的瀑布。
+
+下面三种场景的体验完全不一样。
+
+### 简单项目：SDD 是仪式过载
+
+单文件、单一职责、自己用、不上生产的小工具——SDD 在这种场景上代价大于收益。
+
+constitution / specify / clarify 三步加起来比直接写代码慢得多，clarify 里 AI 反复问的边界条件你大半根本不在乎，spec 里大半篇幅是你读完没感觉的扩展约束。最后输出的代码 + 测试覆盖看上去工整，但你本来就不需要测试覆盖——这种工具一周用一次，出错重跑就是了。
+
+vibe coding 五分钟拿到一个能跑的版本，反而是这种场景的最优解。
+
+### 复杂项目：SDD 的约束开始救你
+
+多模块、多边界、上生产、需求相对稳定的项目——SDD 在这种场景上是真救命。
+
+你心里清楚每个模块的规则，但拼在一起的边界情况会多到一边写一边漏。直接 vibe coding 的话，你能预想到 Claude 写到一半你就会开始抓狂——一个个补漏、回头改设计、来回返工。
+
+SDD 的强约束在这种场景下从负担翻成保护。constitution 阶段你写的几条规则会在后续 plan 和 implement 阶段被 Claude 自己引用、自己检查；specify 阶段 AI 会主动列出你没想到的 user story；clarify 阶段问的那些问题，至少一半是你直接 vibe coding 一定会写到一半才发现、然后倒回去改设计的那种问题。
+
+多花的时间换的是没漏关键场景的稳定。
+
+### 中间地带最难
+
+需求变更频繁的中型项目是 SDD 最尴尬的象限。
+
+spec 写完之后甲方加一个需求，spec / plan / tasks 三个文档要回头改一遍。这本来应该是 SDD 的优势——spec 是活契约可以重写——但每次重写都要再跑一遍 plan / tasks 把上下文重新铺开。这种写完一次还能用很久的前期成本，在频繁变更下被摊薄。
+
+变更越频繁，SDD 的 ROI 越差。这种场景里 spec 永远跟不上现实，每次同步 spec 的成本超过省下来的 oversight 成本。这种活反而该回到 vibe coding 加严格 PR review 的老路。
+
+### 我现在的决策树
+
+| 项目特征 | 做法 |
+| --- | --- |
+| 单文件、自用、不上生产的小工具 | vibe coding |
+| 多模块、多边界、上生产、需求相对稳定 | SDD 全套 |
+| 需求变更频繁的中型项目 | vibe coding + 严格 PR review |
+| 不知道复杂度的探索性项目 | 先 vibe coding 摸边界，摸清楚后视情况转 SDD |
+
+跟那些 GitHub 上写 SDD 是新一代默认开发范式的文章比，这个判断保守得多。SDD 是给复杂、稳定、上生产这一象限准备的工具。
+
+回到第 4 章那六家工具的工作流——它们都默认你的项目处在这个象限。如果你不在这个象限，工具再好也救不了你。
+
+---
+
+## 06 SDD 是不是又一次瀑布
 
 读到这里你可能会有一个直觉的反应：把规范放到代码前面、要求人工审批、流程化分阶段执行——这听起来跟瀑布开发有什么本质区别？
 
@@ -188,7 +235,7 @@ Martin Fowler 站点那篇工具对比文章里的另一句话冷得让人后背
 
 ---
 
-## 06 区别只有一句话：spec 能不能改
+## 07 区别只有一句话：spec 能不能改
 
 正面回应来自 AWS Principal Engineer Marc Brooker 在 2026 年 4 月发表的一篇博客（[Spec Driven Development isn't Waterfall](https://brooker.co.za/blog/2026/04/09/waterfall-vs-spec.html)）。Brooker 是 AWS 内部最有影响力的工程师之一，也是 X 上常发分布式系统观察的 @MarcJBrooker。他的反驳一句话：区别不在写不写 spec，在冻不冻结 spec。
 
@@ -216,7 +263,7 @@ Karpathy 那条 agentic engineering 推文里 acting as oversight 这五个字�
 
 ---
 
-## 07 写 spec 是新的写代码
+## 08 写 spec 是新的写代码
 
 回到第 1 章那个问题：得物为什么砍前端部门？现在能解释了。
 
@@ -270,22 +317,20 @@ agentic engineering + SDD 让一个人可以同时承担 PM、设计师、前端
 
 — 完 —
 
-**编辑** | Liu Zhiyu
-**出品** | CardLink Lab
-**内容来源** | 原创
+作者提示：本文所有数据为 2026 年 5 月 1 日前公开可查的信息。BLS 就业数据为转述自第三方报道，原始数据待核实。Karpathy 引文为 X 平台原帖原文，翻译为意译。
 
 ---
 
 ## 参考资料
 
-**学术 / 概念源头**
+### 学术 / 概念源头
 
 - [Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants · arXiv:2602.00180](https://arxiv.org/abs/2602.00180)
 - [Constitutional Spec-Driven Development · arXiv:2602.02584](https://arxiv.org/abs/2602.02584)
 - [Understanding Specification-Driven Code Generation with LLMs · arXiv:2601.03878v1](https://arxiv.org/html/2601.03878v1)
 - [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl · Martin Fowler 站点](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
 
-**工具生态**
+### 工具生态
 
 - [GitHub Spec Kit · github/spec-kit](https://github.com/github/spec-kit)
 - [Spec-driven development with AI · GitHub Blog](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)
@@ -297,7 +342,7 @@ agentic engineering + SDD 让一个人可以同时承担 PM、设计师、前端
 - [OpenSpec · Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec) · [OpenSpec 官网](https://openspec.dev/)
 - [cc-sdd · gotalab/cc-sdd](https://github.com/gotalab/cc-sdd)
 
-**Karpathy 与范式转折**
+### Karpathy 与范式转折
 
 - [Karpathy 2025-02-02 vibe coding 原帖 · X](https://x.com/karpathy/status/2019137879310836075)
 - [Karpathy 2026-02-04 agentic engineering 帖 · X](https://x.com/karpathy/status/2026731645169185220)
@@ -305,20 +350,20 @@ agentic engineering + SDD 让一个人可以同时承担 PM、设计师、前端
 - [Vibe coding · arXiv:2506.23253v1](https://arxiv.org/html/2506.23253v1)
 - [Andrej Karpathy Vibe Coding · Klover](https://www.klover.ai/andrej-karpathy-vibe-coding/)
 
-**反方质疑 / SDD 是不是瀑布**
+### 反方质疑 / SDD 是不是瀑布
 
 - [Putting Spec Kit Through Its Paces: Radical Idea or Reinvented Waterfall? · Scott Logic](https://blog.scottlogic.com/2025/11/26/putting-spec-kit-through-its-paces-radical-idea-or-reinvented-waterfall.html)
 - [Hacker News 热帖 · SDD: The Waterfall Strikes Back](https://news.ycombinator.com/item?id=45935763)
 - [Spec-Driven Development: The Waterfall Strikes Back · Marmelab](https://marmelab.com/blog/2025/11/12/spec-driven-development-waterfall-strikes-back.html)
 - [Spec-Driven Development Is Waterfall in Markdown · Medium](https://medium.com/@iamalvisng/spec-driven-development-is-waterfall-in-markdown-e2921554a600)
 
-**反反方 / 工业化指标**
+### 反反方 / 工业化指标
 
 - [Spec Driven Development isn't Waterfall · Marc Brooker](https://brooker.co.za/blog/2026/04/09/waterfall-vs-spec.html)
 - [SDD 简介：从氛围编程到 SDD · Jimmy Song](https://jimmysong.io/zh/book/ai-handbook/sdd/overview/)
 - [Five AI Realities with Tessl's Guy Podjarny · GV (含 Gartner 预测)](https://www.gv.com/news/five-ai-realities-with-tessl-guy-podjarny)
 
-**国内现象 / 角色塌缩**
+### 国内现象 / 角色塌缩
 
 - [得物前端并入 AI 全栈部门 · gitcode csdn](https://gitcode.csdn.net/69b2699f0a2f6a37c596c871.html)
 - ["前端已死"是危言耸听吗 · InfoQ](https://www.infoq.cn/article/syoqdk2chqym37kprebi)
@@ -326,5 +371,3 @@ agentic engineering + SDD 让一个人可以同时承担 PM、设计师、前端
 - [SDD 大厂集体押注：阿里腾讯亚马逊都在用 · 博客园](https://www.cnblogs.com/ljbguanli/p/19352109)
 - [规范驱动开发深入解析：从方法论到 AI 范式转移 · 腾讯云](https://cloud.tencent.com/developer/article/2631688)
 - [规范驱动开发：用 AI 写生产级代码的完整指南 · 腾讯云](https://cloud.tencent.com/developer/article/2586438)
-
-作者提示：本文所有数据为 2026 年 5 月 1 日前公开可查的信息。BLS 就业数据为转述自第三方报道，原始数据待核实。Karpathy 引文为 X 平台原帖原文，翻译为意译。
