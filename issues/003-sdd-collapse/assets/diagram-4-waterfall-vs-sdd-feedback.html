@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Waterfall 月级反馈 vs SDD 分钟级反馈</title>
+<style>
+  body {
+    margin: 0;
+    padding: 60px 40px;
+    background: #f2f2f2;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: rgb(34, 34, 34);
+  }
+  .canvas {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 60px 40px;
+  }
+  .title-block {
+    border-top: 6px solid #000;
+    display: inline-block;
+    padding-top: 8px;
+    margin-bottom: 8px;
+  }
+  .title-num {
+    font-family: 'Futura', 'Helvetica Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    line-height: 1;
+  }
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 36px 0;
+    letter-spacing: 0.5px;
+  }
+  .row {
+    display: flex;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .col {
+    flex: 1;
+    background: #fafafa;
+    padding: 28px 22px;
+    border-top: 3px solid #000;
+    display: flex;
+    flex-direction: column;
+  }
+  .col.sdd {
+    border-top-color: rgb(198, 97, 63);
+  }
+  .era {
+    font-size: 13px;
+    color: rgb(150, 150, 150);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .era.brand {
+    color: rgb(198, 97, 63);
+  }
+  .gen {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .cycle-label {
+    font-size: 13px;
+    color: rgb(85, 85, 85);
+    margin-bottom: 22px;
+  }
+  .cycle-label strong {
+    font-family: 'Futura', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    color: #000;
+  }
+  .cycle-label.brand strong {
+    color: rgb(198, 97, 63);
+  }
+  .loop {
+    background: white;
+    padding: 28px 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+  }
+  .ring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .node {
+    background: rgb(236, 236, 236);
+    color: rgb(34, 34, 34);
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 2px;
+    text-align: center;
+    min-width: 130px;
+  }
+  .node.dark { background: #000; color: white; }
+  .node.brand { background: rgb(198, 97, 63); color: white; }
+  .node.gate {
+    background: white;
+    border: 2px solid #000;
+    color: #000;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .node.gate.locked::before {
+    content: "✕ ";
+    color: rgb(180, 60, 60);
+  }
+  .arr {
+    color: rgb(150, 150, 150);
+    font-size: 13px;
+  }
+  .arr.brand { color: rgb(198, 97, 63); }
+  .return-arrow {
+    margin-top: 6px;
+    padding: 6px 12px;
+    background: rgb(247, 232, 226);
+    color: rgb(160, 70, 40);
+    font-size: 11px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+  .return-arrow.locked {
+    background: rgb(245, 220, 220);
+    color: rgb(160, 50, 50);
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+  .stats {
+    background: white;
+    padding: 16px 18px;
+    border-left: 3px solid #000;
+    margin-top: 18px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgb(85, 85, 85);
+  }
+  .stats.brand {
+    border-left-color: rgb(198, 97, 63);
+  }
+  .stats strong {
+    color: #000;
+    font-weight: 700;
+  }
+  .stats.brand strong {
+    color: rgb(198, 97, 63);
+  }
+  .footer {
+    margin-top: 36px;
+    font-size: 12px;
+    color: rgb(150, 150, 150);
+    text-align: center;
+    letter-spacing: 0.5px;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="title-block">
+    <div class="title-num">06</div>
+  </div>
+  <div class="title">反馈循环 · 瀑布月级 vs SDD 分钟级</div>
+
+  <div class="row">
+
+    <!-- Waterfall -->
+    <div class="col">
+      <div class="era">WATERFALL</div>
+      <div class="gen">瀑布 · phase gate 锁死</div>
+      <div class="cycle-label">单次反馈循环 · <strong>weeks ~ months</strong></div>
+
+      <div class="loop">
+        <div class="ring">
+          <div class="node">需求（签字）</div>
+          <div class="arr">↓</div>
+          <div class="node gate locked">PHASE GATE</div>
+          <div class="arr">↓</div>
+          <div class="node">设计</div>
+          <div class="arr">↓</div>
+          <div class="node">开发</div>
+          <div class="arr">↓</div>
+          <div class="node">测试</div>
+          <div class="arr">↓</div>
+          <div class="node dark">上线</div>
+          <div class="return-arrow locked">⤴ 想改需求 · 走变更评审 · 重新签批</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <strong>BDUF · Big Design Up Front</strong><br>
+        一开始就要把所有事想到位，因为后面没机会改。改一次需求 = 整条链路重走 + 合同层面责任。
+      </div>
+    </div>
+
+    <!-- SDD -->
+    <div class="col sdd">
+      <div class="era brand">SDD</div>
+      <div class="gen">SDD · spec 是活契约</div>
+      <div class="cycle-label brand">单次反馈循环 · <strong>5 ~ 15 minutes</strong></div>
+
+      <div class="loop">
+        <div class="ring">
+          <div class="node brand">写一段 spec</div>
+          <div class="arr brand">↓</div>
+          <div class="node">agent 实现</div>
+          <div class="arr brand">↓</div>
+          <div class="node">跑测试 / review</div>
+          <div class="arr brand">↓</div>
+          <div class="node dark">合入</div>
+          <div class="return-arrow">⤴ spec 错了 · 改 spec · agent 重跑</div>
+        </div>
+      </div>
+
+      <div class="stats brand">
+        <strong>delta isolation · OpenSpec</strong><br>
+        每次只描述本次 ADDED / MODIFIED / REMOVED，不重写整个 spec。spec 不必完美就能用，监督在执行过程中补回去。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    数据来源 · Marc Brooker《Spec Driven Development isn't Waterfall》<br>
+    Karpathy 2026-02-04 · agentic engineering = oversight + minutes 级循环
+  </div>
+
+</div>
+</body>
+</html>

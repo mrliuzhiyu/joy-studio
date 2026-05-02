@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开发流水线 · 传统 vs SDD 反转</title>
+<style>
+  body {
+    margin: 0;
+    padding: 60px 40px;
+    background: #f2f2f2;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: rgb(34, 34, 34);
+  }
+  .canvas {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 60px 40px;
+  }
+  .title-block {
+    border-top: 6px solid #000;
+    display: inline-block;
+    padding-top: 8px;
+    margin-bottom: 8px;
+  }
+  .title-num {
+    font-family: 'Futura', 'Helvetica Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    line-height: 1;
+  }
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 36px 0;
+    letter-spacing: 0.5px;
+  }
+  .row {
+    display: flex;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .col {
+    flex: 1;
+    background: #fafafa;
+    padding: 28px 22px;
+    border-top: 3px solid #000;
+    display: flex;
+    flex-direction: column;
+  }
+  .col.sdd {
+    border-top-color: rgb(198, 97, 63);
+  }
+  .era {
+    font-size: 13px;
+    color: rgb(150, 150, 150);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .era.brand {
+    color: rgb(198, 97, 63);
+  }
+  .gen {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 22px;
+    line-height: 1.3;
+  }
+  .flow {
+    background: white;
+    padding: 22px 14px;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .step:last-child { margin-bottom: 0; }
+  .role {
+    font-size: 10px;
+    color: rgb(150, 150, 150);
+    letter-spacing: 0.5px;
+    width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .role.brand { color: rgb(198, 97, 63); }
+  .box {
+    flex: 1;
+    background: rgb(236, 236, 236);
+    color: rgb(34, 34, 34);
+    padding: 9px 12px;
+    font-size: 13px;
+    border-radius: 2px;
+    text-align: center;
+  }
+  .box.dark {
+    background: #000;
+    color: white;
+  }
+  .box.brand {
+    background: rgb(198, 97, 63);
+    color: white;
+  }
+  .box.outline {
+    background: white;
+    border: 1.5px dashed rgb(180, 180, 180);
+    color: rgb(85, 85, 85);
+  }
+  .arrow-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0;
+  }
+  .arrow-spacer { width: 60px; flex-shrink: 0; }
+  .arrow {
+    flex: 1;
+    text-align: center;
+    color: rgb(150, 150, 150);
+    font-size: 12px;
+  }
+  .truth {
+    background: white;
+    padding: 14px 16px;
+    border-left: 3px solid #000;
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgb(85, 85, 85);
+  }
+  .truth.brand {
+    border-left-color: rgb(198, 97, 63);
+  }
+  .truth strong {
+    color: #000;
+    font-weight: 700;
+  }
+  .truth.brand strong {
+    color: rgb(198, 97, 63);
+  }
+  .footer {
+    margin-top: 36px;
+    font-size: 12px;
+    color: rgb(150, 150, 150);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="title-block">
+    <div class="title-num">02</div>
+  </div>
+  <div class="title">开发流水线 · 传统 vs SDD 真源翻转</div>
+
+  <div class="row">
+
+    <!-- 传统流水线 -->
+    <div class="col">
+      <div class="era">TRADITIONAL PIPELINE</div>
+      <div class="gen">传统流水线<br>角色串行翻译</div>
+
+      <div class="flow">
+        <div class="step">
+          <div class="role">PM</div>
+          <div class="box">PRD</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ 翻译</div></div>
+        <div class="step">
+          <div class="role">设计师</div>
+          <div class="box">设计稿</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ 翻译</div></div>
+        <div class="step">
+          <div class="role">前端</div>
+          <div class="box">UI 代码</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ 翻译</div></div>
+        <div class="step">
+          <div class="role">后端</div>
+          <div class="box">接口 + 数据层</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ 翻译</div></div>
+        <div class="step">
+          <div class="role">测试</div>
+          <div class="box dark">上线</div>
+        </div>
+      </div>
+
+      <div class="truth">
+        <strong>代码 = 真源</strong><br>
+        文档是注解，过期不影响系统运行；信息在每个环节都要翻译一次。
+      </div>
+    </div>
+
+    <!-- SDD 流水线 -->
+    <div class="col sdd">
+      <div class="era brand">SDD PIPELINE</div>
+      <div class="gen">SDD 流水线<br>SPEC 真源 + AI 编译</div>
+
+      <div class="flow">
+        <div class="step">
+          <div class="role brand">人</div>
+          <div class="box outline">意图</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ 结构化</div></div>
+        <div class="step">
+          <div class="role brand">人</div>
+          <div class="box brand">SPEC<br><span style="font-size:10px;opacity:0.85;">requirements / design / tasks</span></div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ AI 编译</div></div>
+        <div class="step">
+          <div class="role brand">agent</div>
+          <div class="box">代码（产物）</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow">↓ oversight</div></div>
+        <div class="step">
+          <div class="role brand">人</div>
+          <div class="box dark">上线</div>
+        </div>
+        <div class="arrow-row"><div class="arrow-spacer"></div><div class="arrow" style="opacity: 0.4;">⤴ spec 改 → agent 重跑</div></div>
+      </div>
+
+      <div class="truth brand">
+        <strong>SPEC = 真源</strong><br>
+        代码是从 SPEC 派生出的可运行产物；spec 改了，代码重新生成。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">概念依据 · Martin Fowler 站点 SDD 三层级（spec-first / spec-anchored / spec-as-source）+ Karpathy 2026-02-04 agentic engineering</div>
+
+</div>
+</body>
+</html>
