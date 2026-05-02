@@ -331,6 +331,51 @@ Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif
 - 图注本身保持 `margin-bottom:32px`，跟正文分隔
 - 起手用 `数据来源 · ` 前缀（也可换成 `图源 · ` / `示意图 · ` 等），让读者一眼知道是图注而不是正文
 
+### 10.1 网页截图占位（含可点击源 URL）
+
+**何时用**：正文引用了某个具体网页（官方博客、GitHub 仓库、推文、官方产品页），希望在文中嵌一张那个网页的截图作为视觉证据。
+
+**为什么这个格式好**：
+- 作者在浏览器预览 wechat.html 时，**直接点击占位里的可点 URL** 跳到原网页 → 浏览器截屏 → 回公号编辑器替换占位。比"另开浏览器手动输入 URL"工作流快 10 倍。
+- 占位灰框里同时包含图编号 + 描述 + URL + 操作提示，是自带说明的"待办标签"。
+- 章节子编号（图 4.1 / 图 4.2）让读者一眼知道是哪一章的第几张图，提升阅读结构感。
+
+**HTML 模板**：
+
+```html
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 X.Y · 描述 ]</p>
+<a href="https://full-url" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://full-url</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;">
+  <span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">
+    图 X.Y · 数据来源 · 简短描述
+  </span>
+</p>
+```
+
+**关键数值**：
+- 灰框 `padding: 40px 20px`（比纯占位框小，因为里面要放 3 行文字）
+- 描述行：13px、`color:#888`、`font-weight:600`（最重要的视觉元素）
+- URL 行：`'SF Mono'` 等宽字体、11px、`color:#666`、`text-decoration:underline`、`word-break:break-all`（防长 URL 溢出窄屏）
+- 操作提示行："↑ 点开网页 → 截屏 → 替换本占位"，11px、`color:#bbb`、用 ↑ 和 → 箭头（不要破折号）
+- 图注还在灰框**外面**——这样作者替换图后图注仍在原位
+
+**章节子编号约定**：
+- 图编号格式 `图 X.Y`（X 是章节号，Y 是该章第几张图）
+- 例：图 1.1 / 图 1.2 / 图 4.1 / 图 4.2
+- 概念图（自制 HTML 图）用单数 `图 1` / `图 2` / `图 3` 区分
+
+**链接策略**：
+- 网页截图占位里的 a 链接**只在 wechat.html 预览阶段生效**（作者点 → 跳浏览器 → 截图）。最终发布时占位会整体被截图替换，a 链接不进公号正文。
+- URL 必须含 `https://` 前缀，跟参考资料区一致。
+
+**典型用法**（一篇文章的图配置）：
+- 5 张概念图（自制 HTML 截图）：每章 1-2 张关键概念用
+- 10-15 张网页截图（用此格式）：每章 1-3 张关键引用源用
+- 总计 15-20 张图 / 8000+ 字
+
 ---
 
 ## 11. 文章底部
