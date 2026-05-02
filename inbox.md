@@ -23,6 +23,7 @@
 ## 行业现象 / 反直觉判断
 
 - _刷到的现象、聊天里冒出的观察、可能成为某篇文章主轴的 takeaway_
+- [2026-05-02] AI agent 的记忆系统：CLAUDE.md / MEMORY.md / Mem0 / LangMem / Letta（前 MemGPT）/ Anthropic Memory features —— 跨 harness 的记忆同步是真问题（Cursor memory 不能 Claude Code 用、CLAUDE.md 不能 Cursor 用），LangChain 那篇 Your harness, your memory 是关键文献。004 期讲 harness 时点了一笔，可独立成篇。
 
 ## 杂项
 
