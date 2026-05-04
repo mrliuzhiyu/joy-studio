@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑</title>
+</head>
+<body style="margin:0;background:#f2f2f2;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei UI','Microsoft YaHei',Arial,sans-serif;">
+
+<button id="copy-btn" onclick="copyWxArticle()" style="position:fixed;top:20px;right:20px;padding:10px 20px;background:#111;color:white;border:0;border-radius:999px;cursor:pointer;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15);z-index:999;transition:all .2s;">复制正文（无白边）</button>
+
+<article id="wx-body" style="max-width:677px;margin:0 auto;background:white;padding:40px 24px 60px;">
+
+<h1 style="margin:0 8px 48px;font-size:24px;line-height:1.5;letter-spacing:0.578px;color:rgb(0,0,0);font-weight:700;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;letter-spacing:0.5px;">同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑</span></h1>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2024 年 7 月，OpenAI 在公司内部公布了一张 AI 发展路线图，<strong>5 个阶段</strong>，被 Bloomberg 泄了出来。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">L1 聊天机器人，L2 推理者（人类水平解题），L3 智能体（自主多步执行），L4 创新者（产生新想法），L5 组织（替代整个组织的工作）。这张图成了过去一年半 AI 圈量我们走到哪最常用的尺子。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">按这把尺子量，L1 到 L2 行业走了 <strong>652 天</strong>。2022 年 11 月 ChatGPT 公开，2024 年 9 月 OpenAI 发 o1-preview，差不多两年。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">L2 到 L3 只走了 <strong>40 天</strong>。OpenAI 9 月发 o1-preview，Anthropic 10 月就上了 Computer Use 公测版，一个多月跨了一代。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">就算严格按真正大规模普及算，L2 到 L3 也只用了 <strong>5 个月</strong>。2025 年 2 月 Claude Code 研究预览版出来，L3 开始进入开发者日常。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">AI 跨代速度，从两年压到了一个多月。</span></strong></p>
+
+<table style="width:calc(100% - 16px);border-collapse:collapse;margin:0 8px 8px;background:#f7f7f7;border-radius:4px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;">
+<tr>
+<td style="padding:18px 14px 4px 18px;width:96px;border-right:2px solid #888;text-align:right;color:#666;font-size:13px;letter-spacing:0.5px;vertical-align:top;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;white-space:nowrap;">2022-11-30</td>
+<td style="padding:18px 18px 4px 18px;color:#111;font-size:15px;font-weight:600;letter-spacing:0.5px;">ChatGPT 公开</td>
+</tr>
+<tr>
+<td style="padding:0;border-right:2px solid #888;height:24px;"></td>
+<td style="padding:4px 18px 14px 18px;color:#888;font-size:12px;letter-spacing:0.5px;">L1 → L2 · 652 天</td>
+</tr>
+<tr>
+<td style="padding:14px 14px 4px 18px;width:96px;border-right:2px solid #888;text-align:right;color:#666;font-size:13px;letter-spacing:0.5px;vertical-align:top;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;white-space:nowrap;">2024-09-12</td>
+<td style="padding:14px 18px 4px 18px;color:#111;font-size:15px;font-weight:600;letter-spacing:0.5px;">o1-preview 发布</td>
+</tr>
+<tr>
+<td style="padding:0;border-right:2px solid #888;height:24px;"></td>
+<td style="padding:4px 18px 14px 18px;color:#000;font-size:13px;font-weight:700;letter-spacing:0.5px;">L2 → L3 · 40 天</td>
+</tr>
+<tr>
+<td style="padding:14px 14px 4px 18px;width:96px;border-right:2px solid #888;text-align:right;color:#666;font-size:13px;letter-spacing:0.5px;vertical-align:top;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;white-space:nowrap;">2024-10-22</td>
+<td style="padding:14px 18px 4px 18px;color:#111;font-size:15px;font-weight:600;letter-spacing:0.5px;">Computer Use 公测</td>
+</tr>
+<tr>
+<td style="padding:0;border-right:2px solid #888;height:24px;"></td>
+<td style="padding:4px 18px 14px 18px;color:#888;font-size:12px;letter-spacing:0.5px;">普及节奏 · ~150 天</td>
+</tr>
+<tr>
+<td style="padding:14px 14px 4px 18px;width:96px;border-right:2px solid #888;text-align:right;color:#666;font-size:13px;letter-spacing:0.5px;vertical-align:top;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;white-space:nowrap;">2025-02</td>
+<td style="padding:14px 18px 4px 18px;color:#111;font-size:15px;font-weight:600;letter-spacing:0.5px;">Claude Code 研究预览</td>
+</tr>
+<tr>
+<td style="padding:0;border-right:2px solid #888;height:24px;"></td>
+<td style="padding:4px 18px 14px 18px;color:#bbb;font-size:12px;letter-spacing:0.5px;">?</td>
+</tr>
+<tr>
+<td style="padding:14px 14px 18px 18px;width:96px;text-align:right;color:#aaa;font-size:13px;letter-spacing:0.5px;vertical-align:top;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;white-space:nowrap;">2026-05</td>
+<td style="padding:14px 18px 18px 18px;color:#aaa;font-size:15px;font-weight:600;letter-spacing:0.5px;">L4 ?</td>
+</tr>
+</table>
+<p style="margin:0 8px 48px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 · OpenAI 5 阶段路线图的实际节奏 · L1 到 L2 用了 652 天，L2 到 L3 只用了 40 天</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但 OpenAI 这张图是站在 AI 能力角度看的，它告诉你 AI 能做什么。站在你这一侧，这张图回答不了一个更要紧的问题：<strong>你自己在哪一阶段？</strong></span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">同一个 L3 模型，绝大多数人还当 L1 在用，只是打开对话框、问一句、读答案、关掉。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">AI 走了两代，你的用法没动。</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这篇文章从用户角度切。你跟 AI 的关系，可以分成三个阶段，对应三个动词：<strong>问答、执行、托付</strong>。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:64px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">01</span></strong></p>
+</section>
+<p style="margin:0 8px 40px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">三个动词：问答、执行、托付</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">在描述 AI 用法的时候，业内最常用的两个词是 chat 和 agent。但这两个词其实不在同一个维度。<strong>chat 说的是交互形态，问的是你跟 AI 怎么互动。agent 说的是能力，问的是 AI 能不能自主做事。</strong>把它们并排放在阶段里说 chat 阶段、agent 阶段，逻辑上是混的。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我自己用 AI 用了三年多，最近半年才意识到，从用户角度真正有意义的分阶段，应该按一个更具体的轴来分：你跟 AI 之间是什么关系。这个轴上能立住的有三段，问答、执行、托付。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第一段是<strong>问答</strong>。你问，它答，一次对话一个回合。AI 在对话框里等你启动，答案出来之后用不用、怎么用、用在哪，全是你的事。这段关系里你是用户，AI 是工具，一个比 Google 更会聊天的工具。代表产品就是 ChatGPT、Kimi、文心一言、豆包、通义这一类。2022 年 11 月以来这是最普及的形态，绝大多数人对用 AI 的全部体感都来自这一段。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二段是<strong>执行</strong>。你派，它干，一次对话一个任务。AI 不再只在对话框里，它进入了你的工作流。你说修这个 bug，它打开你的代码库、读文件、写代码、跑测试、提 PR。你说安排下季度的客户回访，它进 CRM、查记录、起草邮件、安排日程。你是派活方，AI 是下属，一个能在你给的边界里自主跑几个小时的下属。代表产品是 Claude Code、Cursor、Devin、Cowork，加上 Sierra（客服）、Harvey（法律）、GitHub Copilot agent 这一类。2024 年底到 2026 年正在大规模成立的形态。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第三段是<strong>托付</strong>。不用派，它自己来。不是你启动一次，是它自己启动很多次。它在你不在的时候监控、推进，按它对你工作的理解判断什么时候叫你、什么时候不叫。你是监督者，AI 是合伙人，一个有长期记忆、有持续感知、按你给的边界自跑的合伙人。代表是 Claude Code 和 Cursor 的后台 agent、Lindy 的常驻工作流、Anthropic 记忆功能的跨对话主动找你、Kimi K2.6 的 5 天连续自主运行。2026 年刚开始有信号的形态，还没普及，但已经在你看不见的地方悄悄跑起来了。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">三段不是顺序排他的，一个人可以同时处在三段里。重心在哪段，决定了 AI 对他生活的真实意义。重心在问答的人最多，重心在执行的人在涨，重心在托付的人最少，<strong>这条分布线就是 AI 用法上正在拉开的代差</strong>。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">三段还有另一种看法：<strong>本质是控制权的递进让渡</strong>。问答你抓得最紧，AI 输出的每一个字你都看、用不用全是你的事。执行你松开一只手，把任务的执行权交给 AI，但每次启动还是你点的。托付你两只手都松开，连什么时候启动都让 AI 自己判断。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">从问答到托付，AI 的能力上限没变多少。变的是你愿意让它做多少。多数人卡住的地方不是 AI 不够强，是手不肯松。</span></strong></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:64px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">02</span></strong></p>
+</section>
+<p style="margin:0 8px 40px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">阶段一：问答的天花板</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">ChatGPT 是 AI 走进十亿人最重要的入口。2022 年 11 月 30 日上线，5 天用户破百万、两个月破一亿，是互联网史上最快的产品扩张。整个 AI 时代是它那个对话框打开的。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">打开它的同时，它也定义了大多数人对用 AI 的全部想象。对话框、问句、回答、复制粘贴。AI 在很多人脑子里 = 一个比 Google 更会聊天的搜索引擎 + 一个比维基百科更耐心的解答员。这个想象太成功了，成功到让大多数人忘了 AI 还能做别的。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我自己用了 ChatGPT 一年多才意识到这件事。那一年我把它当 Google 用，查资料、写邮件草稿、解释一段代码、翻译一段英文。每次的工作流都是一样的：在对话框里问、读它的回答、判断好不好、复制有用的部分到我真正在做的事情里。问答效率确实比 Google 高一倍，但我的工作本身没变。AI 给我答案，我自己用答案。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">直到某次我让 Claude Code 直接读我的代码库、自己改代码、自己跑测试，我才意识到一件事：过去一年我跟 AI 之间的信息搬运，可能比 AI 真正帮我做事的部分还多。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这就是问答的天花板。但<strong>它不只是一个限制，它是一个让人误判 AI 能做什么的滤镜</strong>。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">问答模式天然只能处理一个有边界的小问题，能在一两个回合内被回答清楚的事。涉及多步骤的工作就不行了。修一个 bug、写一份完整文档、安排下季度的客户回访，问答能给你的只是其中某一步的答案，剩下的步骤你自己做。AI 给你写了一段代码，你还要复制到编辑器、调试、看是否真能跑、改 bug。AI 给你写了一封邮件草稿，你还要复制到邮件客户端、改语气、加附件、发出去。AI 干的是产出文字那一步，整个执行链上剩下的事还是你的。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">更微妙的是上下文。每次新会话都是从零开始，它不知道你在做什么项目、不知道你昨天聊到哪、不知道你上周的决定。所谓长记忆功能在 ChatGPT 这一类产品里，更多是给你一个个人喜好备忘录，而不是真正一直跟着你。每次坐下来用，你都得先花十分钟把背景重新铺一遍。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>最深的限制是问的能力本身。</strong>要问出好问题，你得先知道有哪些问题可以问。问答模式天然偏向于这种场景：我已经知道我要做什么、只是需要 AI 帮我答一个具体问题。但很多更值钱的事，AI 自己应该知道要做什么的事，你根本不知道该怎么开口问。一个不熟 AI 能力上限的人坐在 ChatGPT 前面，能问出来的问题几乎全是 Google 时代他就会问的问题。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这几个限制叠加起来的效果是：问答让你只用到了 AI 能力的很小一部分。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你以为自己用 AI 用得很深，其实你只是用同一个对话框做了一千遍同样形状的事。</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">身边正在发生的迁移是看得见的。ChatGPT 周活仍然在涨，它是 AI 入口的事实没变。但你观察重度用 AI 的人，他们花在 ChatGPT 这种纯聊天产品上的时间反而越来越少。开发者迁去了 Claude Code 和 Cursor，文案和产品经理迁去了 Notion AI 这种嵌进文档工作流的 AI，运营和销售迁去了垂直 agent。聊天还是入口，但不再是主战场。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">问答不会消失。它是 AI 用法漏斗最低门槛的那一段，会一直保留在最前面，是大量初次接触 AI 的人的全部体感。但只停在这一段的人会发现一件事，你身边那些重度用 AI 的人，他们打开对话框的次数反而越来越少，AI 替他们做的事却越来越多。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:64px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">03</span></strong></p>
+</section>
+<p style="margin:0 8px 40px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">阶段二：执行正在大规模成立</span></strong></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">执行不是聊天的升级版，是你跟 AI 之间关系的根本改变。</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">问答的时候你打开对话框，从一个空白开始。你写一个问题，AI 写一个回答。整个交互发生在对话框这个隔离空间里。AI 看不到你电脑里的文件、不知道你代码库里的代码长什么样、不能动你的 CRM、不能发邮件。它只能输出文字，你拿着文字回到真实工作环境里去执行。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">执行模式把这道隔板拆掉了。AI 进入了你的真实工作环境，它打开你的文件、改你的代码、跑你的测试、提你的 PR、进你的 CRM、发你的邮件。<strong>它不再产出文字让你去执行，它直接执行。</strong></span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最早把这道隔板拆得最彻底的是编程领域。Cursor 把 AI 嵌进编辑器里，agent 模式可以读整个代码库、写跨多个文件的修改。Claude Code 干脆把 AI 装进终端，它就在你工作的那个 shell 里跑，能直接动你机器上的任何文件、跑任何命令。Devin 把 AI 装进一个虚拟机，给它一个完整的开发环境，让它从零开始接一个任务跑完。GitHub Copilot 在 2025 年也从 inline 建议升级出了 agent 模式。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">数据上这一段已经成立了。Anthropic 的 Claude Code 在 2025 年 11 月年化营收突破 10 亿美元，从 2 月研究预览到 11 月破 10 亿，9 个月。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Cursor 的曲线更陡。2025 年 6 月 5 亿美元年化营收，11 月 10 亿，2026 年 2 月直接破 20 亿，4 月在谈一笔 20 亿美元融资、估值 500 亿美元，2026 年底自家预期年化收入跑到 60 亿。<strong>这是 SaaS 史上最快的产品扩张之一，比 Slack、Zoom、Snowflake 都快。</strong></span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但执行不止编程。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">法律方向是 Harvey。它的产品看上去是律师专用的 AI 助手，实际是一整套法律工作流的执行 agent，读合同、起草条款、查判例、核引文。客户名单包括 A&O Shearman（前 Allen & Overy）、PwC、O'Melveny &amp; Myers、Macfarlanes 这些顶级律所，<strong>超过 3500 名 A&O 律师每天用它跑 40000 次查询</strong>，全球 700 多家律所、超过 7.4 万律师在用。律师不再去 ChatGPT 上贴一段合同问这条有什么风险，他们用 Harvey、让 Harvey 直接进合同库、按律所的规范出修改建议。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">客服方向是 Sierra。Bret Taylor（前 Salesforce 联合 CEO）创立，做的事是给企业部署一个专属客服 AI，它接电话、处理工单、解决客户问题、必要时升级到人工。客户里有 Sonos、SiriusXM、WeightWatchers、ADT、Chime、Cigna、Nordstrom、Nubank、Rivian、Wayfair 这些公开案例。<strong>WeightWatchers 那个 agent 已经独立处理 70% 的客户会话，4.6/5 满意度。</strong>Sierra 的 AI 不再是一个让客服坐席问问题的工具，它本身就是客服坐席。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">类似的故事在更多行业里。Decagon 在客服。Hippocratic AI 在医疗，专做患者沟通和随访，临床决策的边界划得很死。Glean 在企业搜索加工作流 agent。Abridge 在医疗病历记录。每个行业的垂直 agent 都把问答那道隔板拆掉了，AI 直接进入这个行业的工作流里跑活，不再只是侧面提供建议。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 · 执行时代横扫五行业 · 占位 ]</p>
+<a href="https://sierra.ai/customers" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://sierra.ai/customers</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开 Sierra 客户墙截屏 → 替换本占位（替代方案：自己拼 5 行业 logo）</p>
+</div>
+<p style="margin:0 8px 48px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 · 执行时代不止编程 · 垂直 agent 已经在 5 个以上行业大规模成立</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">用户的角色随之改变。在执行模式下你不再是 AI 的用户，你是它的派活方。你的工作不是问问题，也不是消费它的回答。你的工作是把任务拆清楚、把背景说全、把边界划好，然后等结果回来审。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这套能力跟问答的能力其实是反的。问答时代擅长用 AI 的人是<strong>会问问题的人</strong>，会拆问题、会追问、会判断答案。执行时代擅长用 AI 的人是<strong>会写任务简报的人</strong>，会描述任务、会给上下文、会预判失败模式、会在 AI 跑完之后高效审几百行差异。前者是搜索加求解的能力，后者是产品经理加工程经理的能力。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">执行时代正在大规模成立。但它的天花板也已经看得见了。你还是要派、还是要写每个任务的简报、还是要审每个结果。一个真正深度跟 AI 协作的工作流不应该这样：你应该可以把整段时间、整个项目、整个角色都交给 AI 去管，而不是每次都得手动启动它。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:64px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">04</span></strong></p>
+</section>
+<p style="margin:0 8px 40px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">阶段三：托付正在悄悄发生</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">托付的关键差别只有一个：<strong>触发</strong>。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">执行模式下，AI 跑活的每次启动都是你点的。你打开 Claude Code、写一句、回车。哪怕 agent 自己跑几个小时不用你管，那次启动还是你的。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">托付模式下，AI 自己启动。它在你不在的时候监控、在该做事的时候自己开始做、在做完之后告诉你结果，或者不告诉，按它对你工作的理解判断这事重不重要。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这不是科幻。2026 年至少有四种触发模式已经在跑。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最早成立的是<strong>时间触发</strong>，定时类工作流，按时间表自动跑。每天早上扫一遍 inbox 把重要邮件挑出来、每周日整理这周的会议笔记汇总成周报、某个监控指标超过阈值自动做某件事。这一类工作流过去十年都有人做，Zapier 那一拨就是。AI 时代的不同在于：每一步可以塞进一段灵活的判断，不再是死规则。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二种是<strong>事件触发</strong>，AI 监听某个数据源，当事件发生时自动行动。GitHub bot 是早期形态：PR 一开就自动审、issue 一报就自动分类。Anthropic 在 2025 年下半年给 Claude Code 加了 hooks 系统，可以让 AI 在某个事件发生时自动跑某个 skill 或 agent，把传统死规则的自动化升级成可以读懂上下文的判断。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第三种是<strong>后台 agent</strong>。Claude Code 和 Cursor 在 2026 年初先后推出了这个模式：你派一个长任务，合上电脑去做别的，AI 在远端服务器上跑，做完了 push 一个 PR 给你审。Cursor 在 2026 年 2 月推出云端 agent 加 Computer Use，每个 agent 拿到自己的虚拟机、可以开浏览器、可以录视频。到 2026 年 4 月发的 Cursor 3.2 加了 /multitask，agent 可以并行拆任务给多个子 agent 跑。一个最直接的数据：<strong>Cursor 自己内部 35% 的合并 PR 现在是后台 agent 创建的。</strong>技术上这一类还属于你派加 AI 跑长一点，但用户体感已经接近托付了，你跟 AI 的接触从在场指挥变成了远程合作。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最新出现的是<strong>记忆触发</strong>。AI 不需要外部触发，它根据自己的长期记忆和对你工作的理解决定何时介入。Anthropic 在 2026 年 3 月把记忆功能推到所有 Claude 用户，AI 自动从过去对话中提炼你的习惯、项目、工作风格，下一次坐下来用的时候它会主动说上周你提到要做 X、现在 Y 已经满足了，要不要开始。Anthropic 在 4 月 23 日把 Claude Managed Agents 的持久化记忆推到 public beta，开发者可以让 agent 跨对话学习。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 · 托付的四种触发模式 · 占位 ]</p>
+<a href="https://docs.cursor.com/en/background-agent" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://docs.cursor.com/en/background-agent</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开 Cursor 后台 agent 文档截屏 → 替换本占位（替代方案：自画四象限示意图）</p>
+</div>
+<p style="margin:0 8px 48px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 · 托付的四种触发方式 · 时间 · 事件 · 后台 · 记忆</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Kimi 在 2026 年 4 月发的 K2.6 把 agent 自主性推到了一个新刻度。官方公布的能力是 <strong>13 小时连续编码、5 天自主运行、300 个子 agent 集群协同</strong>。这些数字在不同测试条件下能复现到什么程度还有争议，但方向是明确的：agent 应该越跑越长、人介入的频次应该越来越低。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">托付的难点不在 AI 那一边，在人这一边。执行模式下你审一个任务结果就行，20 分钟、几百行差异、看完就知道。托付模式下你要审的是 AI 在过去一周里的几十个决策，绝大多数它直接做了没问你。信任校准没有教科书，是每个人通过翻车一遍遍学出来的。边界设计目前没有产品做得让用户放心。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">正是因为难，托付现在还很早期。真正部署起来的案例不多，比执行少一个数量级。但信号是明确的：每家头部 AI 公司都在这条路上推进，2026 这一年里几乎每个月都有新的后台、记忆、定时 agent 功能上线。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:64px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">05</span></strong></p>
+</section>
+<p style="margin:0 8px 40px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">那今天你能做点什么</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">不打算给你判断你处在哪一阶段。每个人的工作类型、信任阈值、上手能力都不同，强行打包推荐没意义。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但有几类过去 12 个月才出现的工具值得介绍——它们都是为了应对一类很具体的痛点出现的。你看哪个痛点是你的，就值得试。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第一类是 <strong>Skill</strong>。对应 Claude Code 在 2025 年 11 月加的 skills 系统、Cursor 的 commands、各家 agent 平台陆续出的自定义工作流功能。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它要应对的痛点很具体：你发现自己每周都在让 AI 做同一类事，每次都得从头描述一遍流程——先这样、再那样、注意 X、避免 Y。一遍遍说，烦。Skill 把这套流程固化成一个文件，下次你一句"做 X"，AI 就按你之前定好的步骤走，不用再解释。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>Skill 是把你跟 AI 之间的合作模式存档</strong>。换个说法，它是个人级 SOP——以前 SOP 是写给团队成员的，现在写给 AI。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二类是<strong>后台 agent</strong>。Cursor 在 2026 年 2 月推出的云端 agent，Claude Code 的 background mode，Devin 一直就这么干。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它要应对的痛点是：你想让 AI 跑一个 4 小时的代码重构、想合上电脑去做别的，但你必须坐在这里盯着否则放心不了。后台 agent 把任务搬到云端服务器跑，每个任务一个虚拟机，你合上电脑去做别的，做完它给你一个 PR。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>你跟 AI 的工作节奏，从同步变异步</strong>。这是一个范式级的变化——AI 不再是个聊天对象，是个远端协作的同事。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第三类是 <strong>Memory</strong>。Anthropic 在 2026 年 3 月给所有 Claude 用户开放了记忆功能（Pro 和免费都有），ChatGPT 的 memory 早就上了，Cursor 也有它的 project context。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它要应对的痛点是：每次开新对话你都要从头铺一遍背景——我在做 X 项目、上次卡在 Y、目标是 Z。10 分钟过去了你才进入正题。Memory 让 AI 自动从过去对话里提炼你的工作上下文。下次你说"继续上周那个事"，它真的能继续。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>这是 AI 第一次有了"它认识你"的感觉</strong>。不是它真懂你，是它记得你做过什么。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第四类是<strong>子 agent</strong>。Claude Code 内置的 agent 工具、Cursor 3.2 的 /multitask、各家正在推的 agent 群。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它要应对的痛点是：你的某类工作复杂到一个 agent 干不完——比如要并行做 5 处探索、或要专门工具链、或要拆分成多个独立子任务。子 agent 让一个主 agent 调度一组下属同时干活，结果汇总给你。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>AI 不再是一个助手，是一个团队</strong>。你从派活方升级成了派活方的派活方。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这四类工具有一个共同方向——它们都在替你扛一种过去你必须自己扛的事。Skill 扛重复指挥，后台 agent 扛守候等待，Memory 扛上下文铺设，子 agent 扛任务拆分。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">每扛一样，你跟 AI 之间的"信息搬运"就少一类。剩下的时间，你可以去做你真正在意的事。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型越强，这条线越值得迭代。停在聊天对话框里的人会发现，AI 替他们节省的时间，正在被他们和 AI 之间的搬运重新占满。</span></strong></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:64px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">06</span></strong></p>
+</section>
+<p style="margin:0 8px 40px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">阶段四：Agent，AI 替你出现</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">三阶段之后呢？最有用的参照是中国互联网走过的 30 年。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">互联网走过三段。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">1995 到 2005 是<strong>工具阶段</strong>。你打开网易、搜狐看新闻，打开百度搜东西，打开 QQ 跟人聊，打开淘宝买东西。互联网在你上网那一刻才发生。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2005 到 2015 是<strong>服务阶段</strong>。移动互联网把这一切改了。微信、支付宝、滴滴、美团、微博一直在你手机里跑，你不打开它，它也在收消息、推通知、记你的位置和关系。互联网从一个动作变成了一种存在。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2015 至今是<strong>平台阶段</strong>。算法接管了看什么这件事。抖音决定你刷哪条视频，今日头条决定你看哪个新闻，拼多多决定你买什么，小红书决定你种草什么。你不再是用户，是被算法运营的对象。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">AI 现在大概在 1998 年的位置。问答相当于工具时代，你用 AI 是个动作。执行相当于服务时代的早期，AI 进了你的工作流但还没一直跟着你。托付刚冒头，它开始在你不在的时候自己跑。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">AI 路径上下一步是Agent。不是 AI 替你做事，是 AI 替你出现。</span></strong></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">邮件先变。你周末关电脑，AI 按你的语气回所有非紧急邮件，下周一你只看那 5 个真正重要的。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">低优先级会议会变。你跟两个会议时间冲突，AI 替你旁听其中一个、做笔记、关键点问你。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">社交对话会变。LinkedIn 上的开场白，AI 用你的语气发出去，对方感兴趣再转你本人。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">内容发布会变。你的公号或 Twitter 账号，AI 按你过去的风格每天发一篇，你只把关大方向。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">B 端客服已经先变了。客户跟某家公司对话，对面其实是 Sierra 或 Decagon 的 AI，客户大多不知道。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些都不是科幻。每一种正在某些垂直里发生。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">当Agent普及之后，<strong>产品形态会变</strong>。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你的手机第一屏可能不是应用网格，是你的个人 AI。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你的同事跟你的 AI 通信，不是直接跟你，除非紧急。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你的 AI 跟别人的 AI 直接通信，人只在重大决策时介入。</span></p>
+
+<p style="margin:0 8px 56px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我们今天一天看 50 次手机的习惯，会变成一周看 5 次。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">互联网走完这条路用了 30 年。AI 速度快 5 到 10 倍，从问答到托付走了 3 年（2022 到 2025），从托付到Agent可能 5 年。</span></p>
+
+<p style="margin:0 8px 40px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">下一波 AI 公司不会再做更好的对话框，它们会做替你出现的产品。</span></strong></p>
+
+<p style="margin:64px 8px 24px;text-align:center;line-height:1.5;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);letter-spacing:2px;">— 完 —</span></p>
+
+<p style="margin:24px 8px 0;text-align:center;line-height:1.7;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(150,150,150);">#AI 三阶段 &nbsp; #AI 用法 &nbsp; #智能体 &nbsp; #托付 &nbsp; #Claude Code</span></p>
+
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">文中所有数据为 2026 年 5 月前公开可查的信息，时间戳：2026-05-04。融资、估值、年化营收等数字以一手报道为准，二手转述部分（Claude Code 年化营收、Cursor 内部 PR 比例等）按转述源标注。</span></p>
+
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 24px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:18px;letter-spacing:0.5px;color:rgb(0,0,0);">参考资料</span></strong></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">官方资料</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Introducing OpenAI o1-preview · OpenAI（2024-09-12）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://openai.com/index/introducing-openai-o1-preview/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Introducing computer use, a new Claude 3.5 Sonnet · Anthropic（2024-10-22）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.anthropic.com/news/3-5-models-and-computer-use</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Harvey · Customers</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.harvey.ai/customers</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· A&O Shearman · Exclusive launch partnership with Harvey</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.aoshearman.com/en/news/ao-announces-exclusive-launch-partnership-with-harvey</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Sierra · Customers</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://sierra.ai/customers</span></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">OpenAI 五阶段路线图</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· OpenAI Defines Five Stages to Track Progress Toward Human-Level Intelligence · Brian Solis（2024-08）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://briansolis.com/2024/08/ainsights-openai-defines-five-stages-to-track-progress-toward-human-level-intelligence/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· OpenAI's Five Levels of AI · The AI Insider（2024-07）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://theaiinsider.tech/2024/07/12/what-are-openais-five-levels-of-ai-and-where-are-we-now/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· OpenAI unveils o1, a model that can fact-check itself · TechCrunch（2024-09-12）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://techcrunch.com/2024/09/12/openai-unveils-a-model-that-can-fact-check-itself/</span></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">执行时代：编程产品的成立</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Sources: Cursor in talks to raise $2B+ at $50B valuation · TechCrunch（2026-04-17）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://techcrunch.com/2026/04/17/sources-cursor-in-talks-to-raise-2b-at-50b-valuation-as-enterprise-growth-surges/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· AI startup Cursor in talks to raise $2 billion at $50 billion valuation · CNBC（2026-04-19）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.cnbc.com/2026/04/19/cursor-ai-2-billion-funding-round.html</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Claude Code 2025 Summary: From Launch to Beast Timeline · Joe Njenga · Medium</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://medium.com/@joe.njenga/claude-code-2025-summary-from-launch-to-beast-timeline-features-full-breakdown-45e5f3d8d5ff</span></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">托付时代：后台 agent 与记忆</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Cursor 3.2 Reframes the IDE as an Agent Execution Runtime · Futurum（2026-04）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://futurumgroup.com/insights/cursor-3-2-reframes-the-ide-as-an-agent-execution-runtime/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Claude Memory 2026 Complete Guide · LumiChats</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://lumichats.com/blog/claude-memory-2026-complete-guide-how-to-use</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Claude Code Auto Dream · claudefa.st</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://claudefa.st/blog/guide/mechanics/auto-dream</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Anthropic adds persistent memory to Claude Managed Agents · ETIH（2026-04-23）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.edtechinnovationhub.com/news/anthropic-brings-persistent-memory-to-claude-managed-agents-in-public-beta</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Kimi K2.6：大模型进入「长程执行」时代 · 腾讯新闻（2026-04-22）</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://news.qq.com/rain/a/20260422A01FYF00</span></p>
+
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 24px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:18px;letter-spacing:0.5px;color:rgb(0,0,0);">往期推荐</span></strong></p>
+
+<p style="margin:0 8px 4px;line-height:1.6;letter-spacing:2px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);">005</span></p>
+<p style="margin:0 8px 4px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(0,0,0);">AI 记忆框架的发明者，正在抛弃自己的发明</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.6;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(120,120,120);">三年记忆论文圣经，被发明者自己推翻，几大框架集体退回 Markdown</span></p>
+<p style="margin:0 8px 20px;line-height:1.4;letter-spacing:0;"><a href="https://mp.weixin.qq.com/s/_005-pending_" target="_blank" style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(140,140,140);text-decoration:none;word-break:break-all;">https://mp.weixin.qq.com/s/_005-pending_</a></p>
+
+<p style="margin:0 8px 4px;line-height:1.6;letter-spacing:2px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);">004</span></p>
+<p style="margin:0 8px 4px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(0,0,0);">让 AI 真正能干活的不是模型，是 harness</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.6;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(120,120,120);">同一个 Opus 跑出五套 Claude，模型代际差在收敛、harness 差距在拉大</span></p>
+<p style="margin:0 8px 20px;line-height:1.4;letter-spacing:0;"><a href="https://mp.weixin.qq.com/s/_004-pending_" target="_blank" style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(140,140,140);text-decoration:none;word-break:break-all;">https://mp.weixin.qq.com/s/_004-pending_</a></p>
+
+<p style="margin:0 8px 4px;line-height:1.6;letter-spacing:2px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);">003</span></p>
+<p style="margin:0 8px 4px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:15px;letter-spacing:0.5px;color:rgb(0,0,0);">前端、后端、PM 正在塌缩成一个岗位</span></strong></p>
+<p style="margin:0 8px 4px;line-height:1.6;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(120,120,120);">从 vibe coding 到 SDD，AI 时代的开发流水线正在被重新装配</span></p>
+<p style="margin:0 8px 32px;line-height:1.4;letter-spacing:0;"><a href="https://mp.weixin.qq.com/s/g0LjdXl-JOzzQoQ5SIsseA" target="_blank" style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(140,140,140);text-decoration:none;word-break:break-all;">https://mp.weixin.qq.com/s/g0LjdXl-JOzzQoQ5SIsseA</a></p>
+
+</article>
+
+<div style="max-width:677px;margin:24px auto;padding:14px 18px;background:rgb(255,245,230);border:1px solid rgb(245,200,122);font-size:13px;color:rgb(120,53,15);font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.7;">
+<p style="margin:0 0 6px;font-weight:700;">v4 改动：</p>
+<p style="margin:0 0 4px;">① 引言金句：「加速本身在加速」→「AI 跨代速度，从两年压到了一个多月」</p>
+<p style="margin:0 0 4px;">② 删除全部「」装饰引号</p>
+<p style="margin:0 0 4px;">③ 03/04 章图占位换成可点击 URL（Sierra 客户墙 + Cursor 后台 agent 文档）</p>
+<p style="margin:0 0 4px;">④ 段间距 32→40、章节间距 40→64、金句段后 56，手机滑动更松</p>
+<p style="margin:0 0 4px;">⑤ 03 章 Cursor 数据段拆开（Claude Code 单成一段、Cursor 单成一段）</p>
+<p style="margin:0 0 4px;">⑥ 04 章末尾 2 段抽象（信任校准 + 边界）合并简化</p>
+<p style="margin:0 0 4px;">⑦ <strong>05 章彻底重做</strong>：从「按身份升级路径」改成「4 类工具 + 每个为应对什么」（Skill / 后台 agent / Memory / 子 agent）</p>
+<p style="margin:0;">⑧ Computer Use 日期已 verify ✅ 2024-10-22</p>
+</div>
+
+<script>
+function copyWxArticle() {
+  var target = document.getElementById('wx-body');
+  if (!target) return;
+  var range = document.createRange();
+  range.selectNodeContents(target);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  sel.removeAllRanges();
+  var btn = document.getElementById('copy-btn');
+  btn.textContent = ok ? '已复制 ✓' : '复制失败';
+  btn.style.background = ok ? '#10b981' : '#dc2626';
+  setTimeout(function(){
+    btn.textContent = '复制正文（无白边）';
+    btn.style.background = '#111';
+  }, 2200);
+}
+</script>
+
+</body>
+</html>
