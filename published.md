@@ -2,7 +2,9 @@
 
 | # | 标题 | 平台 | 发布日 | 链接 | 阅读 | 在看 | 转发 | 复盘 |
 |---|---|---|---|---|---|---|---|---|
-| 001 | 刚发布的 DeepSeek V4-Pro，已经长出了自己的审美 | 微信公众号 | 2026-04-24 | _待补_ | — | — | — | [notes](issues/001-v4pro-vs-claude/notes.md) |
+| 001 | 刚发布的 DeepSeek V4-Pro，已经长出了自己的审美 | 微信公众号 | 2026-04-24 | <https://mp.weixin.qq.com/s/oHqjXPvfFQiuk6GmUy4rwA> | — | — | — | [notes](issues/001-v4pro-vs-claude/notes.md) |
+| 002 | 原生多模态大模型到底是什么 | 微信公众号 | _待补_ | <https://mp.weixin.qq.com/s/WtlNwAkpWfrITxfDteaH4g> | — | — | — | [notes](issues/002-native-multimodal/notes.md) |
+| 003 | 前端、后端、PM 正在塌缩成一个岗位 | 微信公众号 | _待补_ | <https://mp.weixin.qq.com/s/g0LjdXl-JOzzQoQ5SIsseA> | — | — | — | [notes](issues/003-sdd-collapse/notes.md) |
 
 ---
 

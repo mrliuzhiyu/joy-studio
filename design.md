@@ -514,6 +514,116 @@ Futura-Medium, Futura, 'Helvetica Neue', Arial, sans-serif
 
 ---
 
+### 11.D · 往期推荐卡片（推荐放参考资料之后）
+
+**何时用**：系列文章 / 公号已发布 2 篇以上、希望读者看完当前文章后顺势点击去读姐妹篇或前作。
+
+**为什么这个格式好**：
+- 卡片式（灰底方块）比纯文字列表显眼，读者注意力被吸引
+- 期号用 Futura-Medium 大字，沿用章节编号字体，跟正文视觉系统一致
+- 标题 16px 粗体 + 一句话副标题（如有）+ URL，信息密度合理
+- URL 用 a 链接 target="_blank"——作者在浏览器预览时直接点击跳转测试，公号编辑器里也能通过点击触发跳转
+
+**HTML 模板**：
+
+```html
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 24px;line-height:1.5;letter-spacing:0.578px;">
+  <strong>
+    <span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:18px;letter-spacing:0.5px;color:rgb(0,0,0);">
+      往期推荐
+    </span>
+  </strong>
+</p>
+
+<!-- 卡片单元：div + URL 行（URL 是唯一 a 链接）-->
+<div style="margin:0 8px 12px;background:#f5f5f5;padding:20px 18px;letter-spacing:0.5px;">
+  <p style="margin:0 0 8px;letter-spacing:2px;">
+    <strong style="color:rgb(0,0,0);">
+      <span style="font-size:14px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;">
+        00X
+      </span>
+    </strong>
+  </p>
+  <p style="margin:0 0 12px;line-height:1.4;letter-spacing:0.578px;">
+    <strong>
+      <span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">
+        文章标题
+      </span>
+    </strong>
+  </p>
+  <!-- 副标题行（推荐都加 · 一句话讲清这篇在讲什么）-->
+  <p style="margin:0 0 12px;line-height:1.6;letter-spacing:0.5px;">
+    <span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(120,120,120);">
+      一句话副标题
+    </span>
+  </p>
+  <!-- URL 行：唯一可点 a 链接 -->
+  <p style="margin:0;line-height:1.4;letter-spacing:0;">
+    <a href="https://mp.weixin.qq.com/s/XXX" target="_blank" style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(140,140,140);text-decoration:none;word-break:break-all;">
+      https://mp.weixin.qq.com/s/XXX
+    </a>
+  </p>
+</div>
+```
+
+**关键数值**：
+
+- 灰底 `#f5f5f5`（跟图占位框同款，视觉系统统一）
+- 卡片 padding `20px 18px`（比图占位略小，因为只有 4 行文字）
+- 卡片间 margin `0 8px 12px`（最后一张用 `0 8px 32px` 跟正文/article 收口）
+- 期号：14px、Futura-Medium、`letter-spacing:2px`、粗体、纯黑（视觉锚点）
+- 标题：16px、Optima-Regular、粗体、纯黑（最重要的内容）
+- 副标题：13px、灰色 `rgb(120,120,120)`（推荐都加，让读者一眼判断要不要点）
+- URL：11px、SF Mono 等宽、灰色 `rgb(140,140,140)`、a 链接 target="_blank"、`text-decoration:none`、`word-break:break-all`
+
+**重要：不要把整张卡片包在 `<a>` 里**
+
+公众号编辑器对 `<a>` 包多个 `<p>` 的处理是：把每个 `<p>` 拆成独立的"文章引用块"（每行前面加文档 icon），卡片完全坏掉。**实测过，是公号编辑器的特殊行为，无法绕开**。所以：
+
+- a 链接只放在 URL 行（唯一可点元素）
+- 标题/副标是纯文本，不可点
+
+**让标题也可点的标准做法**（实测可行）：
+
+粘贴 HTML 后在公众号编辑器里手动操作——
+
+1. 选中卡片里的标题文字（双击或拖选）
+2. 点顶部工具栏 **「超链接」** 按钮
+3. 在弹出对话框里选 **「选择账号文章」**
+4. 搜文章名 → 选定 → 完成
+
+操作后那段标题文字就成了可点链接，跳转到指定的同公号文章。3 张卡片各操作一次。
+
+这种做法保留了灰底卡片的视觉系统（跟正文图占位风格一致）+ 标题可点 + URL 行也可点。比公号原生引用卡片视觉更克制（不带封面图缩略），适合系列文章的"轻量推荐"位。
+
+**另一种选择：用公号原生引用卡片**
+
+粘贴后**删除自制卡片**，改用公号编辑器侧边栏 **「附加内容 → 历史文章」** 插入。公号会自动渲染成原生卡片：白底 + 文章封面图缩略 + 标题 + 摘要 + 整体可点。视觉最规范但跟正文系统不太统一（带封面图、突兀）。
+
+按文章性质选——简洁系列推荐用自制卡片 + 标题超链接；首屏视觉位用原生引用卡片。
+
+**排序约定**：倒序（最近的在前），比如 003 → 002 → 001。读者看到"上一篇就是这个，再上一篇是这个……"自然顺序。
+
+**链接策略**：
+- 卡片 URL 用 a 链接 target="_blank"——公号编辑器允许同公号文章互相链接（同公号内链可点）
+- 作者发布前在浏览器预览时也能直接点击跳转测试链接是否正确
+- 如果公号编辑器粘贴后 a 链接被剥掉，作者手动用公号"添加超链接"按钮重新加
+
+**典型放置位置**：参考资料之后、`</article>` 之前。这样底部布局：
+
+1. 正文
+2. — 完 —
+3. # tag 一行
+4. 灰色注释（数据时间戳）
+5. 参考资料分组
+6. **往期推荐 标题 + 卡片们**
+
+读者从正文读完 → 看完参考资料 → 看到往期推荐 → 顺势点击下一篇。
+
+---
+
 ## 12. 复制按钮（关键！）
 
 **为什么要**：用户 Ctrl+A 会选到 body 外层，把 `body { background: #f2f2f2 }` 或 article 的 `padding:40px 24px` 带进公众号，导致左右空白错位。
