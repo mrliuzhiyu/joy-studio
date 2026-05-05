@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>005 封面图 · 折腾了两年的 AI 记忆系统</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 28px 24px 60px;
+  background: #f0f0f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: #333;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+h1 {
+  font-size: 15px; margin: 0 0 4px; color: #111; font-weight: 700;
+}
+h1 small { color: #888; font-weight: 400; font-size: 12.5px; margin-left: 8px; }
+.hint { color: #666; font-size: 12.5px; line-height: 1.75; margin: 6px 0 18px; }
+.hint code { background: white; padding: 1px 6px; border-radius: 3px; font-family: 'SF Mono',Consolas,monospace; font-size: 11.5px; }
+
+.stage {
+  background: white; padding: 24px; border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  margin: 0 0 14px;
+  position: relative;
+}
+.canvas-wrap { position: relative; display: inline-block; width: 100%; }
+canvas {
+  background: white; box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  display: block; margin: 0 auto; max-width: 100%; height: auto;
+}
+.crop-indicator {
+  position: absolute; top: 0; height: 100%;
+  border-left: 2px dashed rgba(150,150,150,0.6);
+  border-right: 2px dashed rgba(150,150,150,0.6);
+  pointer-events: none;
+}
+.crop-indicator::after {
+  content: '公众号 1:1 裁切区';
+  position: absolute; top: -20px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px; color: #666; font-weight: 600;
+  white-space: nowrap;
+}
+
+.fields {
+  display: grid; grid-template-columns: 90px 1fr; gap: 8px 12px;
+  margin: 14px 0 0; font-size: 12.5px; color: #555;
+  background: #fafafa; padding: 14px 18px; border-radius: 6px;
+}
+.fields label { padding-top: 7px; }
+.fields input {
+  font-family: inherit; font-size: 13px; color: #222;
+  border: 1px solid #ddd; background: white;
+  padding: 6px 10px; border-radius: 4px; width: 100%;
+}
+
+.ctrls {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  margin: 18px 0 0;
+}
+.ctrls button {
+  border: 0; border-radius: 999px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  transition: all .2s;
+  padding: 11px 22px; background: #111; color: white;
+}
+.ctrls button:hover { background: #333; }
+
+.note {
+  font-size: 12.5px; color: #666; line-height: 1.8;
+  margin: 14px 0 0; padding: 12px 16px;
+  background: #fafafa; border-radius: 6px;
+}
+.note code {
+  background: white; padding: 1px 6px; border-radius: 3px;
+  font-family: 'SF Mono',Consolas,monospace; font-size: 12px;
+}
+.note strong { color: #111; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>005 封面图 <small>900 × 383 母图 · 公众号自动从中央裁 1:1 方卡</small></h1>
+  <p class="hint">改完文字直接点下载。<strong>核心信息全在中央虚线框内</strong>，两侧只放日期 / tag。</p>
+
+  <div class="stage">
+    <div class="canvas-wrap" id="cw">
+      <canvas id="cover"></canvas>
+      <div class="crop-indicator" id="crop"></div>
+    </div>
+
+    <div class="fields">
+      <label>主标题 1</label>
+      <input id="title1" value="折腾了两年的 AI 记忆系统" oninput="render(2)">
+      <label>主标题 2</label>
+      <input id="title2" value="最后是一个 markdown 文件" oninput="render(2)">
+      <label>副标</label>
+      <input id="sub" value="MemGPT 三年圣经 · 被发明者自己推翻" oninput="render(2)">
+      <label>日期</label>
+      <input id="date" value="2026 · 05 · 03" oninput="render(2)">
+      <label>左侧标签</label>
+      <input id="hint" value="005 · AI 记忆系统" oninput="render(2)">
+      <label>右侧标签</label>
+      <input id="tag" value="MemGPT · Letta · agent" oninput="render(2)">
+      <label>下载文件名</label>
+      <input id="filename" value="cover-005-agent-memory" oninput="">
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <button onclick="downloadPng(2)">下载 @2x 高清版（1800 × 766）</button>
+  </div>
+
+  <div class="note">
+    <strong>使用方式</strong>：
+    ① 改字段（实时预览）
+    ② 点【下载 @2x 高清版】
+    ③ 上传公众号封面（公众号会自动压缩到合适大小）<br>
+    <strong>字体</strong>：Optima + PingFangTC-light（iOS / macOS 才有效果），其他平台优雅降级到 PingFang SC / Microsoft YaHei。<br>
+    <strong>颜色</strong>：黑 <code>#111</code> 主标题 / 灰阶 <code>#666 / #888 / #aaa</code> 辅助。全单色。
+  </div>
+</div>
+
+<script>
+const W = 900, H = 383;
+const fontStack = '"Optima-Regular","PingFangTC-light","PingFang SC","Hiragino Sans GB","Helvetica Neue",Arial,sans-serif';
+
+// 1:1 裁切区 x 范围：居中，宽度 383
+const CROP_X1 = 259;
+const CROP_X2 = 641;
+const CROP_CENTER = 450;
+
+function val(id) { return document.getElementById(id).value; }
+
+function pickFontSize(ctx, lines, maxWidth, baseSize, minSize, family, weight) {
+  let size = baseSize;
+  while (size >= minSize) {
+    ctx.font = `${weight} ${size}px ${family}`;
+    if (lines.every(l => ctx.measureText(l).width <= maxWidth)) return size;
+    size -= 1;
+  }
+  return minSize;
+}
+
+function drawCover(ctx) {
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+  ctx.textBaseline = 'alphabetic';
+
+  // 核心信息必须在 [259, 641] 裁切区内（宽 383），两侧各留 ~3px 安全边
+  const SAFE_WIDTH = 376;
+
+  const t1 = val('title1'), t2 = val('title2');
+  const titleLines = t2 ? [t1, t2] : [t1];
+  const titleSize = pickFontSize(ctx, titleLines, SAFE_WIDTH, 52, 30, fontStack, 700);
+  const lineGap = Math.round(titleSize * 1.32);
+
+  ctx.fillStyle = '#111';
+  ctx.font = `700 ${titleSize}px ${fontStack}`;
+  ctx.textAlign = 'center';
+
+  const titleStartY = t2 ? 142 : 178;
+  ctx.fillText(titleLines[0], CROP_CENTER, titleStartY);
+  if (t2) ctx.fillText(titleLines[1], CROP_CENTER, titleStartY + lineGap);
+
+  // accent line
+  const accentY = (t2 ? titleStartY + lineGap : titleStartY) + 30;
+  ctx.fillStyle = '#111';
+  ctx.fillRect(CROP_CENTER - 30, accentY, 60, 4);
+
+  // 副标
+  const subText = val('sub');
+  if (subText) {
+    const subSize = pickFontSize(ctx, [subText], SAFE_WIDTH, 22, 16, fontStack, 400);
+    ctx.fillStyle = '#666';
+    ctx.font = `400 ${subSize}px ${fontStack}`;
+    ctx.fillText(subText, CROP_CENTER, accentY + 38);
+  }
+
+  ctx.textAlign = 'left';
+
+  // 左侧（仅消息列表可见）：日期 + hint
+  ctx.fillStyle = '#aaa';
+  ctx.font = `600 14px ${fontStack}`;
+  ctx.fillText(val('date'), 60, 64);
+  if (val('hint')) {
+    ctx.fillStyle = '#9a9a9a';
+    ctx.font = `400 13px ${fontStack}`;
+    ctx.fillText(val('hint'), 60, 86);
+  }
+
+  // 右侧（仅消息列表可见）：tag
+  if (val('tag')) {
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#9a9a9a';
+    ctx.font = `500 14px ${fontStack}`;
+    ctx.fillText(val('tag'), W - 60, 64);
+    ctx.textAlign = 'left';
+  }
+}
+
+function render(scale) {
+  scale = scale || 2;
+  const c = document.getElementById('cover');
+  c.width = W * scale;
+  c.height = H * scale;
+  const ctx = c.getContext('2d');
+  ctx.scale(scale, scale);
+  drawCover(ctx);
+  updateCropIndicator();
+}
+
+function updateCropIndicator() {
+  const c = document.getElementById('cover');
+  const crop = document.getElementById('crop');
+  const rect = c.getBoundingClientRect();
+  const wrap = document.getElementById('cw').getBoundingClientRect();
+  const ratio = rect.width / W;
+  crop.style.left = (rect.left - wrap.left + CROP_X1 * ratio) + 'px';
+  crop.style.width = ((CROP_X2 - CROP_X1) * ratio) + 'px';
+}
+
+window.addEventListener('resize', () => updateCropIndicator());
+
+function downloadPng(scale) {
+  render(scale);
+  const c = document.getElementById('cover');
+  const a = document.createElement('a');
+  const fname = (val('filename') || 'cover').replace(/[^\w-]/g, '-');
+  a.download = `${fname}@2x-1800x766.png`;
+  a.href = c.toDataURL('image/png');
+  a.click();
+  setTimeout(() => render(2), 50);
+}
+
+// 初始渲染
+render(2);
+</script>
+
+</body>
+</html>
