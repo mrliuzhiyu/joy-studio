@@ -5,6 +5,10 @@
 | 001 | 刚发布的 DeepSeek V4-Pro，已经长出了自己的审美 | 微信公众号 | 2026-04-24 | <https://mp.weixin.qq.com/s/oHqjXPvfFQiuk6GmUy4rwA> | — | — | — | [notes](issues/001-v4pro-vs-claude/notes.md) |
 | 002 | 原生多模态大模型到底是什么 | 微信公众号 | _待补_ | <https://mp.weixin.qq.com/s/WtlNwAkpWfrITxfDteaH4g> | — | — | — | [notes](issues/002-native-multimodal/notes.md) |
 | 003 | 前端、后端、PM 正在塌缩成一个岗位 | 微信公众号 | _待补_ | <https://mp.weixin.qq.com/s/g0LjdXl-JOzzQoQ5SIsseA> | — | — | — | [notes](issues/003-sdd-collapse/notes.md) |
+| 004 | 让 AI 真正能干活的不是模型，是 harness | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/004-harness/notes.md) |
+| 005 | 折腾了两年的 AI 记忆系统，最后是一个 markdown 文件 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/005-agent-memory/notes.md) |
+| 006 | 同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/006-three-stages/notes.md) |
+| 007 | 你写的 Agent Harness，正在变成你的技术债 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/007-harness-tech-debt/notes.md) |
 
 ---
 
