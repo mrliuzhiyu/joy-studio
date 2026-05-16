@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>你写的 Agent Harness，正在变成你的技术债</title>
+</head>
+<body style="margin:0;background:#f2f2f2;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei UI','Microsoft YaHei',Arial,sans-serif;">
+
+<button id="copy-btn" onclick="copyWxArticle()" style="position:fixed;top:20px;right:20px;padding:10px 20px;background:#111;color:white;border:0;border-radius:999px;cursor:pointer;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15);z-index:999;transition:all .2s;">复制正文（无白边）</button>
+
+<article id="wx-body" style="max-width:677px;margin:0 auto;background:white;padding:40px 24px 60px;">
+
+<h1 style="margin:0 8px 16px;font-size:24px;line-height:1.5;letter-spacing:0.578px;color:rgb(0,0,0);font-weight:700;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;letter-spacing:0.5px;">你写的 Agent Harness，正在变成你的技术债</span></h1>
+
+<p style="margin:0 8px 40px;font-size:13px;line-height:1.75em;letter-spacing:0.5px;color:rgb(136,136,136);"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;">写给正在做 AI agent 的人</span></p>
+
+<div style="background:#f5f5f5;padding:80px 20px;text-align:center;color:#aaa;font-size:13px;margin:0 8px 32px;letter-spacing:0.5px;">[ 头图 · 在公众号编辑器替换为题图 · 可用 cover.html 导出的封面，或另选一张图 ]</div>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">过去一年你在做 AI agent，大概写过不少这样的代码：系统提示、工具调用的封装、记忆模块、规划器、多 agent 的编排。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些代码里有很大一部分，<strong>是为今天这一代模型的短板量身写的</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型补上短板，它们就开始作废。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它们值不值得写不是问题。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">问题是写的时候你当它是什么——一笔会一直增值的资产，还是一笔到期要还的债。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">01</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">一个被删掉的架构</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2024 年末，LangChain 的工程师 Lance Martin 发布了一个开源的深度研究工具，叫 Open Deep Research。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它的做法在当时很标准：一个大模型负责调度，把用户的研究请求拆成若干报告章节，再交给一组子模型并行去查、各写各的，最后汇总成一份完整报告。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这种一个调度、一组并行执行的结构，业内叫 orchestrator-worker。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Lance Martin 没有让模型自己一边想一边调工具——那时候不敢。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他后来在一篇复盘里写得很直白：2023 年他被 agent 折磨得够呛，模型调工具不可靠，上下文窗口又小。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">把流程拆成固定的章节、固定的并行子模型，是为了绕开模型当时靠不住的那些地方。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这一整套硬编码的工作流，本质上是给模型架的一圈拐杖。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一年后，拐杖开始硌脚。</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">到 2025 年冬天，模型变了。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">工具调用变可靠，MCP 这类工具协议起势，agent 被证明很适合做研究这类活。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Lance Martin 发现，他那套精心设计的并行架构成了报告质量的瓶颈。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">并行写章节的子模型互相不通气，各写各的，拼出来前言不搭后语——他自己的用词是 disjoint。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他把整套并行写作的架构删了。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">改成让一个 agent 自己规划研究、把材料收齐后留到最后一次性写完。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">评测分数不降反升。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Lance Martin 删掉的不是 bug。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">那套调度逻辑、那些并行的子模型、那套拼装逻辑，在 2024 年每一块都解决了一个真问题，是当时完全正确的设计。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它们过时，不是因为写错了，是因为<strong>模型把它们原本要补的洞，自己补上了</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型外面这一圈东西——编排代码、系统提示、工具调用的封装、记忆、规划循环——这两年业内统一管它叫 harness。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Lance Martin 删掉的，是他那个工具的 harness 里的一大块。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 1 · Lance Martin 的复盘博客《Learning the Bitter Lesson》 ]</p>
+<a href="https://rlancemartin.github.io/2025/07/30/bitter_lesson/" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://rlancemartin.github.io/2025/07/30/bitter_lesson/</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 1 · Lance Martin 复盘他怎么删掉那套并行架构 · rlancemartin.github.io</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这不是他一个人撞上的事。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">browser-use 团队 2026 年 4 月写过一篇复盘，讲他们怎么把一套很重的浏览器自动化 harness 一路删到只剩几百行。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">更早，Cognition 的联合创始人 Walden Yan 写过《Don't Build Multi-Agents》，从原理上说清楚了 Lance Martin 撞的那堵墙——并行的 agent 各掌握任务的一个碎片，各自做的判断拼到一起就是冲突。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">同一个动作，不同的人在不同的场景里各做了一遍：发现一块 harness 过期了，删掉它。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你这一年写的 harness 代码，大半也会这样结束。</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">用会计的说法：这部分 harness <strong>不是资产，是一笔按模型发布周期折旧的开支</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你今天写下它，它就开始贬值。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">没及时删掉的部分，<strong>最后变成技术债</strong>——你得花工程时间绕开它、维护它、跟它打架。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这不是说你不该写 harness。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Lance Martin 那套并行架构在 2024 年是必要的，没有它他根本发不出能用的产品。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">问题不在写，在于把写下来的每一块都默认成会一直增值的核心资产——不断加层、精心维护、舍不得删。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一块 harness 真正的成本，不在你写它花了多久，在模型让它过期那天，<strong style="text-decoration:underline;">你要花多久才能把它弄走</strong>。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">02</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">每一层结构都在补一个洞</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Lance Martin 删掉的那套并行架构，往回倒推，每一块都对得上模型在某个时间点的一个具体短板。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这不是他那个工具的特殊情况，过去三年冒出来的 harness 组件，差不多都是这么长出来的。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">把时间线拉开：</span></p>
+
+<pre style="margin:0 8px 8px;padding:18px 16px;background:rgb(247,247,247);overflow-x:auto;"><code style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:12px;line-height:1.7;color:rgb(34,34,34);">2023   洞 · 上下文窗口小、记不住
+       脚手架 · RAG 那一整套
+       报废 · 2025 长上下文模型普及
+
+2024   洞 · 工具调用不可靠
+       脚手架 · 可视化工作流 n8n / Dify
+       报废 · 2025 模型能可靠自调工具
+
+2025   洞 · 长任务跑着会断
+       脚手架 · 多 agent 并行编排
+       报废 · 2026 一个长 agent 顶几十节点</code></pre>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 2 · 每一层 harness 都对应模型当时的一个短板</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2023 年模型的上下文窗口只有几千到几万 token，记不住跨会话的东西，于是有了 RAG 那一整套——文档切块、向量化、检索、重排序、查询改写——专门解决它装不下。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2024 年模型能调工具但调不稳，会写错参数、会在多步任务里跑丢目标，于是有了 n8n、Dify 这类可视化工作流，把流程画成节点图，让模型每个节点只做一件最小的事，流转由你写死的图保证。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Anthropic 2024 年 10 月发 Computer Use 时，自己都说这套能力时常笨拙、容易出错。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">每一层都对着模型当时的一个洞。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">而洞会被补上。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2025 年冬天模型能可靠地自己调工具了，那张精心画的节点图，就从替模型做决策，变成挡着模型做决策。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2026 年一个能跑长任务的 agent，自己就能完成 2024 年要几十个节点才拼得出来的流程——那几十个节点没变好也没变坏，它们变成了迁移时要清理的东西。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">OpenAI 的研究科学家 Hyung Won Chung 有个说法，被 Lance Martin 引在那篇复盘里：在你当前的算力和数据水平上，该加的结构要加；但之后要把这些结构去掉，因为它们是捷径，会成为下一步提升的瓶颈。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Chung 说的是模型架构里那些手工设计的归纳偏置。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这句话挪到 agent harness 上，<strong>一个字都不用改</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">加结构本身没有错——每一层结构当时都在补一个真实的洞。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">错的是默认它会一直有用。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong style="text-decoration:underline;">harness 组件的有效期，绑在模型的发布周期上</strong>：洞补上的那天，对应那层脚手架的价值就归零，然后它留在你的代码库里，等下一次升级，从帮手变成瓶颈。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以加一层结构的时候，真正该一起记下来的，是它的临时性。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">03</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">有一类脚手架不会过期</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前两章讲的会折旧，只对一部分 harness 成立。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>harness 这个词底下，装着两类性质完全不同的东西</strong>，把它们混在一起，是很多团队后来栽跟头的地方。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第一类，是前面说的能力脚手架：RAG、工作流编排、上下文压缩、工具调用的格式重试。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它们存在的理由是模型还做不到某件事。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型做到了，它们就该退场。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这一类会折旧。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二类，是给模型的自主行为划边界的东西：权限白名单、最小权限、危险操作的人工复核、审计日志、出问题能一键关停的开关，还有把 agent 接到公司内部系统上的集成代码。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">工程师 Tian Pan 在一篇讲 agent 治理的文章里，把 agent 外面这层壳拆成执行层、协调层、治理层三层。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他有个观察值得抄下来：大多数 agent 上线失败，不是模型不够强，是它外面那层壳缺结构。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">而治理这层结构有个麻烦的特点——它没法事后补。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">给一个已经跑了几个月的生产系统补一套审计日志，是非常痛苦的事。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">第二类 harness 不会随模型变强而贬值，原因正好相反：<strong>模型越强、越自主，它越要紧</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个只按你画的节点图走的模型，你不太需要给它配审计——它每一步你都写死了。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个能自己规划、自己调工具、自己连跑几小时的模型，你必须知道它做过什么，必须能在它做错时拦下来。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">能力越大，边界越得清楚。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">下一代模型不会让权限管理变得没必要，它让权限管理变得更必要。</span></p>
+
+<pre style="margin:0 8px 8px;padding:18px 16px;background:rgb(247,247,247);overflow-x:auto;"><code style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:12px;line-height:1.7;color:rgb(34,34,34);">能力脚手架（会折旧）
+   解决 · 模型还做不到的事
+   例子 · RAG、工作流编排、上下文压缩、重试
+   规律 · 洞被补上,从帮手变成瓶颈
+   建法 · 按随时能删来建
+
+治理层（不折旧）
+   解决 · 模型不该自己决定的边界
+   例子 · 权限白名单、最小权限、审计、一键关
+   规律 · 模型越自主越不可少
+   建法 · 按长期基础设施来建</code></pre>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 3 · 会折旧的能力脚手架，不会折旧的治理层</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">回头看 Lance Martin 删掉的东西，是第一类——为 2024 年模型短板搭的并行架构。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">那套架构不是浪费。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它在 2024 年让 Open Deep Research 能用、能发布，是一笔花在当年、当年就回了本的开支。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2025 年它折旧到零，删掉就是了。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">技术债不是指你当初搭了它，是指<strong>它过期了你还留着、还绕着它写代码、还不敢删</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这个两类的分法，有一派人根本不接受。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">在他们看来，你这套能力脚手架会折旧、要趁早删的讲法本身就是错的——harness 不是模型的临时拐杖，harness 就是产品。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这一派里声音最大的是 LangChain。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他们开源了一套叫 Deep Agents 的东西，做法跟把 harness 做薄完全相反——把任务规划、子 agent 调度、中间件、钩子，全做进 harness 里，做厚。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他们的理由不弱。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">在另一篇文章里他们讲得很清楚：模型变强，确实会把今天 harness 里的一些东西吸收进去；但这不意味着 harness 会变得不重要——就像今天 prompt engineering 仍然有用一样，harness engineering 也会一直有用，因为 harness 做的不只是补短板，它在系统性地组织模型的智能。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他们还有一个不容易反驳的观察：模型升级从来不会让 harness 这一层消失，它只会让旧的 harness 被新的 harness 替代——大模型外面永远需要一个系统。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 4 · LangChain《The Anatomy of an Agent Harness》 ]</p>
+<a href="https://www.langchain.com/blog/the-anatomy-of-an-agent-harness" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://www.langchain.com/blog/the-anatomy-of-an-agent-harness</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 4 · 主张 harness 该做厚的一派 · LangChain Blog</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这话有它的道理。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果你真的相信 harness 会一直被需要、一直值得投入，那趁早删听上去就像短视。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但把这套反驳和前面那两类东西摆在一起看，分歧的位置就清楚了。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">LangChain 说得对的那部分——harness 在组织智能、harness 永远会被需要——讲的是这一层作为整体不会消失，以及治理、编排这些组织性质的东西值得做厚。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这跟能力脚手架会折旧并不冲突。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong style="text-decoration:underline;">会折旧的从来不是 harness 这一整层，是这一层里为某一代模型短板写的那些具体实现。</strong></span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">harness 不消失，和你 2024 年写的那套并行编排不消失，是两件事。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">LangChain 自己那句话其实已经说明白了：旧 harness 被新 harness 替代——被替代掉的那个旧的，就是折旧。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以这两派的分歧，不在做厚还是做薄，在你分不分得清手里这块 harness 是哪一类。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">组织智能、划定边界的，做厚有道理。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">补能力短板的，做厚就是给自己挖坑。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>判断力就是这个——拿起一块 harness 代码，你知道它属于哪一类。</strong></span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">04</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">让框架变薄，让技能变厚</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果补能力短板的那类 harness 注定折旧，那写它的时候，就该让它好删。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">怎么写才好删，有人已经想清楚，还给了它一个名字。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">YC 的 CEO Garry Tan 在自己的一个仓库里写过一份设计信条，标题叫 Thin Harness, Fat Skills——薄 harness，厚技能。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一句话概括：把智能往上推，推进 skill 里；把执行往下推，推进确定性的工具里；中间那层 harness，保持薄。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">具体说。harness 那层，按他的写法只有两百行左右，只干四件事：在一个循环里跑模型、管文件、控制上下文、做安全围栏。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">判断、领域知识、业务流程，这些不写进 harness 代码，写成 skill——一份模型能直接读的 markdown。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这样拆，好处很直接。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">下一代模型出来，你不用重写 harness。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">skill 是模型读的，模型变聪明，同一份 skill 自动被执行得更好；harness 那两百行确定性代码本来不承载判断，不需要动。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Garry Tan 的原话是：模型一升级，每个 skill 立刻变好，因为隐含步骤里的判断力提升了，而确定性的步骤照旧可靠。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前面提过的 browser-use 团队，把这件事做到了一个挺极端的程度。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">他们那套浏览器自动化 harness，核心大约六百行：一个十三行的 run.py 把东西跑起来，一个一百九十多行的 helpers.py 是对 Chrome 调试协议的薄封装，一个两百二十行的 daemon.py 保持连接不断，再加一个 SKILL.md 告诉模型这些怎么用。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它缺功能时的做法更值得看。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型发现 helpers 里没有它要的某个函数，不会卡住——它像任何一个 Claude Code 用户那样，grep 一下 helpers.py，把函数补上，重跑。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">harness 不预先把能力写全，<strong>它把补能力这件事交还给模型</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Gregor Zunic 那篇博客里有句话很干脆：你的 helpers 也是一种抽象，删掉它，让 agent 自己写它需要的。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 5 · browser-use《The Bitter Lesson of Agent Harnesses》 ]</p>
+<a href="https://browser-use.com/posts/bitter-lesson-agent-harnesses" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://browser-use.com/posts/bitter-lesson-agent-harnesses</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 5 · 那套约六百行、模型自己补函数的极简 harness · browser-use</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这套东西的场景是浏览器自动化，封装的是 Chrome 协议，不能照抄到别的领域。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但薄框架、厚技能、模型自己补缺口这个形状是通用的。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">薄不是省事，是把劲使对地方。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">做薄之后省下来的工程力气，该花在模型真正的短板上。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Letta 这家公司——原来做 MemGPT 的那家——做了个叫 Letta Code 的编程 agent，主打持久记忆，让 agent 状态跨会话留存。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它是第三方 harness，不是模型厂自己做的。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">在综合编程评测 Terminal-Bench 2.0 上，Letta Code 用 Claude Opus 4.5 拿到 59.1%；Anthropic 官方的 Claude Code 用同一颗 Opus 4.5 是 52.1%，换更新一代的 Opus 4.6 才追到 58.0%。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">同一颗模型，一个把劲专门使在记忆上的第三方 harness，比模型厂的官方 harness 高出约七个百分点。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 6 · Terminal-Bench 2.0 官方榜单 ]</p>
+<a href="https://www.tbench.ai/leaderboard/terminal-bench/2.0" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://www.tbench.ai/leaderboard/terminal-bench/2.0</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 6 · Letta Code 59.1% vs Claude Code 52.1% / 58.0%（同模型） · Terminal-Bench 2.0</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它赢，不是因为 harness 更厚、层数更多，是因为<strong>找准了一个模型的短板，在那一个点上做深</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">会写 harness 的人值钱，这一点没有变。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">变的是值钱的位置。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它不在你写下的那些代码能用多久——那些为某一代模型短板量身写的实现，会跟着模型一起折旧。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它在判断力：知道哪一层该薄、哪一层该厚，知道劲该使在模型的哪个短板上，知道一块 harness 过期了该果断删。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong style="text-decoration:underline;">代码按模型周期折旧，判断力不折旧。</strong></span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">05</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">训练环境要宽，生产环境要窄</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这一章是给做模型训练的人看的——具体说，给做 agent 强化学习、做 agent 后训练的人。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">只用 agent、不训练它的读者，可以快速扫过。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">机器人强化学习里有个反直觉的成熟做法。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">要训一只机械手在真实世界里干活，你不会把仿真环境调得跟真实世界一模一样——你会反过来，把仿真里的纹理、光照、摩擦力、物体位置全部大幅随机化，让它宽到失真。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2017 年一篇提出 domain randomization（域随机化）的论文把这个做法的道理讲透了：仿真器里的多样性足够多时，真实世界对模型来说，不过是又一个变体。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">反过来，一个调得又窄又精致的仿真环境，训出来的 policy（策略）一迈出仿真就废——这就是 sim-to-real gap。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);"><strong>训练环境要比部署环境宽，不是浪费，是模型能不能泛化的关键。</strong></span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这件事搬到 agent 上，是一个很多团队会忽略的分野：<strong>训练用的 harness 和生产用的 harness，得朝相反的方向设计</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">生产那套要窄。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个对用户负责的线上系统，就该把 agent 能碰的工具限制到最小——严格白名单、最小权限、全程审计、出事一键关。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前一章讲的治理层，干的就是这个。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">训练那套必须宽。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">训练一个 agent，本质是让它在环境里反复试、反复错，学会判断：什么时候调哪个工具，工具失败了怎么恢复，任务跑偏了怎么自己拉回来。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些判断，模型只能在一个足够宽的环境里长出来。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一份讲 agent 训练环境的分析里有句话很直接：只在单轮问答上训练的模型，一旦要它在五十步的企业工作流里保持状态，就会立刻吃力。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">环境给模型多大的动作空间，它就只能在多大的范围里长出判断力。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">于是有了那个最常见的错误：<strong>把生产环境那份窄白名单，原样搬进训练环境</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型在那份只有五个工具的白名单里训练，它学到的是怎么在这五个工具里表现得好。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">白名单之外的情况——一个没见过的工具、一个现有工具的升级版、一个该停下来问人的时刻——它没机会遇到，也就学不会处理。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">ACL 2025 一篇叫 GenTool 的研究把这个机制坐实了：在固定工具集上微调，模型会过拟合到那些特定工具和用法，损害它对未见工具的泛化。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它学到的是这组工具怎么用，不是什么时候该用什么工具那种能迁移的判断。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这是工具微调场景的研究，但机制能类推到 agent 训练：<strong>你用一条软件工程的限制，替掉了模型本该自己长出来的判断</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">你以为给训练环境加的是一道护栏，<strong style="text-decoration:underline;">其实加的是一道天花板</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但训练要宽这句话，得防着被读成越宽越好。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">宽是有代价的。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">动作空间和环境越宽，探索效率越低、收敛越慢、样本越贵，模型还更容易学会钻奖励函数的空子——拿到高分却没真解决问题。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">业界甚至有一整支研究在专门做反方向的事：怎么把动作空间缩小到模型训得动。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">连 domain randomization 这个主张要宽的范式本身都承认：随机化的分布过宽，会带出根本不可行的解，反而让 policy 学不出来。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以宽不是起点，是过程和终点。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前面那篇 domain randomization 的思路，到了 OpenAI 那个用机械手解魔方的项目里，变成一套叫 ADR 的机制：环境不是一上来就拉到最宽，而是从单一、不随机的环境起步，模型每达到一个性能阈值，就自动把随机化的范围加宽一档。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 7 · OpenAI 用机械手解魔方（ADR / domain randomization） ]</p>
+<a href="https://arxiv.org/abs/1910.07113" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">https://arxiv.org/abs/1910.07113</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 7 · 训练环境从单一起步、随能力达标逐步加宽 · arXiv 1910.07113</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这跟强化学习里的 curriculum learning 是一个意思——从易到难分阶段推进，比一上来就最难收敛得更快、还更省样本。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">训练环境的宽，是要一步步放开的宽，不是第一天就漫无边际的宽。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">专门给别人做 agent 训练环境，这件事本身已经长成一个产业，多家研究机构和创业公司在做。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">怎么设计训练环境的宽窄，正在变成一个独立的、要花钱买的能力。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">把这两套 harness 搞反了，代价不会当场出现。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它会等到模型上线、遇到第一个白名单没覆盖的情况才暴露——而且是用你最不希望的方式：模型不会求助，也不会变通，它只会在它训练时待过的那个小笼子里，继续做笼子里的动作。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">生产环境的窄，是为了上线那天安全。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">训练环境的宽，是为了模型真的学会判断。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这一个窄和一个宽，不能是同一套东西。</span></p>
+
+<section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;">
+<p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">06</span></strong></p>
+</section>
+<p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">把 harness 当成有保质期的东西</span></strong></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">前面分了两类 harness、讲了薄和厚、讲了训练和生产。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些分法落到日常，可以收成一个很小的检验。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型升级那天，你打开代码库，要删掉一块过时的 harness。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果这块删掉只花一个小时，<strong>你手里有的是一个选项</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果要花一周，<strong style="text-decoration:underline;">你手里有的是一笔债</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">差别不在那块 harness 有多大，在你当初写它的时候，<strong>给没给它留下一条退出的路</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">举两个具体的。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一种 harness，写成独立 skill 挂上去，或者做成一个组件、配置里一个开关就能整段摘掉——它跟别的部分之间只有一个清楚的接口。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">模型升级让它没用了，你删一个文件、关一个开关，一个小时的事。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">另一种 harness，是当初图省事，把逻辑直接焊进了主流程，中间还顺手跟另外十个组件勾连起来取数据、传状态。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它现在过时了，你想删，得先理清这十根线，每一根都可能在别处还有人用。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这就是那一周。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以让 harness 好删，不是口号，是几个具体的习惯。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">补能力短板的那类组件，单独成块，不要跟治理逻辑、跟业务主流程缠在一起——它们的折旧速度不一样，缠在一起，删得快的那个会被删得慢的那个拖住。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">能做成 skill 的，不写进 harness 代码。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">每加一层结构，顺手记一句：模型的哪个短板让我加了它。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">等那个短板被下一代模型补上，这句话就是你的删除清单。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">把补能力的那类 harness，当成一个有保质期的东西来对待。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">不是说它明天就坏，是说你写它的那天，就该默认它活不久——下一代模型很可能让它过期——然后照这个默认来安排它的位置，让它到期那天好删。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一块好删的过期 harness，是一个选项；一块难删的过期 harness，是一笔你迟早要还的债。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这件事背后，是一个更老的规律。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2019 年，强化学习的奠基人之一 Rich Sutton 写过一篇很短的文章，叫《The Bitter Lesson》：七十年 AI 研究最大的一条教训是，靠人手把知识塞进系统的做法，短期有用，长期总会被那些利用大规模计算的通用方法赶过去。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">1997 年打败卡斯帕罗夫的深蓝靠的是大规模搜索，不是把人对国际象棋的理解编进程序；二十年后计算机围棋又演了一遍。</span></p>
+
+<div style="background:#f5f5f5;padding:40px 20px;text-align:center;margin:0 8px 8px;letter-spacing:0.5px;">
+<p style="margin:0 0 10px;color:#888;font-size:13px;font-weight:600;">[ 图 8 · Rich Sutton《The Bitter Lesson》原文 ]</p>
+<a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html" target="_blank" style="color:#666;font-size:11px;text-decoration:underline;font-family:'SF Mono','Menlo',monospace;word-break:break-all;display:inline-block;max-width:90%;">http://www.incompleteideas.net/IncIdeas/BitterLesson.html</a>
+<p style="margin:8px 0 0;color:#bbb;font-size:11px;">↑ 点开网页 → 截屏 → 替换本占位</p>
+</div>
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 8 · 七十年 AI 研究的教训 · Rich Sutton · 2019</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这条规律值得知道，但要用得诚实——Sutton 讲的是研究在几十年尺度上的方向，不是你这个季度该怎么做产品。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个要上线、要赚钱的产品等不起几十年，它现在就需要结构来兜底，也有人专门提醒过这条教训套到产品上的限度。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它对 harness 的意思不是现在就把结构删光，是给你一个方向感：<strong>你今天加的结构，是借来的时间</strong>。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以下次你要给 agent 加一个 harness 组件，先别急着问它今天有没有用——能被你加进来的，今天大都有用。</span></p>
+
+<p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">问那个更难的问题：等模型升级、让这块组件变成多余的那天，你要花多久，才能把它干净地删掉。</span></p>
+
+<p style="margin:48px 8px 0;text-align:center;line-height:1.5;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);letter-spacing:2px;">— 完 —</span></p>
+
+<p style="margin:24px 8px 0;text-align:center;line-height:1.7;letter-spacing:0.5px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(150,150,150);">#harness&nbsp;&nbsp;#AI agent&nbsp;&nbsp;#技术债&nbsp;&nbsp;#agentic engineering&nbsp;&nbsp;#模型迭代</span></p>
+
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 0;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">文中事实均附一手来源，文末按学术论文、官方与产品、工程师复盘、强化学习背景四组列出。数据截至 2026 年 5 月。</span></p>
+
+<hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;" />
+
+<p style="margin:0 8px 24px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:18px;letter-spacing:0.5px;color:rgb(0,0,0);">参考资料</span></strong></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">学术论文</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World · Tobin et al. · 2017</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://arxiv.org/abs/1703.06907</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Solving Rubik's Cube with a Robot Hand · OpenAI · 2019</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://arxiv.org/abs/1910.07113</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· MemGPT: Towards LLMs as Operating Systems · 2023</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://arxiv.org/abs/2310.08560</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· GenTool: Enhancing Tool Generalization in Language Models · ACL 2025</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://arxiv.org/abs/2502.18990</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Curriculum Reinforcement Learning from Easy to Hard Tasks Improves LLM Reasoning · 2025</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://arxiv.org/abs/2506.06632</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Action Space Reduction Strategies for RL in Autonomous Driving · 2025</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://arxiv.org/abs/2507.05251</span></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">官方与产品</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Introducing computer use, a new Claude 3.5 Sonnet · Anthropic · 2024-10</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.anthropic.com/news/3-5-models-and-computer-use</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Letta Code: A Memory-First Coding Agent · Letta · 2025-12</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.letta.com/blog/letta-code</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Terminal-Bench 2.0 · 官方榜单</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.tbench.ai/leaderboard/terminal-bench/2.0</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Building Multi-Agent Applications with Deep Agents · LangChain</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.blog.langchain.com/building-multi-agent-applications-with-deep-agents/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· The Anatomy of an Agent Harness · LangChain · 2026-03</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.langchain.com/blog/the-anatomy-of-an-agent-harness</span></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">工程师复盘与方法论</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Learning the Bitter Lesson · Lance Martin · 2025-07</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://rlancemartin.github.io/2025/07/30/bitter_lesson/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Open Deep Research · langchain-ai · GitHub</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://github.com/langchain-ai/open_deep_research</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· The Bitter Lesson of Agent Harnesses · browser-use · Gregor Zunic · 2026-04</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://browser-use.com/posts/bitter-lesson-agent-harnesses</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Don't Build Multi-Agents · Cognition · Walden Yan · 2025-06</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://cognition.ai/blog/dont-build-multi-agents</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Building Governed AI Agents · Tian Pan · 2026-02</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://tianpan.co/blog/2026-02-16-building-governed-ai-agents-agentic-scaffolding</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Thin Harness, Fat Skills · Garry Tan · garrytan/gbrain</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://github.com/garrytan/gbrain/blob/master/docs/ethos/THIN_HARNESS_FAT_SKILLS.md</span></p>
+
+<p style="margin:24px 8px 8px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:14px;letter-spacing:1px;color:rgb(0,0,0);">强化学习与思想背景</span></strong></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Domain Randomization for Sim2Real Transfer · Lilian Weng · Lil'Log</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://lilianweng.github.io/posts/2019-05-05-domain-randomization/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· A Taxonomy of RL Environments for LLM Agents · Han-chung Lee · 2026-03</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://leehanchung.github.io/blogs/2026/03/21/rl-environments-for-llm-agents/</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· An FAQ on Reinforcement Learning Environments · Epoch AI</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://epoch.ai/gradient-updates/state-of-rl-envs</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Does the Bitter Lesson Have Limits? · David Breunig · 2025-08</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://www.dbreunig.com/2025/08/01/does-the-bitter-lesson-have-limits.html</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· The Bitter Lesson · Rich Sutton · 2019</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">http://www.incompleteideas.net/IncIdeas/BitterLesson.html</span></p>
+<p style="margin:0 8px 2px;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;letter-spacing:0.5px;color:rgb(85,85,85);">· Stanford CS25 演讲 · Hyung Won Chung</span></p>
+<p style="margin:0 8px 14px 22px;line-height:1.4;letter-spacing:0;"><span style="font-family:'SF Mono','Menlo','Consolas','Courier New',monospace;font-size:11px;color:rgb(170,170,170);word-break:break-all;">https://youtu.be/orDKvo8h71o</span></p>
+
+</article>
+
+<div style="max-width:677px;margin:24px auto;padding:14px 18px;background:rgb(255,245,230);border:1px solid rgb(245,200,122);font-size:13px;color:rgb(120,53,15);font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.7;">
+<p style="margin:0 0 6px;font-weight:700;">粘贴到公众号：</p>
+<p style="margin:0 0 4px;">① 点右上角【复制正文（无白边）】按钮</p>
+<p style="margin:0 0 4px;">② 公众号图文编辑器 Ctrl+V 粘贴</p>
+<p style="margin:0 0 4px;">③ 两张文本图是 pre 代码块，粘贴后确认 monospace 字体没掉</p>
+<p style="margin:0;">④ 真实效果要在 iOS/Mac 微信里看（Windows 回退 YaHei 看不出 Optima 味道）</p>
+</div>
+
+<script>
+function copyWxArticle() {
+  var target = document.getElementById('wx-body');
+  if (!target) return;
+  var range = document.createRange();
+  range.selectNodeContents(target);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  sel.removeAllRanges();
+  var btn = document.getElementById('copy-btn');
+  btn.textContent = ok ? '已复制 ✓' : '复制失败';
+  btn.style.background = ok ? '#10b981' : '#dc2626';
+  setTimeout(function(){
+    btn.textContent = '复制正文（无白边）';
+    btn.style.background = '#111';
+  }, 2200);
+}
+</script>
+
+</body>
+</html>
