@@ -8,7 +8,10 @@
 
 ## 高优先（下一期候选）
 
-- 💡 _在这里加新选题_
+- 💡 **context engineering 上位 / RAG 之死的下半场** — 接 005；长 context 把 RAG 吃到什么程度，prompt engineering 让位 context engineering（Anthropic 官方背书）
+- 💡 **多 agent 什么时候反而坏事** — 接 007；人人卷几百个子 agent，但删掉多 agent 反而更好的案例在增多
+- 💡 **版本号通胀：几周一个小版本在改变什么** — 一手可即时验证、搜索依赖最低
+- 详见 [research/topic-map.md](research/topic-map.md)（已写主题地图 + 延伸候选 + 官方支撑源）
 
 ## 中优先
 
@@ -31,6 +34,8 @@
 - ✅ **005** 折腾了两年的 AI 记忆系统，最后是一个 markdown 文件 (待补, 微信公众号)
 - ✅ **006** 同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑 (待补, 微信公众号)
 - 📝 **007** 你写的 Agent Harness，正在变成你的技术债 (待发布, 微信公众号)
+- 📝 **008** AI 让你效率翻倍，团队交付却一动没动 (SPDD 报道+评判, 待发布)
+- 📝 **009** OpenAI 把自己做的 AI 编程榜，停用了 (榜单失信; draft + 真图 + wechat 已齐, 待 Joy 发布)
 
 ## 弃稿 / 不写了
 

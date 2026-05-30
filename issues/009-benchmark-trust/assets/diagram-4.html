@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 30px; }
+  .cols { display:flex; gap:18px; align-items:stretch; }
+  .col { flex:1; border-radius:8px; padding:22px; }
+  .col h3 { margin:0 0 16px; font-size:17px; }
+  .left { background:#f1f5ef; border:1px solid #d8e3d2; }
+  .left h3 { color:#3f6b3a; }
+  .right { background:#f7efe8; border:1px solid #e8d8c8; }
+  .right h3 { color:#9a5a2a; }
+  .tag { display:inline-block; margin:0 6px 8px 0; padding:6px 12px; border-radius:6px; font-size:14px; }
+  .left .tag { background:#e3eede; color:#3f6b3a; }
+  .right .tag { background:#efe0d2; color:#8a5326; }
+  .vs { align-self:center; font-size:18px; color:#9a8f78; font-weight:700; }
+  .callout { margin-top:26px; padding:18px 22px; background:#f7ece9; border-left:5px solid #b2402a; font-size:17px; color:#1a1a1a; }
+  .callout b { color:#b2402a; }
+  .foot { margin-top:24px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">04</div>
+    <div class="title">一个干净的题，对一坨真实代码</div>
+
+    <div class="cols">
+      <div class="col left">
+        <h3>榜里的题</h3>
+        <span class="tag">仓库给定</span><span class="tag">bug 给定</span><span class="tag">测试给定</span><span class="tag">只要测试变绿</span>
+      </div>
+      <div class="vs">vs</div>
+      <div class="col right">
+        <h3>你的真实活</h3>
+        <span class="tag">祖传屎山</span><span class="tag">自己定位 bug</span><span class="tag">没人写测试</span><span class="tag">过代码评审</span><span class="tag">合规约束</span><span class="tag">集成上下游</span><span class="tag">不踩别人分支</span>
+      </div>
+    </div>
+
+    <div class="callout">实验室分 → 生产表现：落差约 <b>37%</b>　·　同等准确率，成本差约 <b>50 倍</b></div>
+
+    <div class="foot">图 4 · 榜题与真实交付之间的沟 · 落差数字为第三方测算（约数）</div>
+  </div>
+</body></html>

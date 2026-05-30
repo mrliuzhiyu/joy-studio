@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 32px; }
+  .row { display:flex; align-items:center; gap:16px; margin-bottom:18px; }
+  .ylab { width:96px; font-family:'Futura',sans-serif; font-size:16px; color:#6b6b6b; }
+  .track { flex:1; height:28px; background:#ece4d2; border-radius:3px; overflow:hidden; }
+  .fill { height:100%; background:#b8860b; }
+  .pct { width:58px; font-family:'Futura',sans-serif; font-weight:700; font-size:18px; color:#1a1a1a; text-align:right; }
+  .stop { display:flex; align-items:center; gap:14px; margin-top:26px; padding:16px 20px; background:#f7ece9; border-left:5px solid #b2402a; }
+  .stop .x { font-size:26px; color:#b2402a; font-weight:700; }
+  .stop .t { font-size:18px; color:#b2402a; font-weight:700; }
+  .foot { margin-top:30px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">01</div>
+    <div class="title">一个榜，从冲榜到被弃用</div>
+
+    <div class="row"><div class="ylab">2024.08</div><div class="track"><div class="fill" style="width:20%"></div></div><div class="pct">20%</div></div>
+    <div class="row"><div class="ylab">2025.01</div><div class="track"><div class="fill" style="width:40%"></div></div><div class="pct">40%</div></div>
+    <div class="row"><div class="ylab">2025.08</div><div class="track"><div class="fill" style="width:70%"></div></div><div class="pct">70%</div></div>
+    <div class="row"><div class="ylab">2026.01</div><div class="track"><div class="fill" style="width:90%"></div></div><div class="pct">90%</div></div>
+
+    <div class="stop"><span class="x">✕</span><span class="t">2026.02 · 作者 OpenAI 宣布停用 SWE-bench Verified</span></div>
+
+    <div class="foot">图 1 · SWE-bench Verified 通过率（约数）· 据 Epoch AI 追踪</div>
+  </div>
+</body></html>

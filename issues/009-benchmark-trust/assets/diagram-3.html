@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 8px; }
+  .who { font-size:15px; color:#b8860b; font-weight:600; margin-bottom:26px; }
+  .cols { display:flex; gap:20px; }
+  .col { flex:1; background:#fbf7ee; border:1px solid #ece4d2; border-radius:8px; padding:22px 22px 24px; }
+  .col h3 { margin:0 0 16px; font-size:17px; color:#1a1a1a; }
+  .col.left { border-top:4px solid #b8860b; }
+  .col.right { border-top:4px solid #3a3a3a; }
+  .big { font-family:'Futura',sans-serif; font-size:30px; font-weight:700; color:#b8860b; }
+  .bigsub { font-size:14px; color:#6b6b6b; margin-top:8px; line-height:1.6; }
+  .it { display:flex; gap:10px; margin-bottom:14px; font-size:15px; color:#3a3a3a; line-height:1.5; }
+  .it .d { color:#b8860b; font-weight:700; }
+  .foot { margin-top:26px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">03</div>
+    <div class="title">摆数字的和拆数字的，是同一家</div>
+    <div class="who">Anthropic · 2026 上半年</div>
+
+    <div class="cols">
+      <div class="col left">
+        <h3>发布会头条</h3>
+        <div class="big">SWE-bench Pro 69.2</div>
+        <div class="bigsub">Opus 4.8 · 在这一项上领先 GPT-5.5（58.6）约十分；只打更难、抗污染的 Pro，不碰旧榜</div>
+      </div>
+      <div class="col right">
+        <h3>自家工程博客</h3>
+        <div class="it"><span class="d">·</span><span>模型能察觉自己正在被考</span></div>
+        <div class="it"><span class="d">·</span><span>机器环境抖动会污染分数</span></div>
+        <div class="it"><span class="d">·</span><span>题会被做穿，得专门设计抗 AI 的评测</span></div>
+      </div>
+    </div>
+
+    <div class="foot">图 3 · 同一家公司，两副面孔 · 据 Anthropic 发布页与工程博客</div>
+  </div>
+</body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 30px; }
+  .eq { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:34px; }
+  .pill { padding:12px 20px; border-radius:8px; font-size:17px; font-weight:600; }
+  .p-model { background:#eceae3; color:#3a3a3a; }
+  .p-scaf { background:#b8860b; color:#fff; }
+  .p-luck { background:#eceae3; color:#9a9a9a; }
+  .p-eq { background:#1a1a1a; color:#fff; }
+  .op { font-size:22px; color:#9a8f78; font-weight:700; }
+  .cmp { margin-top:8px; }
+  .crow { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+  .clab { width:150px; font-size:16px; color:#3a3a3a; }
+  .ctrack { flex:1; height:30px; background:#ece4d2; border-radius:3px; overflow:hidden; }
+  .cfill { height:100%; background:#b8860b; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; color:#fff; font-family:'Futura',sans-serif; font-weight:700; font-size:15px; }
+  .cfill.bare { background:#cbb88a; }
+  .gap { margin-top:8px; font-size:16px; color:#b8860b; font-weight:700; }
+  .foot { margin-top:28px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">02</div>
+    <div class="title">一个榜分 = 模型 + 脚手架 + 运气</div>
+
+    <div class="eq">
+      <span class="pill p-model">模型</span><span class="op">+</span>
+      <span class="pill p-scaf">脚手架</span><span class="op">+</span>
+      <span class="pill p-luck">运气</span><span class="op">=</span>
+      <span class="pill p-eq">一个榜分</span>
+    </div>
+
+    <div class="cmp">
+      <div class="crow"><div class="clab">同模型 · 裸跑</div><div class="ctrack"><div class="cfill bare" style="width:69%">约 69%</div></div></div>
+      <div class="crow"><div class="clab">同模型 · 打磨脚手架</div><div class="ctrack"><div class="cfill" style="width:81%">约 81%</div></div></div>
+      <div class="gap">↑ 多出十几分全在脚手架，模型一字没改</div>
+    </div>
+
+    <div class="foot">图 2 · 同一基座模型，换层脚手架分就变 · 数字为第三方梳理（约数）</div>
+  </div>
+</body></html>

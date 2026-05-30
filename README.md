@@ -24,6 +24,11 @@ joy-studio/
 │   ├── cankao-style/         # 「书摘公号风」排版样本（design.md 抠样式的源）
 │   ├── inspiration/          # 别人写得好的 AI 文章（学结构 / 切入 / 金句）
 │   └── citations/            # 引用源原件（论文 PDF / 报告 / 截图，防链接失效）
+├── research/         # 跨期研究料库（写之前的料，不写观点）
+│   ├── README.md
+│   ├── sources-official.md   # 三家官方干货源目录（Anthropic / OpenAI / Google）
+│   ├── topic-map.md          # 已写主题地图（001-008）+ 延伸选题候选
+│   └── landscape-2026H1.md   # AI 行业大盘快照（时效背景）
 ├── issues/           # 每期一个文件夹
 │   └── 001-v4pro-vs-claude/
 │       ├── draft.md          # markdown 源稿（平台无关，真源）
