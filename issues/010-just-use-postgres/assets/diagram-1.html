@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 30px; }
+  .cols { display:flex; gap:18px; align-items:stretch; }
+  .col { flex:1; border:1.5px solid #e2d9c2; border-radius:10px; padding:22px 20px 20px; background:#fffefb; }
+  .yr { font-family:'Futura',sans-serif; font-weight:700; font-size:19px; color:#9a8f78; margin-bottom:3px; }
+  .ct { font-size:15px; color:#6b6b6b; margin-bottom:18px; }
+  .stack { display:flex; flex-direction:column; gap:9px; }
+  .box { padding:12px 15px; border-radius:8px; font-size:16px; font-weight:600; line-height:1.3; }
+  .b-model { background:#eceae3; color:#4a4a4a; }
+  .b-hot { background:#b8860b; color:#fff; }
+  .b-cold { background:#f2eee4; color:#a59d8a; border:1px dashed #cdbf9f; }
+  .tag { display:block; font-size:12px; font-weight:600; margin-top:3px; opacity:.88; }
+  .plus { text-align:center; color:#c4b896; font-weight:700; font-size:15px; line-height:1; }
+  .arrow { display:flex; flex-direction:column; justify-content:center; align-items:center; color:#9a8f78; font-family:'Futura',sans-serif; font-size:12px; font-weight:700; padding:0 2px; }
+  .arrow .a { font-size:32px; line-height:1; color:#b8860b; }
+  .foot { margin-top:28px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">01</div>
+    <div class="title">起点位置反转了</div>
+    <div class="cols">
+      <div class="col">
+        <div class="yr">2023</div>
+        <div class="ct">做 AI 应用的默认架构</div>
+        <div class="stack">
+          <div class="box b-model">大模型</div>
+          <div class="plus">＋</div>
+          <div class="box b-hot">专用向量数据库<span class="tag">第一步就要先选一个</span></div>
+          <div class="plus">＋</div>
+          <div class="box b-model">主数据库</div>
+        </div>
+      </div>
+      <div class="arrow"><div class="a">→</div><div>两年</div></div>
+      <div class="col">
+        <div class="yr">2026</div>
+        <div class="ct">做 AI 应用的默认架构</div>
+        <div class="stack">
+          <div class="box b-model">大模型</div>
+          <div class="plus">＋</div>
+          <div class="box b-hot">Postgres ＋ pgvector<span class="tag">数据和向量待在一个库</span></div>
+          <div class="plus">⋯</div>
+          <div class="box b-cold">专用向量数据库<span class="tag">撞到墙才考虑</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">图 1 · 向量库从「第一步」退到「撞墙才考虑」· 来源:TechCrunch、向量数据库市场预测</div>
+  </div>
+</body></html>

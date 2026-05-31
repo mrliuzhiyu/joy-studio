@@ -11,8 +11,9 @@
 | 007 | 你写的 Agent Harness，正在变成你的技术债 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/007-harness-tech-debt/notes.md) |
 | 008 | AI 让你效率翻倍，团队交付却一动没动 | 微信公众号 | _待发布_ | _待发布_ | — | — | — | [notes](issues/008-spdd/notes.md) |
 | 009 | OpenAI 把自己做的 AI 编程榜，停用了 | 微信公众号 | _待发布_ | _待发布_ | — | — | — | [notes](issues/009-benchmark-trust/notes.md) |
+| 010 | 向量数据库火了两年，大家又搬回了 Postgres | 微信公众号 | _待发布_ | _待发布_ | — | — | — | [notes](issues/010-just-use-postgres/notes.md) |
 
-> 008 / 009 内容已完成（draft + 图 + wechat.html），标 _待发布_；正式推送后补发布日与链接。
+> 008 / 009 / 010 内容已完成（draft + 图 + wechat.html），标 _待发布_；正式推送后补发布日与链接。
 
 ---
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 30px; }
+  .cols { display:flex; gap:18px; align-items:stretch; }
+  .col { flex:1; border:1.5px solid #e2d9c2; border-radius:10px; padding:20px 20px 18px; background:#fffefb; display:flex; flex-direction:column; }
+  .lab { font-size:15px; font-weight:700; color:#9a8f78; margin-bottom:16px; }
+  .node { padding:11px 14px; border-radius:8px; font-size:15px; font-weight:600; text-align:center; }
+  .n-app { background:#1a1a1a; color:#fff; }
+  .n-db { background:#eceae3; color:#4a4a4a; }
+  .n-pg { background:#b8860b; color:#fff; line-height:1.35; }
+  .down { text-align:center; color:#c4b896; font-size:20px; line-height:1.1; margin:7px 0; }
+  .two { display:flex; gap:12px; }
+  .two .node { flex:1; }
+  .sync { text-align:center; font-size:13px; color:#b2402a; font-weight:700; margin:9px 0; }
+  .risk { margin-top:auto; background:#f7ece9; border-left:5px solid #b2402a; padding:11px 14px; font-size:13.5px; color:#b2402a; line-height:1.5; }
+  .good { margin-top:auto; background:#f3eddc; border-left:5px solid #b8860b; padding:11px 14px; font-size:13.5px; color:#8a6608; line-height:1.5; }
+  .sql { font-family:'SFMono-Regular',Consolas,monospace; font-size:12.5px; }
+  .foot { margin-top:28px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">02</div>
+    <div class="title">两套系统要对账，一个库一条 SQL 查完</div>
+    <div class="cols">
+      <div class="col">
+        <div class="lab">专用向量库方案</div>
+        <div class="node n-app">你的应用</div>
+        <div class="down">▼</div>
+        <div class="two">
+          <div class="node n-db">主数据库<br>原文 · 权限</div>
+          <div class="node n-db">向量库<br>向量</div>
+        </div>
+        <div class="sync">↔ 还要自己同步 / 对账</div>
+        <div class="risk">对账掉链子：删掉的文档还能被搜到，或查到一条改过的旧内容。</div>
+      </div>
+      <div class="col">
+        <div class="lab">Postgres 方案</div>
+        <div class="node n-app">你的应用</div>
+        <div class="down">▼</div>
+        <div class="node n-pg">Postgres<br>原文 · 元数据 · 向量 同一张表</div>
+        <div class="down">▼</div>
+        <div class="good"><span class="sql">一条 SQL：按权限过滤 → 相似度排序 → join 取标题</span></div>
+      </div>
+    </div>
+    <div class="foot">图 2 · 两套系统要对账 vs 一个库搞定 · 来源:Encore</div>
+  </div>
+</body></html>

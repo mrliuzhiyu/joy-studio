@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fffdf8; font-family:'PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif; }
+  .fig { width:880px; background:#fffdf8; padding:44px 48px; }
+  .tnum { font-family:'Futura','Helvetica Neue',Arial,sans-serif; font-size:30px; font-weight:700; color:#1a1a1a; border-top:6px solid #1a1a1a; display:inline-block; padding-top:6px; line-height:1; }
+  .title { font-size:26px; font-weight:700; color:#1a1a1a; margin:16px 0 30px; }
+  .start { background:#b8860b; color:#fff; border-radius:10px; padding:16px 20px; font-size:19px; font-weight:700; text-align:center; }
+  .start span { display:block; font-size:13px; font-weight:600; opacity:.9; margin-top:3px; }
+  .down { text-align:center; color:#c4b896; font-size:24px; margin:12px 0 6px; }
+  .wallrow { display:flex; gap:14px; }
+  .wall { flex:1; background:#f7ece9; border:1.5px solid #e6c9c0; border-radius:9px; padding:15px 14px; text-align:center; }
+  .wall .h { font-size:16px; font-weight:700; color:#b2402a; margin-bottom:5px; }
+  .wall .d { font-size:12.5px; color:#a86b5e; line-height:1.45; }
+  .hint { text-align:center; font-size:13px; color:#9a8f78; margin:14px 0 6px; }
+  .end { background:#1a1a1a; color:#fff; border-radius:10px; padding:15px 20px; font-size:17px; font-weight:700; text-align:center; }
+  .end span { display:block; font-size:13px; font-weight:500; opacity:.82; margin-top:4px; }
+  .foot { margin-top:28px; font-size:13px; color:#a99c82; }
+</style></head>
+<body>
+  <div class="fig" id="fig">
+    <div class="tnum">03</div>
+    <div class="title">默认 Postgres，撞到这几堵墙才升级</div>
+    <div class="start">默认用 Postgres ＋ pgvector<span>百万级向量、带过滤的检索，够用</span></div>
+    <div class="down">▼ 一直用到撞墙</div>
+    <div class="wallrow">
+      <div class="wall"><div class="h">延迟超标</div><div class="d">QPS / 响应到了极致要求，调不动了</div></div>
+      <div class="wall"><div class="h">内存扛不住</div><div class="d">向量上亿，索引要上百 GB 内存</div></div>
+      <div class="wall"><div class="h">过滤做不动</div><div class="d">重多租户 / 复杂过滤，pgvector 别扭</div></div>
+    </div>
+    <div class="hint">撞上一堵能量化的墙，再迁 ▼</div>
+    <div class="end">升级专用向量库<span>Pinecone（托管） · Qdrant（最快） · Weaviate（多租户）</span></div>
+    <div class="foot">图 3 · 撞到可量化的墙再升级，不是第一步 · 来源:Pinecone、Tiger Data</div>
+  </div>
+</body></html>
