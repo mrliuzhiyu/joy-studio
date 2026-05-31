@@ -1,12 +1,12 @@
-# 向量数据库火了两年,大家又搬回了 Postgres
+# 为什么 AI 时代的数据库都选 Postgres？
 
 > 标题候选(定稿拍板):
-> A(主推)向量数据库火了两年,大家又搬回了 Postgres
-> B 做 AI 应用,你多半不需要专门的向量数据库
-> C 先别急着上向量数据库
-> D AI 没催生新数据库,反而把大家送回了 Postgres
+> A(主推)为什么 AI 时代的数据库都选 Postgres？
+> B 为什么 AI 时代越来越多人选 Postgres
+> C 向量数据库火了两年,大家又搬回了 Postgres
+> D 做 AI 应用,你多半不需要专门的向量数据库
 >
-> 状态:**v3**。按 Joy 反馈:每章加正文引导 / 背景,内容写深(补机制、场景、迁移案例),每张图下挂来源网址。事实带 inline 链接(markdown 真源);HNSW(0.5.0 / 2023 下半年)、Pinecone B 轮、Supabase 融资已核实。转 wechat.html 时撤正文链接、把图注来源烤进图里。
+> 状态:**v4**。按 Joy 反馈:标题改回疑问句(不剧透结论);删掉正文里 3 张自制架构图(diagram-1/2/3),只保留真实网页截图位。内容写深(补机制、场景、迁移案例),事实带 inline 链接(markdown 真源);HNSW(0.5.0 / 2023 下半年)、Pinecone B 轮、Supabase 融资已核实。转 wechat.html 时撤正文链接。
 
 ---
 
@@ -36,8 +36,7 @@
 
 得说清楚,这不代表向量库凉了。这个市场还在快速变大,有机构预测它会从 2024 年的约二十亿美元长到 2032 年的上百亿(机构预测口径本来就宽,看个量级就好)。变的不是这门生意的死活,是它的起点位置:向量库从做 AI 应用的第一步,退回成撞到墙之后才考虑的一步。pgvector 没杀死谁,它只是把最大的那块入门市场,从专用库手里端走了。
 
-![图 1 · 起点位置的反转:向量库从「第一步」退到「撞墙才考虑」· 待生成](assets/diagram-1.png)
-> 图注来源:Pinecone B 轮报道 https://techcrunch.com/2023/04/27/pinecone-drops-100m-investment-on-750m-valuation-as-vector-database-demand-grows/ · 市场规模预测 https://www.globenewswire.com/news-release/2025/03/07/3039040/0/en/Vector-Database-Market-to-Reach-USD-10-6-Billion-by-2032-SNS-Insider.html
+> 📷 额外截图位（Joy 自截真实网页）:pgvector 已是主流 — https://github.com/pgvector/pgvector
 
 ## 03 为什么偏偏是 Postgres
 
@@ -48,9 +47,6 @@
 第二,少养一套系统。上一个专门的向量库,你的架构里就多出一块:它要单独部署、单独配一套凭据、单独接进监控、出问题单独排查,半夜宕的时候也会单独把你叫醒。用 pgvector,这一块整个没了,向量就是你主库里的几张表。对小团队和快迭代的产品,省下的这份运维负担,常常比那点性能差更值钱。你本来人就不够,不会想再多伺候一个系统。
 
 第三,检索就是一句 SQL。向量检索不再是另一个系统的接口调用,而是普通查询的一部分。举个常见场景:你要在某个用户自己的文档里,按语义找最相关的五段。用 pgvector,这就是一条 SQL,先按用户和权限过滤,再按向量相似度排序,顺手 join 上文档表拿标题。换成两套系统,你得先去向量库查一批,再回主库验证权限、补全字段,来回倒腾,还要担心两边对不上。Postgres 三十年攒下的事务、备份、复制、权限这套东西,在这里全都顺带就用上了。
-
-![图 2 · 两套系统要对账 vs 一个库一条 SQL 查完 · 待生成](assets/diagram-2.png)
-> 图注来源:Encore https://encore.dev/blog/you-probably-dont-need-a-vector-database
 
 说到底,不是 Postgres 突然学会了做向量,是 AI 应用要存的数据,原文加元数据加向量绑在一起、还得带着过滤条件查,这个形状本来就长在关系数据库的主场上。专门的向量库擅长的是另一件事:在海量向量里做极速的最近邻。两件事不一样,只是前两年很多人没分清。
 
@@ -74,8 +70,7 @@
 
 至于到底多少向量算该升级,没有一个干净的数字。有人说一百万,有人说五百万,也有人说一千万以上加高并发才需要,它取决于你的并发量、过滤复杂度、更新频率。
 
-![图 3 · 默认 Postgres,撞到这几堵墙才升级专用库 · 待生成](assets/diagram-3.png)
-> 图注来源:Pinecone https://www.pinecone.io/blog/pinecone-vs-pgvector/ · Tiger Data https://www.tigerdata.com/blog/pgvector-is-now-as-fast-as-pinecone-at-75-less-cost
+> 📷 额外截图位（Joy 自截真实网页）:pgvector vs Pinecone 性能/成本基准（Tiger Data 自家口径） — https://www.tigerdata.com/blog/pgvector-is-now-as-fast-as-pinecone-at-75-less-cost
 
 这个数字不必纠结,关键是先后:默认用 Postgres,直到撞上一堵能量化的墙(延迟超标、内存扛不住、过滤场景做不动),再换专门的向量库。它是撞墙之后的选择,不是第一步。
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>向量数据库火了两年，大家又搬回了 Postgres · 公众号版</title>
+<title>为什么 AI 时代的数据库都选 Postgres？· 公众号版</title>
 <style>
   body { margin: 0; background: #f2f2f2; }
   #copy-btn { font-family: system-ui, sans-serif; }
@@ -18,10 +18,10 @@
 
 <article id="wx-body" style="max-width:677px; margin:0 auto; background:white; padding:40px 24px 60px;">
 
-  <figure style="margin:0 0 28px; text-align:center;"><img src="../assets/cover-010.png" alt="向量数据库火了两年，大家又搬回了 Postgres" width="629" style="max-width:100%; height:auto; display:block; margin:0 auto;" /></figure>
+  <figure style="margin:0 0 28px; text-align:center;"><img src="../assets/cover-010.png" alt="为什么 AI 时代的数据库都选 Postgres" width="629" style="max-width:100%; height:auto; display:block; margin:0 auto;" /></figure>
 
   <h1 style="margin:0 8px 6px; font-size:23px; font-weight:700; line-height:1.5;">
-    <span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; color:rgb(0,0,0);">向量数据库火了两年，大家又搬回了 Postgres</span>
+    <span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; color:rgb(0,0,0);">为什么 AI 时代的数据库都选 Postgres？</span>
   </h1>
   <p style="margin:0 8px 36px; line-height:1.5;">
     <span style="font-family:Optima-Regular,PingFangTC-light,sans-serif; font-size:13px; letter-spacing:0.5px; color:rgb(170,170,170);">2026 · AI 工程观察 · 刘志宇 Joy</span>
@@ -61,14 +61,13 @@
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">要看懂这个反转，得先认识 pgvector。它是个开源扩展，给 Postgres 装上向量类型和向量索引，让相似度检索变成普通 SQL 的一部分。它不算新东西，2021 年就有了，但早期只有一种较慢的索引，撑不起认真的生产负载。真正让它能打的那块拼图，是 2023 年下半年加进的 HNSW 索引。有了 HNSW，pgvector 在百万级向量上的检索延迟能压到几十毫秒、召回率超过九成，跟专用向量库放进同一个量级里比，不再是玩具。从那以后，几乎所有主流托管 Postgres，AWS、Supabase、Neon、Azure、Google Cloud，都把 pgvector 当成开箱即用的标配。</span></p>
 
+  <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,sans-serif; font-size:14px; letter-spacing:0.5px; color:rgb(150,150,150);">〖 此处插一张截图：pgvector 已是主流（GitHub 两万多星、各大托管 Postgres 标配）<br>截图来源 github.com/pgvector/pgvector ·  上传图片后删掉本行 〗</span></p>
+
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">押得最狠的是 Supabase。这家公司本来就靠把 Postgres 包装成好用的后端起家，这两年它几乎把整个 AI 故事都压在 Postgres 上：开箱带 pgvector，产品线直接叫 Supabase Vector，围着它做了自动向量化、语义缓存一整套工具，还亲自写文章跟 Pinecone 比成本、比性能，论证同等场景下 pgvector 更省也更够用。市场给的回应不小：2025 年 4 月，这家走纯 Postgres 路线的公司融了两亿美元，估值二十亿。</span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">当然，Supabase 卖的就是 Postgres 托管，它说 pgvector 够用，本来就带着立场。有意思的是另一头：Pinecone 也专门写了文章，逐条论证 pgvector 为什么不够认真用，这些批评后面会收。一边卖向量库的说你需要它，一边卖 Postgres 的说你不需要，两边都有自己的立场。<strong>但风往哪边吹，看默认架构图就知道：两年前你得解释为什么敢用 Postgres 做向量，现在要解释的反过来是，为什么还得单独上一个向量库。</strong></span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">得说清楚，这不代表向量库凉了。这个市场还在快速变大，有机构预测它会从 2024 年的约二十亿美元长到 2032 年的上百亿（机构预测口径本来就宽，看个量级就好）。变的不是这门生意的死活，是它的起点位置：向量库从做 AI 应用的第一步，退回成撞到墙之后才考虑的一步。<strong style="text-decoration:underline;">pgvector 没杀死谁，它只是把最大的那块入门市场，从专用库手里端走了。</strong></span></p>
-
-  <figure style="margin:0 8px 8px; text-align:center;"><img src="../assets/diagram-1.png" alt="起点位置反转：向量库从第一步退到撞墙才考虑" width="620" style="max-width:100%; height:auto; display:block; margin:0 auto;" /></figure>
-  <p style="margin:0 8px 32px; line-height:1.6; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,sans-serif; font-size:12px; letter-spacing:0.5px; color:rgb(150,150,150);">图 1 · 向量库从「第一步」退到「撞墙才考虑」<br><span style="font-family:'SF Mono','Menlo',monospace; font-size:10.5px; color:rgb(180,180,180); word-break:break-all;">来源 https://techcrunch.com/2023/04/27/pinecone-drops-100m-investment-on-750m-valuation-as-vector-database-demand-grows/ · https://www.globenewswire.com/news-release/2025/03/07/3039040/0/en/Vector-Database-Market-to-Reach-USD-10-6-Billion-by-2032-SNS-Insider.html</span></span></p>
 
   <!-- 03 -->
   <section style="padding:3px; display:inline-block; border-top:6px solid rgb(0,0,0); margin:40px 8px 8px;">
@@ -85,9 +84,6 @@
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第二，少养一套系统。上一个专门的向量库，你的架构里就多出一块：它要单独部署、单独配一套凭据、单独接进监控、出问题单独排查，半夜宕的时候也会单独把你叫醒。用 pgvector，这一块整个没了，向量就是你主库里的几张表。对小团队和快迭代的产品，省下的这份运维负担，常常比那点性能差更值钱。你本来人就不够，不会想再多伺候一个系统。</span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">第三，检索就是一句 SQL。向量检索不再是另一个系统的接口调用，而是普通查询的一部分。举个常见场景：你要在某个用户自己的文档里，按语义找最相关的五段。用 pgvector，这就是一条 SQL，先按用户和权限过滤，再按向量相似度排序，顺手 join 上文档表拿标题。换成两套系统，你得先去向量库查一批，再回主库验证权限、补全字段，来回倒腾，还要担心两边对不上。Postgres 三十年攒下的事务、备份、复制、权限这套东西，在这里全都顺带就用上了。</span></p>
-
-  <figure style="margin:0 8px 8px; text-align:center;"><img src="../assets/diagram-2.png" alt="两套系统要对账 vs 一个库一条 SQL 查完" width="620" style="max-width:100%; height:auto; display:block; margin:0 auto;" /></figure>
-  <p style="margin:0 8px 32px; line-height:1.6; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,sans-serif; font-size:12px; letter-spacing:0.5px; color:rgb(150,150,150);">图 2 · 两套系统要对账 vs 一个库搞定<br><span style="font-family:'SF Mono','Menlo',monospace; font-size:10.5px; color:rgb(180,180,180); word-break:break-all;">来源 https://encore.dev/blog/you-probably-dont-need-a-vector-database</span></span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">说到底，不是 Postgres 突然学会了做向量，是 AI 应用要存的数据，原文加元数据加向量绑在一起、还得带着过滤条件查，这个形状本来就长在关系数据库的主场上。<strong>专门的向量库擅长的是另一件事：在海量向量里做极速的最近邻。两件事不一样，只是前两年很多人没分清。</strong></span></p>
 
@@ -111,14 +107,13 @@
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">规模再往上，裸的 pgvector 也会吃力，通常在几百万到上千万向量这个区间开始显出来。续命的办法是再加一个扩展，叫 pgvectorscale，它把一部分索引放到磁盘上、不全压在内存里，专门对付大规模。做它的是 Tiger Data（原来的 Timescale）。按它自己的基准，在五千万向量的规模上加上 pgvectorscale，延迟能低到二十几倍、成本省七成多，反超 Pinecone（据 Tiger Data 自家基准）。这组数字很漂亮，但两件事得记住：一是它出自卖 Postgres 服务的公司自己的测试，口径自己定；二是立功的是 pgvectorscale 这个额外扩展，不是 pgvector 本身。这俩名字像，经常被当成一个东西，其实是两层。</span></p>
 
+  <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,sans-serif; font-size:14px; letter-spacing:0.5px; color:rgb(150,150,150);">〖 此处插一张截图：pgvector vs Pinecone 性能与成本基准（Tiger Data 自家口径）<br>截图来源 tigerdata.com/blog/pgvector-is-now-as-fast-as-pinecone-at-75-less-cost ·  上传图片后删掉本行 〗</span></p>
+
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">那什么时候是专用库真正更合适？几种情况很清楚。向量到了亿级、写入吞吐极大，这是 Pinecone 这类托管系统的主场，你不用操心怎么扩容。对延迟和每秒查询数有极致要求的，Qdrant 用 Rust 写的内核在这块最快。需要很重的多租户和混合检索的，Weaviate 在这个方向上更专。还有一种最简单的情况：你的栈里压根没有 Postgres，那 pgvector 复用现有库的好处就归零，直接上一个专用库反而更干脆。</span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">反过来，从专用库迁回 Postgres 也不是免费的。有团队把生产系统从 Pinecone 迁到 pgvector，花了几天工程时间重导向量、重建索引、调参数，换来每月省下一千多美元的账单；也有团队把 Pinecone 加一套关系库，合并成 Neon 上的一个 Postgres，延迟还降了一截（这些都是迁移方或托管商自己讲的复盘，有立场，听个思路就好）。迁移有成本，但对很多正为账单和运维发愁的团队，这笔账算得过来。</span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">至于到底多少向量算该升级，没有一个干净的数字。有人说一百万，有人说五百万，也有人说一千万以上加高并发才需要，它取决于你的并发量、过滤复杂度、更新频率。</span></p>
-
-  <figure style="margin:0 8px 8px; text-align:center;"><img src="../assets/diagram-3.png" alt="默认 Postgres，撞到这几堵墙才升级专用库" width="620" style="max-width:100%; height:auto; display:block; margin:0 auto;" /></figure>
-  <p style="margin:0 8px 32px; line-height:1.6; letter-spacing:0.578px; text-align:center;"><span style="font-family:Optima-Regular,PingFangTC-light,sans-serif; font-size:12px; letter-spacing:0.5px; color:rgb(150,150,150);">图 3 · 撞到可量化的墙再升级，不是第一步<br><span style="font-family:'SF Mono','Menlo',monospace; font-size:10.5px; color:rgb(180,180,180); word-break:break-all;">来源 https://www.pinecone.io/blog/pinecone-vs-pgvector/ · https://www.tigerdata.com/blog/pgvector-is-now-as-fast-as-pinecone-at-75-less-cost</span></span></p>
 
   <p style="margin:0 8px 32px; line-height:1.75em; letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif; font-size:16px; letter-spacing:0.5px; color:rgb(34,34,34);">这个数字不必纠结，关键是先后：默认用 Postgres，直到撞上一堵能量化的墙（延迟超标、内存扛不住、过滤场景做不动），再换专门的向量库。<strong style="text-decoration:underline;">它是撞墙之后的选择，不是第一步。</strong></span></p>
 
@@ -181,29 +176,15 @@
 
 <!-- 配图下载区 · 在 article 外，不会被「复制正文」带走；发布后无需理会 -->
 <section style="max-width:677px; margin:24px auto 60px; padding:28px 24px; border-top:1px solid #e6e6e6;">
-  <p style="margin:0 0 4px; font-family:system-ui,sans-serif; font-size:15px; font-weight:700; color:#111;">本文配图 · 点按钮直接复制</p>
-  <p style="margin:0 0 22px; font-family:system-ui,sans-serif; font-size:12.5px; color:#888; line-height:1.7;">点「复制图片」→ 到公众号编辑器 Ctrl+V 粘贴；或「下载」存到本地传素材库。这一区在正文之外，不会被「复制正文」带走。头图 cover-010.png 待封面生成后替换。</p>
+  <p style="margin:0 0 4px; font-family:system-ui,sans-serif; font-size:15px; font-weight:700; color:#111;">本文头图 · 点按钮直接复制</p>
+  <p style="margin:0 0 22px; font-family:system-ui,sans-serif; font-size:12.5px; color:#888; line-height:1.7;">点「复制图片」→ 到公众号编辑器 Ctrl+V 粘贴；或「下载」存到本地传素材库。这一区在正文之外，不会被「复制正文」带走。复制需在浏览器里打开（file:// 双击本地文件时复制不可用，用「下载」即可）。</p>
 
   <div style="display:flex; flex-direction:column; gap:24px;">
     <div style="text-align:center;">
-      <img id="img-d1" src="../assets/diagram-1.png" alt="图 1 起点位置反转" style="max-width:100%; width:360px; height:auto; display:block; margin:0 auto 10px; border:1px solid #e6e6e6; border-radius:4px;" />
-      <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:12px; color:#999;">图 1 · diagram-1.png</p>
-      <button onclick="copyImg('img-d1', this)" style="padding:7px 16px; margin:0 4px; background:#111; color:#fff; border:0; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:system-ui,sans-serif;">复制图片</button>
-      <a href="../assets/diagram-1.png" download="diagram-1.png" style="padding:7px 16px; margin:0 4px; background:#fff; color:#555; border:1px solid #ccc; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; font-family:system-ui,sans-serif;">下载</a>
-    </div>
-
-    <div style="text-align:center;">
-      <img id="img-d2" src="../assets/diagram-2.png" alt="图 2 两套系统 vs 一个库" style="max-width:100%; width:360px; height:auto; display:block; margin:0 auto 10px; border:1px solid #e6e6e6; border-radius:4px;" />
-      <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:12px; color:#999;">图 2 · diagram-2.png</p>
-      <button onclick="copyImg('img-d2', this)" style="padding:7px 16px; margin:0 4px; background:#111; color:#fff; border:0; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:system-ui,sans-serif;">复制图片</button>
-      <a href="../assets/diagram-2.png" download="diagram-2.png" style="padding:7px 16px; margin:0 4px; background:#fff; color:#555; border:1px solid #ccc; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; font-family:system-ui,sans-serif;">下载</a>
-    </div>
-
-    <div style="text-align:center;">
-      <img id="img-d3" src="../assets/diagram-3.png" alt="图 3 选型决策" style="max-width:100%; width:360px; height:auto; display:block; margin:0 auto 10px; border:1px solid #e6e6e6; border-radius:4px;" />
-      <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:12px; color:#999;">图 3 · diagram-3.png</p>
-      <button onclick="copyImg('img-d3', this)" style="padding:7px 16px; margin:0 4px; background:#111; color:#fff; border:0; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:system-ui,sans-serif;">复制图片</button>
-      <a href="../assets/diagram-3.png" download="diagram-3.png" style="padding:7px 16px; margin:0 4px; background:#fff; color:#555; border:1px solid #ccc; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; font-family:system-ui,sans-serif;">下载</a>
+      <img id="img-cover" src="../assets/cover-010.png" alt="封面" style="max-width:100%; width:360px; height:auto; display:block; margin:0 auto 10px; border:1px solid #e6e6e6; border-radius:4px;" />
+      <p style="margin:0 0 8px; font-family:system-ui,sans-serif; font-size:12px; color:#999;">封面 · cover-010.png</p>
+      <button onclick="copyImg('img-cover', this)" style="padding:7px 16px; margin:0 4px; background:#111; color:#fff; border:0; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:system-ui,sans-serif;">复制图片</button>
+      <a href="../assets/cover-010.png" download="cover-010.png" style="padding:7px 16px; margin:0 4px; background:#fff; color:#555; border:1px solid #ccc; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; font-family:system-ui,sans-serif;">下载</a>
     </div>
   </div>
 </section>
@@ -229,24 +210,33 @@ function copyWxArticle() {
   }, 2200);
 }
 
+function flash(btn, ok, failText){
+  var label = btn.getAttribute('data-label') || btn.textContent;
+  btn.setAttribute('data-label', label);
+  btn.textContent = ok ? '已复制 ✓' : (failText || '失败，请用「下载」');
+  btn.style.background = ok ? '#10b981' : '#dc2626';
+  setTimeout(function(){ btn.textContent = label; btn.style.background = '#111'; }, 2400);
+}
+
 function copyImg(imgId, btn) {
   var img = document.getElementById(imgId);
-  var label = btn.textContent;
-  function done(ok){
-    btn.textContent = ok ? '已复制 ✓' : '失败，请用「下载」';
-    btn.style.background = ok ? '#10b981' : '#dc2626';
-    setTimeout(function(){ btn.textContent = label; btn.style.background = '#111'; }, 2200);
+  // 复制图片到剪贴板依赖安全上下文（https 或 localhost）。
+  // 直接双击本地 file:// 打开时 navigator.clipboard.write 不可用，直接提示用下载。
+  if (!window.isSecureContext || !navigator.clipboard || !navigator.clipboard.write || !window.ClipboardItem) {
+    flash(btn, false, '本地打开请用「下载」');
+    return;
   }
   try {
     var c = document.createElement('canvas');
     c.width = img.naturalWidth; c.height = img.naturalHeight;
     c.getContext('2d').drawImage(img, 0, 0);
     c.toBlob(function(blob){
-      if (blob && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
-        navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(function(){ done(true); }).catch(function(){ done(false); });
-      } else { done(false); }
+      if (!blob) { flash(btn, false); return; }
+      navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
+        .then(function(){ flash(btn, true); })
+        .catch(function(){ flash(btn, false); });
     }, 'image/png');
-  } catch (e) { done(false); }
+  } catch (e) { flash(btn, false); }
 }
 </script>
 
