@@ -1,75 +1,119 @@
-# joy-studio · 刘志宇 Joy 的内容创作工作台
+# Joy Studio
 
-多平台文章工作台。一份源稿 → 各平台适配 → 发布。
+> 刘志宇 Joy 的 AI 技术内容创作工作台。
 
-当前覆盖平台：
-- ✅ **微信公众号**（已上线，排版自动化）
-- 🔜 知乎 / 小红书 / 即刻 / B 站专栏（按需开通）
+Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、调研、写作、事实核查，到配图、评审和公众号排版，所有过程都沉淀在同一个仓库里。
 
----
+它不是一套空白模板，而是一个持续更新的内容档案。截至目前，仓库已经完成 10 期长文，主题集中在 AI 编程、Agent 工程、软件开发方式和技术基础设施。
 
-## 文件夹一览
+## 这个仓库有什么
 
-```
+- 完整源稿：每篇文章都保留平台无关的 Markdown 真源
+- 调研过程：官方资料、实验记录、事实核查和研究简报
+- 写作过程：选题动机、提纲、评审反馈与修改记录
+- 视觉资产：封面、架构图、网页截图和可复用的 HTML 图稿
+- 公众号成品：可以直接预览和复制的微信排版版本
+- 内容方法：长期积累的写作 voice、工作流与排版规范
+
+## 最新一期
+
+### 010 · 为什么 AI 时代的数据库都选 Postgres？
+
+前几年，做 AI 应用的第一步往往是挑一个专门的向量数据库。现在默认答案正在反过来：先用已有的 Postgres 加 pgvector，直到真正撞上可量化的性能边界。
+
+这篇文章讨论这个转向为什么发生、为什么偏偏是 Postgres，以及什么情况下才真的需要 Pinecone、Weaviate、Qdrant 这类专用向量数据库。
+
+[阅读 Markdown 源稿](issues/010-just-use-postgres/draft.md) · [查看公众号排版](issues/010-just-use-postgres/platforms/wechat.html) · [查看研究笔记](issues/010-just-use-postgres/notes.md)
+
+## 文章目录
+
+| # | 标题 | 状态 |
+|---:|---|---|
+| 001 | [刚发布的 DeepSeek V4-Pro，已经长出了自己的审美](issues/001-v4pro-vs-claude/draft.md) | 已发布 |
+| 002 | [原生多模态大模型到底是什么](issues/002-native-multimodal/draft.md) | 已发布 |
+| 003 | [前端、后端、PM 正在塌缩成一个岗位](issues/003-sdd-collapse/draft.md) | 已发布 |
+| 004 | [让 AI 真正能干活的不是模型，是 harness](issues/004-harness/draft.md) | 已发布 |
+| 005 | [折腾了两年的 AI 记忆系统，最后是一个 markdown 文件](issues/005-agent-memory/draft.md) | 已发布 |
+| 006 | [同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑](issues/006-three-stages/draft.md) | 已发布 |
+| 007 | [你写的 Agent Harness，正在变成你的技术债](issues/007-harness-tech-debt/draft.md) | 已发布 |
+| 008 | [AI 让你效率翻倍，团队交付却一动没动](issues/008-spdd/draft.md) | 待发布 |
+| 009 | [OpenAI 把自己做的 AI 编程榜，停用了](issues/009-benchmark-trust/draft.md) | 待发布 |
+| 010 | [为什么 AI 时代的数据库都选 Postgres？](issues/010-just-use-postgres/draft.md) | 待发布 |
+
+正式推送链接与发布数据见 [published.md](published.md)。
+
+## 工作流
+
+一篇文章通常经过六步：
+
+1. **选题**：在 `inbox.md` 收集灵感，在 `ideas.md` 沉淀可以正式写的选题
+2. **研究**：查官方资料、论文、报告与真实案例，产出 research brief
+3. **写作**：在 `draft.md` 完成平台无关的 Markdown 源稿
+4. **评审**：检查事实、结构、观点、语言和公众号阅读体验
+5. **适配**：从源稿派生公众号 HTML，按需扩展到知乎、小红书等平台
+6. **复盘**：发布后登记链接和数据，把有效经验沉淀到 `memory/`
+
+核心原则只有一个：**Markdown 是真源，平台版本是衍生产物。** 观点和事实只在源稿中修改，再统一生成各平台版本。
+
+## 目录结构
+
+```text
 joy-studio/
-├── SKILL.md          # Claude Code 自动调用的公众号排版 skill
-├── design.md         # 「书摘公号风」排版规范（字体/字号/颜色/间距）
-├── template.html     # 公众号 HTML 起手模板
-├── README.md         # 本文件
-├── ideas.md          # 选题池（已成熟到能写的候选）
-├── inbox.md          # 灵感库（比选题更早一层的原料）
-├── published.md      # 已发布作品 + 数据复盘
-├── refs/             # 跨期共享的参考素材
-│   ├── README.md
-│   ├── cankao-style/         # 「书摘公号风」排版样本（design.md 抠样式的源）
-│   ├── inspiration/          # 别人写得好的 AI 文章（学结构 / 切入 / 金句）
-│   └── citations/            # 引用源原件（论文 PDF / 报告 / 截图，防链接失效）
-├── research/         # 跨期研究料库（写之前的料，不写观点）
-│   ├── README.md
-│   ├── sources-official.md   # 三家官方干货源目录（Anthropic / OpenAI / Google）
-│   ├── topic-map.md          # 已写主题地图（001-008）+ 延伸选题候选
-│   └── landscape-2026H1.md   # AI 行业大盘快照（时效背景）
-├── issues/           # 每期一个文件夹
-│   └── 001-v4pro-vs-claude/
-│       ├── draft.md          # markdown 源稿（平台无关，真源）
-│       ├── notes.md          # 选题动机 / 提纲 / 复盘
-│       ├── assets/           # 截图、配图、生成器
-│       ├── experiments/      # 原始实验数据、API 回包等
-│       └── platforms/        # 各平台适配产物
-│           ├── wechat.html   # 公众号版（SKILL 生成）
-│           ├── zhihu.md      # 知乎版（按需）
-│           └── xhs.md        # 小红书版（按需）
-└── .tmp/             # 真·临时（用完即删，不保留）
+├── issues/          # 每期文章：源稿、笔记、研究、图片与平台版本
+├── research/        # 跨期共享的 AI 行业资料与主题地图
+├── refs/            # 排版样本、引用原件与写作参考
+├── memory/          # 从实际写作中沉淀的长期经验
+├── scripts/         # 素材抓取等辅助脚本
+├── ideas.md         # 已经成熟、可以继续写的选题
+├── inbox.md         # 早期灵感与素材入口
+├── published.md     # 发布链接、数据与复盘索引
+├── design.md        # 微信公众号视觉和排版规范
+├── WORKFLOW.md      # 完整内容生产流程
+└── SKILL.md         # 公众号排版自动化说明
 ```
 
----
+每一期文章内部保持相同结构：
 
-## 每期工作流（5 步）
+```text
+issues/00X-topic/
+├── draft.md         # Markdown 真源
+├── notes.md         # 选题、提纲与复盘
+├── experiments/     # 调研、实验与原始资料
+├── assets/          # 封面、配图与图稿
+└── platforms/
+    └── wechat.html  # 微信公众号版本
+```
 
-1. **选题** —— 从 `ideas.md` 挑一个；原料还不够格的先丢 `inbox.md` 攒着
-2. **建文件夹** —— `issues/00X-{slug}/`，X 取当前最大编号 + 1，slug 用英文短句（如 `v4pro-vs-claude`）
-3. **写笔记** —— `notes.md` 写：一句话钩子、5-7 章提纲、想表达的核心观点、可能的素材来源
-4. **写源稿** —— `draft.md` 用 markdown 写完整文章。这是真源，未来所有平台版本都从它派生
-5. **平台适配** —— 跟 Claude Code 说"按 SKILL 写公众号"，自动生成 `platforms/wechat.html`，浏览器打开 → 点"复制正文（无白边）" → 粘到公众号编辑器 → 替换图片 → 发布
-6. **登记** —— 发布后到 `published.md` 加一行（标题 / 平台 / 链接），每周日补阅读数据
+## 如何使用
 
-> 实验/原始数据走 `experiments/`，截图/配图走 `assets/`，纯临时文件走 `.tmp/`（用完自己删）。
+如果你也在做技术内容，可以直接参考这里的目录和工作流，不必照搬全部工具。最小可用版本只需要：
 
----
+1. 为每篇内容建立独立文件夹
+2. 用 `notes.md` 管选题，用 `draft.md` 保存唯一源稿
+3. 把调查材料和发布成品与源稿放在一起
+4. 发布后记录数据和真实反馈
 
-## 已发布
+公众号排版规范见 [design.md](design.md)，完整流程见 [WORKFLOW.md](WORKFLOW.md)。
 
-详见 [published.md](published.md)。最新一期：
+## 关于 Joy
 
-| # | 标题 | 平台 | 日期 |
-|---|---|---|---|
-| 006 | 同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑 | 微信公众号 | _待补_ |
+我是刘志宇 Joy，一名独立开发者。我关注 AI 产品、Agent 工程、软件开发方式，以及一个人如何借助 AI 做出真正能用的产品。
 
----
+如果你想交流 AI、独立开发或内容创作，可以添加我的微信；如果这个仓库或其中的文章对你有帮助，也可以请我喝杯咖啡。
 
-## 设计原则
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets/readme/wechat-contact.jpg" width="280" alt="刘志宇 Joy 的个人微信二维码"><br>
+      <strong>添加微信</strong>
+    </td>
+    <td align="center">
+      <img src="assets/readme/wechat-coffee.jpg" width="280" alt="微信赞赏码，请 Joy 喝杯咖啡"><br>
+      <strong>请我喝杯咖啡</strong>
+    </td>
+  </tr>
+</table>
 
-- **markdown 是真源**，HTML/各平台格式是衍生产物。绝不在 HTML 里改观点
-- **`refs/` 跨期共享**，单期专属的范文/数据放各自 `experiments/`
-- **临时文件不进版本**，`.tmp/` 不保留任何内容
-- **命名一致**：`issues/00X-{英文短 slug}/`，方便排序、git friendly
+## 开放说明
+
+这个仓库公开展示 Joy Studio 的真实内容生产过程，欢迎学习和参考。文章版权归刘志宇 Joy 所有；转载或商用前请联系作者，并保留原文署名与出处。
