@@ -8,6 +8,7 @@
 
 ## 高优先（下一期候选）
 
+- 📝 **011 · AI 时代，文档开始由代码生成** — 描述系统现状的文档从代码按需生成；人只维护代码里没有的意图、约束与取舍
 - 💡 **context engineering 上位 / RAG 之死的下半场** — 接 005；长 context 把 RAG 吃到什么程度，prompt engineering 让位 context engineering（Anthropic 官方背书）
 - 💡 **多 agent 什么时候反而坏事** — 接 007；人人卷几百个子 agent，但删掉多 agent 反而更好的案例在增多
 - 💡 **版本号通胀：几周一个小版本在改变什么** — 一手可即时验证、搜索依赖最低
