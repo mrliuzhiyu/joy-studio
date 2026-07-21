@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="870" viewBox="0 0 640 870">
+  <g font-family="PingFang SC, Microsoft YaHei, sans-serif" fill="#111827">
+    <text x="30" y="42" font-size="16" letter-spacing="2" fill="#6b7280">真实场景 · 临时任务界面</text>
+    <text x="30" y="82" font-size="30" font-weight="700">用户说目标，系统生成一张比较界面</text>
+    <line x1="30" y1="105" x2="610" y2="105" stroke="#111827" stroke-width="2"/>
+
+    <rect x="88" y="132" width="522" height="82" rx="16" fill="#f6f7f9"/>
+    <circle cx="56" cy="173" r="24" fill="#e8f1ff"/>
+    <path d="M45 177c4-13 18-13 22 0M56 159a8 8 0 1 0 0 .1" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+    <text x="112" y="165" font-size="18" font-weight="700">找三家适合带孩子住的杭州酒店</text>
+    <text x="112" y="193" font-size="16" fill="#4b5563">两晚，总预算 1,500 元，要停车场和早餐</text>
+
+    <g transform="translate(30 244)">
+      <rect width="580" height="556" rx="16" fill="none" stroke="#d1d5db" stroke-width="2"/>
+      <rect x="1" y="1" width="578" height="62" rx="15" fill="#f8fafc"/>
+      <circle cx="30" cy="31" r="14" fill="#ede9fe"/>
+      <path d="M30 18l4 9 10 4-10 4-4 9-4-9-10-4 10-4Z" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linejoin="round"/>
+      <text x="56" y="37" font-size="19" font-weight="700">为这次任务生成的酒店比较</text>
+      <rect x="472" y="18" width="84" height="28" rx="14" fill="#eef2f7"/>
+      <text x="514" y="37" text-anchor="middle" font-size="13" fill="#6b7280">临时出现</text>
+
+      <g transform="translate(18 82)">
+        <rect width="170" height="294" rx="12" fill="none" stroke="#d1d5db" stroke-width="2"/>
+        <rect x="12" y="12" width="146" height="86" rx="8" fill="#eaf2ff"/>
+        <path d="M48 85V48h50v37M60 48V35h26v13M58 60h7m12 0h7m-26 12h7m12 0h7" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+        <text x="12" y="126" font-size="18" font-weight="700">湖畔酒店</text>
+        <text x="12" y="151" font-size="14" fill="#6b7280">距景区最近</text>
+        <line x1="12" y1="169" x2="158" y2="169" stroke="#e5e7eb"/>
+        <circle cx="20" cy="193" r="5" fill="#16a34a"/><text x="32" y="199" font-size="14">免费停车</text>
+        <circle cx="20" cy="221" r="5" fill="#16a34a"/><text x="32" y="227" font-size="14">含双早</text>
+        <circle cx="20" cy="249" r="5" fill="#9ca3af"/><text x="32" y="255" font-size="14">亲子房较少</text>
+        <text x="12" y="282" font-size="21" font-weight="700">1,256 元</text>
+
+        <rect x="187" width="170" height="294" rx="12" fill="none" stroke="#111827" stroke-width="3"/>
+        <rect x="199" y="12" width="146" height="86" rx="8" fill="#eef9f2"/>
+        <path d="M235 84V52l24-16 24 16v32M245 58h8m12 0h8m-28 13h8m12 0h8" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="291" y="20" width="46" height="22" rx="11" fill="#111827"/><text x="314" y="35" text-anchor="middle" font-size="11" fill="#ffffff">更合适</text>
+        <text x="199" y="126" font-size="18" font-weight="700">城西酒店</text>
+        <text x="199" y="151" font-size="14" fill="#6b7280">家庭房更大</text>
+        <line x1="199" y1="169" x2="345" y2="169" stroke="#e5e7eb"/>
+        <circle cx="207" cy="193" r="5" fill="#16a34a"/><text x="219" y="199" font-size="14">免费停车</text>
+        <circle cx="207" cy="221" r="5" fill="#16a34a"/><text x="219" y="227" font-size="14">儿童早餐</text>
+        <circle cx="207" cy="249" r="5" fill="#16a34a"/><text x="219" y="255" font-size="14">免费取消</text>
+        <text x="199" y="282" font-size="21" font-weight="700">1,318 元</text>
+
+        <rect x="374" width="170" height="294" rx="12" fill="none" stroke="#d1d5db" stroke-width="2"/>
+        <rect x="386" y="12" width="146" height="86" rx="8" fill="#fff2eb"/>
+        <path d="M422 85V45h48v40M416 85h60M432 57h7m12 0h7m-26 13h7m12 0h7" fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+        <text x="386" y="126" font-size="18" font-weight="700">运河酒店</text>
+        <text x="386" y="151" font-size="14" fill="#6b7280">价格最低</text>
+        <line x1="386" y1="169" x2="532" y2="169" stroke="#e5e7eb"/>
+        <circle cx="394" cy="193" r="5" fill="#16a34a"/><text x="406" y="199" font-size="14">免费停车</text>
+        <circle cx="394" cy="221" r="5" fill="#9ca3af"/><text x="406" y="227" font-size="14">不含早餐</text>
+        <circle cx="394" cy="249" r="5" fill="#16a34a"/><text x="406" y="255" font-size="14">免费取消</text>
+        <text x="386" y="282" font-size="21" font-weight="700">1,098 元</text>
+      </g>
+
+      <line x1="18" y1="398" x2="562" y2="398" stroke="#e5e7eb"/>
+      <text x="18" y="431" font-size="15" fill="#6b7280">系统为什么推荐城西酒店？</text>
+      <text x="18" y="462" font-size="17">预算内，家庭房更大，儿童早餐和取消规则更合适。</text>
+      <rect x="18" y="487" width="170" height="46" rx="23" fill="#111827"/>
+      <text x="103" y="516" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">查看订单草稿</text>
+      <text x="558" y="516" text-anchor="end" font-size="14" fill="#6b7280">任务结束后自动收起</text>
+    </g>
+
+    <text x="30" y="842" font-size="17" font-weight="700">不是把完整网站塞进对话，而是只生成完成这次任务所需的界面。</text>
+    <text x="30" y="858" font-size="13" fill="#9ca3af">图 3 · 中文场景复原 · 比较界面只在需要判断时出现</text>
+  </g>
+</svg>

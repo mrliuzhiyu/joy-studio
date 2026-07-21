@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="940" viewBox="0 0 640 940">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L8 4.5L0 9Z" fill="#9ca3af"/></marker>
+  </defs>
+  <g font-family="PingFang SC, Microsoft YaHei, sans-serif" fill="#111827">
+    <text x="30" y="42" font-size="16" letter-spacing="2" fill="#6b7280">真实场景 · 订酒店</text>
+    <text x="30" y="82" font-size="30" font-weight="700">助手可以跑流程，付款必须等人确认</text>
+    <line x1="30" y1="105" x2="610" y2="105" stroke="#111827" stroke-width="2"/>
+
+    <rect x="92" y="132" width="518" height="82" rx="16" fill="#f6f7f9"/>
+    <circle cx="58" cy="173" r="25" fill="#e8f1ff"/>
+    <path d="M47 177c4-13 18-13 22 0M58 159a8 8 0 1 0 0 .1" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+    <text x="116" y="165" font-size="19" font-weight="700">下周五去杭州，两晚</text>
+    <text x="116" y="193" font-size="17" fill="#4b5563">有停车场，预算每晚 700 元以内</text>
+
+    <g transform="translate(30 244)">
+      <circle cx="16" cy="16" r="15" fill="#dbeafe"/>
+      <path d="M9 17l5 5 10-12" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="22" font-size="20" font-weight="700">找到 12 家，先比较三家</text>
+      <text x="580" y="22" font-size="15" text-anchor="end" fill="#6b7280">只读查询</text>
+    </g>
+
+    <g transform="translate(30 292)">
+      <rect width="178" height="188" rx="12" fill="none" stroke="#d1d5db" stroke-width="2"/>
+      <rect x="14" y="14" width="150" height="72" rx="8" fill="#eaf2ff"/>
+      <path d="M48 72V42h48v30M58 42V31h28v11M59 53h7m12 0h7m-26 11h7m12 0h7" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <text x="14" y="116" font-size="18" font-weight="700">湖畔酒店</text>
+      <text x="14" y="143" font-size="15" fill="#6b7280">距西湖 800 米 · 可停车</text>
+      <text x="14" y="174" font-size="22" font-weight="700">628 元</text>
+
+      <rect x="201" width="178" height="188" rx="12" fill="none" stroke="#d1d5db" stroke-width="2"/>
+      <rect x="215" y="14" width="150" height="72" rx="8" fill="#eef9f2"/>
+      <path d="M249 71V46l24-15 24 15v25M260 51h8m10 0h8m-26 11h8m10 0h8" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="215" y="116" font-size="18" font-weight="700">城西酒店</text>
+      <text x="215" y="143" font-size="15" fill="#6b7280">近地铁 · 免费取消</text>
+      <text x="215" y="174" font-size="22" font-weight="700">579 元</text>
+
+      <rect x="402" width="178" height="188" rx="12" fill="none" stroke="#d1d5db" stroke-width="2"/>
+      <rect x="416" y="14" width="150" height="72" rx="8" fill="#fff2eb"/>
+      <path d="M455 72V38h38v34M449 72h50M465 48h7m10 0h7m-24 11h7m10 0h7" fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+      <text x="416" y="116" font-size="18" font-weight="700">运河酒店</text>
+      <text x="416" y="143" font-size="15" fill="#6b7280">含双早 · 可停车</text>
+      <text x="416" y="174" font-size="22" font-weight="700">688 元</text>
+    </g>
+
+    <line x1="320" y1="496" x2="320" y2="530" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g transform="translate(30 548)">
+      <rect width="580" height="200" rx="14" fill="none" stroke="#111827" stroke-width="2"/>
+      <circle cx="34" cy="34" r="17" fill="#e8f1ff"/>
+      <path d="M26 34l6 6 11-13" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="62" y="40" font-size="20" font-weight="700">订单草稿已生成</text>
+      <text x="550" y="40" text-anchor="end" font-size="15" fill="#6b7280">尚未下单</text>
+      <line x1="24" y1="63" x2="556" y2="63" stroke="#e5e7eb"/>
+      <text x="24" y="92" font-size="16" fill="#6b7280">酒店</text><text x="160" y="92" font-size="17" font-weight="700">湖畔酒店 · 湖景大床房</text>
+      <text x="24" y="124" font-size="16" fill="#6b7280">日期</text><text x="160" y="124" font-size="17">周五入住，周日离店</text>
+      <text x="24" y="156" font-size="16" fill="#6b7280">规则</text><text x="160" y="156" font-size="17">含双早 · 入住前一天可取消</text>
+      <text x="24" y="187" font-size="16" fill="#6b7280">合计</text><text x="160" y="187" font-size="22" font-weight="700">1,256 元</text>
+    </g>
+
+    <line x1="320" y1="764" x2="320" y2="798" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g transform="translate(30 816)">
+      <rect width="580" height="92" rx="46" fill="#f8fafc" stroke="#d1d5db" stroke-width="2"/>
+      <g transform="translate(48 46)" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M0-22l18 7v15c0 15-18 25-18 25S-18 15-18 0v-15Z"/><path d="M-7 0l5 6L9-7"/></g>
+      <text x="88" y="39" font-size="18" font-weight="700">最后一步交还给人</text>
+      <text x="88" y="66" font-size="15" fill="#6b7280">核对金额、日期、取消规则</text>
+      <rect x="414" y="20" width="142" height="52" rx="26" fill="#111827"/>
+      <text x="485" y="53" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">确认支付</text>
+    </g>
+
+    <text x="30" y="932" font-size="13" fill="#9ca3af">图 2 · 中文场景复原 · 搜索、草稿与付款不是同一个动作</text>
+  </g>
+</svg>
