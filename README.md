@@ -4,7 +4,7 @@
 
 Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、调研、写作、事实核查，到配图、评审和公众号排版，所有过程都沉淀在同一个仓库里。
 
-它不是一套空白模板，而是一个持续更新的内容档案。截至目前，仓库已经完成并发布 11 期长文，主题集中在 AI 编程、Agent 工程、软件开发方式和技术基础设施。
+它不是一套空白模板，而是一个持续更新的内容档案。截至目前，仓库已经沉淀 18 期长文，其中 11 期已登记发布，主题集中在 AI 编程、Agent 工程、软件开发方式和技术基础设施。
 
 ## 这个仓库有什么
 
@@ -17,13 +17,13 @@ Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、
 
 ## 最新一期
 
-### 012 · AI 时代的软件，到底是给人用，还是给 AI 用？
+### 018 · AI 写的项目，数据到底该放在哪里？
 
-过去的软件把能力做成页面、菜单和按钮，因为操作者一直是人。当 AI 开始替人操作软件，产品需要同时提供可组合的机器能力、可信的人类界面，以及独立于模型的权限边界。
+本地注册、登录和文件上传都正常，第二次部署以后，用户记录和文件却可能一起消失。问题不一定出在部署平台，而是代码与用户数据从一开始就没有独立的生命周期。
 
-这篇文章讨论 AI 成为任务入口后，软件应该如何拆分领域能力、机器契约、AI 编排、人类控制面与安全控制面。
+这篇文章讨论 AI 项目怎样区分临时状态、业务记录、对象文件和派生数据，怎样选择 SQLite 或 PostgreSQL，以及怎样用迁移、权限与恢复流程守住数据。
 
-[阅读 Markdown 源稿](issues/012-human-ui-or-agent-api/draft.md) · [查看公众号排版](issues/012-human-ui-or-agent-api/platforms/wechat.html) · [查看研究笔记](issues/012-human-ui-or-agent-api/notes.md)
+[阅读 Markdown 源稿](issues/018-ai-project-data-storage/draft.md) · [查看公众号排版](issues/018-ai-project-data-storage/platforms/wechat.html) · [查看研究笔记](issues/018-ai-project-data-storage/notes.md)
 
 ## 文章目录
 
@@ -39,7 +39,14 @@ Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、
 | 008 | [AI 让你效率翻倍，团队交付却一动没动](issues/008-spdd/draft.md) | 已发布 |
 | 009 | [OpenAI 把自己做的 AI 编程榜，停用了](issues/009-benchmark-trust/draft.md) | 已发布 |
 | 010 | [为什么 AI 时代的数据库都选 Postgres？](issues/010-just-use-postgres/draft.md) | 已发布 |
+| 011 | [产品文档为什么总是过期？AI 正在换一种写法](issues/011-code-generates-docs/draft.md) | 已完成 |
 | 012 | [AI 时代的软件，到底是给人用，还是给 AI 用？](issues/012-human-ui-or-agent-api/draft.md) | 已发布 |
+| 013 | [AI 能帮你扩展边界，但不能替你守住边界](issues/013-ai-boundaries/draft.md) | 已完成 |
+| 014 | [一天消耗超过 30 亿 Token，我是怎么让 AI 理解产品的？](issues/014-three-billion-tokens/draft.md) | 已完成 |
+| 015 | [AI 时代，详细的 PRD 还有必要吗？](issues/015-multi-window-production-stability/draft.md) | 已完成 |
+| 016 | [AI 写的项目：从自己能用，到别人敢用](issues/016-demo-to-service/draft.md) | 已完成 |
+| 017 | [AI 写的项目，怎么部署到网上给别人用？](issues/017-deploy-ai-project/draft.md) | 已完成 |
+| 018 | [AI 写的项目，数据到底该放在哪里？](issues/018-ai-project-data-storage/draft.md) | 已完成 |
 
 正式推送链接与发布数据见 [published.md](published.md)。
 
