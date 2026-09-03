@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>事故到不变量</title>
+<style>
+:root{--ink:#172033;--muted:#61717f;--line:#d8e1e8;--blue:#316ea6;--blue-soft:#edf5fc;--teal:#147d72;--teal-soft:#eaf7f4;--amber:#b86b13;--amber-soft:#fff7e9}*{box-sizing:border-box}html,body{margin:0;width:1200px;height:820px;overflow:hidden;background:#fbfcfd}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:var(--ink)}.wrap{width:1200px;height:820px;padding:56px 64px}.kicker{font:700 14px/1.2 Arial,sans-serif;letter-spacing:3px;color:var(--blue)}.title{margin-top:14px;font-size:38px;line-height:1.25;font-weight:750}.desc{margin-top:10px;font-size:18px;color:var(--muted)}.head{margin-top:34px;display:grid;grid-template-columns:255px 70px 290px 70px 1fr;align-items:end}.head div{font-size:15px;font-weight:700;color:#70808d;letter-spacing:1px}.head div:first-child{color:var(--amber)}.head div:last-child{color:var(--teal)}.head .blank{color:transparent}.rows{margin-top:12px}.row{display:grid;grid-template-columns:255px 70px 290px 70px 1fr;align-items:center;margin-bottom:18px}.cell{min-height:132px;border:1px solid var(--line);padding:22px 21px;background:#fff}.incident{border:1px solid #e5bd7e;background:var(--amber-soft)}.root{border-color:#b8cee1;background:var(--blue-soft)}.gate{border:1px solid #83c4b8;background:var(--teal-soft)}.cell-title{font-size:20px;font-weight:750}.cell-copy{margin-top:10px;font-size:15px;line-height:1.55;color:var(--muted)}.arrow{text-align:center;font-size:30px;color:#76a69e}.footer{margin-top:24px;background:#edf8f5;border:1px solid #a9d5cd;padding:16px 18px;text-align:center;font-size:20px;font-weight:750;color:#105f58}.footer span{font-weight:400;color:#4f716d;margin-left:12px}.caption{position:absolute;left:64px;bottom:28px;width:1072px;border-top:1px solid var(--line);padding-top:12px;text-align:center;font-size:14px;color:#7b8994}
+</style></head>
+<body><main class="wrap">
+  <div class="kicker">INCIDENT → INVARIANT</div>
+  <div class="title">事故复盘只有变成自动门禁，才会留在系统里</div>
+  <div class="desc">提醒会被忘记；单一真源和机器检查会在下一次并行任务中继续生效。</div>
+  <section class="head"><div>真实事故</div><div class="blank">→</div><div>共同根因</div><div class="blank">→</div><div>留下的工程规则</div></section>
+  <section class="rows">
+    <div class="row"><div class="cell incident"><div class="cell-title">两个迁移同时叫 095</div><div class="cell-copy">单人时代的递增编号<br>遇到并行窗口立即撞车</div></div><div class="arrow">→</div><div class="cell root"><div class="cell-title">共享取号点</div><div class="cell-copy">每个窗口都先读取同一个下一个编号</div></div><div class="arrow">→</div><div class="cell gate"><div class="cell-title">时间戳命名 + CI</div><div class="cell-copy">消灭共享编号；重复、乱名和错误目录自动失败</div></div></div>
+    <div class="row"><div class="cell incident"><div class="cell-title">worker 漏掉五项初始化</div><div class="cell-copy">代码搬了，网络、技能、连接池和记忆没有一起搬</div></div><div class="arrow">→</div><div class="cell root"><div class="cell-title">同一事实写两份</div><div class="cell-copy">两个进程入口依靠人肉复制保持一致</div></div><div class="arrow">→</div><div class="cell gate"><div class="cell-title">统一启动入口 + 一致性测试</div><div class="cell-copy">初始化只有一个物理实现，入口禁止各写一套</div></div></div>
+    <div class="row"><div class="cell incident"><div class="cell-title">旧镜像进入生产</div><div class="cell-copy">健康检查全绿，真实后台任务全部卡住</div></div><div class="arrow">→</div><div class="cell root"><div class="cell-title">部署列表手工维护</div><div class="cell-copy">构建、启动与实际服务集合发生漂移</div></div><div class="arrow">→</div><div class="cell gate"><div class="cell-title">版本戳 + 跨进程冒烟检查</div><div class="cell-copy">逐容器核验 Git SHA，再跑真实任务链</div></div></div>
+  </section>
+  <div class="footer">生产级不是零事故<span>是同一类事故不再依赖记忆</span></div>
+  <div class="caption">图 4 · 从事故到工程不变量 · 作者根据个人项目实践整理</div>
+</main></body></html>

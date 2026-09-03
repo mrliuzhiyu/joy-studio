@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  *{box-sizing:border-box}html,body{width:1200px;height:800px;margin:0;overflow:hidden;background:#fff}body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:#111}.canvas{position:relative;width:1200px;height:800px;padding:48px 54px;background:#fff}.eyebrow{font-size:17px;font-weight:750;letter-spacing:4px;color:#8b8b8b}.title{margin:16px 0 8px;font-size:46px;line-height:1.2;letter-spacing:-1px}.subtitle{margin:0;color:#777;font-size:21px}.flow{display:grid;grid-template-columns:260px 70px 330px 70px 350px;align-items:center;margin-top:54px}.box{min-height:338px;border:2px solid #111;background:#fff}.box h2{margin:0;padding:19px 22px;background:#111;color:#fff;font-size:21px;letter-spacing:1px}.box .content{padding:18px 22px}.item{padding:13px 0;border-bottom:1px solid #ddd;font-size:18px;font-weight:650}.item:last-child{border-bottom:0}.arrow{font-size:45px;text-align:center;color:#777}.gate .question{padding:13px 0;border-bottom:1px solid #ddd}.gate .question:last-child{border-bottom:0}.gate b{display:block;font-size:18px}.gate span{display:block;margin-top:5px;font-size:14px;color:#777}.outputs{display:grid;grid-template-rows:1fr 1fr;gap:14px;height:338px}.output{border:2px solid #111;padding:18px 21px}.output.reject{border-color:#aaa;color:#777;background:#f7f7f7}.output.pass{background:#111;color:#fff}.output h3{margin:0 0 12px;font-size:20px}.output p{margin:0;font-size:17px;line-height:1.55;font-weight:650}.quote{position:absolute;left:54px;right:54px;bottom:48px;border-top:2px solid #111;padding-top:20px;display:flex;align-items:baseline;justify-content:space-between}.quote b{font-size:28px}.quote span{font-size:16px;color:#777}
+</style>
+</head>
+<body>
+<main class="canvas">
+  <div class="eyebrow">03 · 产品边界</div>
+  <h1 class="title">AI 开始实现以前，先让模糊目标经过四道边界</h1>
+  <p class="subtitle">边界不是限制 AI 的能力，而是决定哪些能力值得进入产品</p>
+  <section class="flow">
+    <div class="box">
+      <h2>模糊目标</h2>
+      <div class="content">
+        <div class="item">全面审查</div>
+        <div class="item">生产级收口</div>
+        <div class="item">补齐所有边缘情况</div>
+        <div class="item">加强安全与可靠性</div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="box gate">
+      <h2>停止条件</h2>
+      <div class="content">
+        <div class="question"><b>产品</b><span>是否改善核心用户动作</span></div>
+        <div class="question"><b>风险</b><span>是否对应真实影响与恢复成本</span></div>
+        <div class="question"><b>复杂度</b><span>是否替换旧负担或增加新状态</span></div>
+        <div class="question"><b>稳定性</b><span>是否扩大生产与业务变更面</span></div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="outputs">
+      <div class="output reject"><h3>暂时不做</h3><p>只有理论可能<br>没有当前业务结果</p></div>
+      <div class="output pass"><h3>进入实现</h3><p>底线明确 · 范围有限<br>主路径可端到端验证</p></div>
+    </div>
+  </section>
+  <div class="quote"><b>AI 可以执行边界，不能替产品承担边界。</b><span>真正稀缺的是停止条件</span></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>017 cover</title>
+<script>if(location.hash==="#square")document.documentElement.classList.add("square")</script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:900px;height:383px;overflow:hidden;background:#fff}
+body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#15191d}
+.canvas{position:relative;width:900px;height:383px;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fff 58%,#f7f9fa 100%)}
+.heading{position:absolute;z-index:2;top:27px;left:258px;width:383px;text-align:center}
+.meta{font:600 11px/1.2 Arial,"PingFang SC",sans-serif;letter-spacing:1.8px;color:#74808a}
+.title{margin-top:14px;color:#14191d}
+.title-small{font-size:20px;line-height:1.25;font-weight:720;letter-spacing:.3px}
+.title-main{margin-top:5px;font-size:34px;line-height:1.2;font-weight:800;letter-spacing:-1.1px}
+.title-main span{display:block}
+.scene{position:absolute;left:0;right:0;bottom:0;height:172px}
+.scene svg{display:block;width:900px;height:172px}
+html.square,html.square body{width:383px}
+html.square .canvas{transform:translateX(-258px)}
+</style>
+</head>
+<body>
+<main class="canvas">
+  <section class="heading" aria-label="AI 写的项目，怎么部署到网上给别人用">
+    <div class="meta">AI 时代的基建 · 017</div>
+    <div class="title">
+      <div class="title-small">AI 写的项目</div>
+      <div class="title-main"><span>怎么部署到网上</span><span>给别人用？</span></div>
+    </div>
+  </section>
+
+  <div class="scene" aria-hidden="true">
+    <svg viewBox="0 0 900 172" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#d9e1e5" stop-opacity="0"/>
+          <stop offset=".2" stop-color="#d9e1e5"/>
+          <stop offset=".8" stop-color="#d9e1e5"/>
+          <stop offset="1" stop-color="#d9e1e5" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="M16 131H249c29 0 31-31 62-31h277c31 0 33 31 62 31h234" fill="none" stroke="url(#fade)" stroke-width="1.2"/>
+      <g fill="#fff" stroke="#cfd9de" stroke-width="1.2">
+        <circle cx="83" cy="131" r="3.5"/><circle cx="153" cy="131" r="3.5"/><circle cx="747" cy="131" r="3.5"/><circle cx="817" cy="131" r="3.5"/>
+      </g>
+
+      <!-- 本地电脑 -->
+      <g transform="translate(287 71)">
+        <rect x="0" y="0" width="78" height="55" rx="5" fill="#fff" stroke="#1a2024" stroke-width="1.7"/>
+        <path d="M0 14h78" stroke="#1a2024" stroke-width="1.7"/>
+        <circle cx="9" cy="7" r="1.5" fill="#738995"/><circle cx="15" cy="7" r="1.5" fill="#bcc9cf"/><circle cx="21" cy="7" r="1.5" fill="#dce4e7"/>
+        <rect x="13" y="26" width="41" height="5" rx="2.5" fill="#dce7eb"/>
+        <rect x="13" y="38" width="53" height="4" rx="2" fill="#edf2f4"/>
+        <path d="M-8 55h94l-9 9H1Z" fill="#fff" stroke="#1a2024" stroke-width="1.7" stroke-linejoin="round"/>
+      </g>
+
+      <!-- 域名与公网 -->
+      <g transform="translate(400 73)">
+        <circle cx="28" cy="28" r="28" fill="#edf3f6" stroke="#4f7185" stroke-width="1.7"/>
+        <path d="M0 28h56M28 0c8 8 12 18 12 28s-4 20-12 28M28 0c-8 8-12 18-12 28s4 20 12 28M6 17h44M6 39h44" fill="none" stroke="#4f7185" stroke-width="1.35"/>
+        <circle cx="28" cy="28" r="4" fill="#4f7185"/>
+      </g>
+
+      <!-- HTTPS 公共入口 -->
+      <g transform="translate(485 69)">
+        <path d="M29 0l27 11v27c0 25-17 41-27 46C19 79 2 63 2 38V11Z" fill="#fff" stroke="#1a2024" stroke-width="1.7"/>
+        <rect x="18" y="28" width="22" height="19" rx="3" fill="#edf3f6" stroke="#4f7185" stroke-width="1.4"/>
+        <path d="M22 28v-5c0-10 14-10 14 0v5" fill="none" stroke="#4f7185" stroke-width="1.6"/>
+      </g>
+
+      <!-- 线上应用与数据 -->
+      <g transform="translate(570 69)">
+        <rect x="0" y="0" width="61" height="72" rx="7" fill="#fff" stroke="#1a2024" stroke-width="1.7"/>
+        <rect x="11" y="13" width="39" height="21" rx="4" fill="#edf3f6" stroke="#4f7185" stroke-width="1.2"/>
+        <path d="M17 26h7l4-8 7 13 5-7h7" fill="none" stroke="#4f7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 47h37M12 56h26" stroke="#d3dde2" stroke-width="3" stroke-linecap="round"/>
+      </g>
+
+      <g fill="none" stroke="#4f7185" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M365 100h35M456 100h31M543 100h27"/>
+        <path d="M391 96l9 4-9 4M478 96l9 4-9 4M561 96l9 4-9 4"/>
+      </g>
+    </svg>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  *{box-sizing:border-box}html,body{width:1200px;height:800px;margin:0;overflow:hidden;background:#fff}body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:#111}.canvas{position:relative;width:1200px;height:800px;padding:48px 54px;background:#fff}.eyebrow{font-size:17px;font-weight:750;letter-spacing:4px;color:#8b8b8b}.title{margin:16px 0 8px;font-size:46px;line-height:1.2;letter-spacing:-1px}.subtitle{margin:0;color:#777;font-size:21px}.field{position:relative;margin-top:62px;height:390px;border-left:2px solid #111;border-bottom:2px solid #111}.axis-y{position:absolute;left:-1px;top:-32px;font-size:16px;font-weight:800;letter-spacing:2px}.axis-x{position:absolute;right:0;bottom:-36px;font-size:16px;font-weight:800;letter-spacing:2px}.line{position:absolute;left:72px;height:0;border-top:4px solid #111}.line:after{content:"";position:absolute;right:-2px;top:-9px;border-left:16px solid #111;border-top:8px solid transparent;border-bottom:8px solid transparent}.capability{top:86px;width:905px}.judgment{top:270px;width:392px;border-top-color:#888}.judgment:after{border-left-color:#888}.line-label{position:absolute;left:0;top:-45px;font-size:26px;font-weight:850}.line-note{position:absolute;left:0;top:19px;font-size:18px;color:#777}.capability .line-note{color:#444}.gap{position:absolute;left:506px;top:124px;width:380px;height:176px;border-left:1px dashed #999;border-right:1px dashed #999}.gap b{display:block;margin:56px 0 0;text-align:center;font-size:25px}.gap span{display:block;margin-top:9px;text-align:center;font-size:16px;color:#777}.human{position:absolute;left:72px;bottom:24px;font-size:17px;color:#777}.verdict{position:absolute;left:54px;right:54px;bottom:48px;border-top:2px solid #111;padding-top:20px;display:flex;align-items:baseline;justify-content:space-between}.verdict b{font-size:28px}.verdict span{font-size:16px;color:#777}
+</style>
+</head>
+<body>
+<main class="canvas">
+  <div class="eyebrow">01 · 边界失衡</div>
+  <h1 class="title">实现范围正在扩张，判断边界没有自动跟上</h1>
+  <p class="subtitle">AI 降低了把可能性写成代码的成本，没有降低拥有这些代码的成本</p>
+  <section class="field">
+    <div class="axis-y">进入系统的可能性</div>
+    <div class="axis-x">AI 能力与使用时间 →</div>
+    <div class="line capability"><b class="line-label">能做到</b><span class="line-note">功能 · 校验 · 重试 · 回退 · 状态 · 服务</span></div>
+    <div class="line judgment"><b class="line-label">值得做</b><span class="line-note">用户结果 · 业务影响 · 真实风险</span></div>
+    <div class="gap"><b>边界缺口</b><span>更多实现进入系统，却没有同等强度的取舍</span></div>
+    <div class="human">判断边界来自承担用户、收入和生产后果的人</div>
+  </section>
+  <div class="verdict"><b>写出一个功能越来越便宜，拥有一个功能仍然很贵。</b><span>实现成本下降 ≠ 维护成本消失</span></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>公网请求路径</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:750px;overflow:hidden;background:#fff}
+body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#182027}
+.figure{width:1200px;height:750px;background:linear-gradient(180deg,#fff 0%,#fff 73%,#f7f9fa 100%)}
+svg{display:block;width:1200px;height:750px}
+</style>
+</head>
+<body>
+<main class="figure">
+<svg viewBox="0 0 1200 750" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="用户通过域名、DNS、HTTPS 公共入口、应用端口访问数据库的路径">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#55788b"/>
+    </marker>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#9aa9b1" flood-opacity=".12"/>
+    </filter>
+  </defs>
+
+  <text x="600" y="72" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="2" fill="#74808a">用户输入域名以后，请求才开始上路</text>
+
+  <!-- 用户设备与地址栏 -->
+  <g transform="translate(55 266)" filter="url(#soft)">
+    <rect x="0" y="0" width="165" height="274" rx="25" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <rect x="16" y="30" width="133" height="200" rx="10" fill="#fbfcfc" stroke="#d9e1e5" stroke-width="2"/>
+    <rect x="31" y="52" width="103" height="25" rx="12.5" fill="#edf2f4"/>
+    <text x="82.5" y="70" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="600" fill="#435966">your-domain.com</text>
+    <rect x="34" y="105" width="74" height="10" rx="5" fill="#dce7eb"/>
+    <rect x="34" y="132" width="96" height="8" rx="4" fill="#edf2f4"/>
+    <rect x="34" y="151" width="82" height="8" rx="4" fill="#edf2f4"/>
+    <circle cx="82.5" cy="251" r="7" fill="#fff" stroke="#9aabb3" stroke-width="2"/>
+  </g>
+  <text x="137" y="580" text-anchor="middle" font-size="22" font-weight="700" fill="#182027">用户浏览器</text>
+
+  <!-- DNS 是一次地址查询 -->
+  <g transform="translate(300 122)">
+    <circle cx="95" cy="95" r="78" fill="#edf3f6" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M17 95h156M95 17c24 21 37 47 37 78s-13 57-37 78M95 17c-24 21-37 47-37 78s13 57 37 78M30 57h130M30 133h130" fill="none" stroke="#55788b" stroke-width="2"/>
+    <circle cx="95" cy="95" r="8" fill="#55788b"/>
+    <text x="95" y="211" text-anchor="middle" font-size="22" font-weight="700" fill="#182027">DNS</text>
+  </g>
+  <path d="M193 280C232 205 270 183 317 194" fill="none" stroke="#55788b" stroke-width="3" stroke-dasharray="8 9" marker-end="url(#arrow)"/>
+  <path d="M337 262C292 299 250 319 205 320" fill="none" stroke="#9aabb3" stroke-width="2.5" stroke-dasharray="7 9" marker-end="url(#arrow)"/>
+
+  <!-- HTTPS 公共入口 -->
+  <g transform="translate(385 319)">
+    <path d="M0 63h113" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="56" y="45" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#55788b">HTTPS · 443</text>
+  </g>
+  <g transform="translate(515 278)" filter="url(#soft)">
+    <path d="M75 0l70 28v70c0 62-44 103-70 116C49 201 5 160 5 98V28Z" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <rect x="47" y="67" width="56" height="48" rx="7" fill="#edf3f6" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M58 67V54c0-24 34-24 34 0v13" fill="none" stroke="#55788b" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="75" cy="90" r="5" fill="#55788b"/>
+    <path d="M75 95v10" stroke="#55788b" stroke-width="3" stroke-linecap="round"/>
+    <text x="75" y="250" text-anchor="middle" font-size="22" font-weight="700" fill="#182027">公共入口</text>
+    <text x="75" y="281" text-anchor="middle" font-size="17" fill="#74808a">Nginx 或托管平台</text>
+  </g>
+
+  <!-- 内部应用端口 -->
+  <path d="M665 382h90" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="710" y="362" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#55788b">内部端口 · 8000</text>
+  <g transform="translate(775 280)" filter="url(#soft)">
+    <rect x="0" y="0" width="190" height="205" rx="18" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <rect x="29" y="30" width="132" height="60" rx="9" fill="#edf3f6" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M43 65h20l12-21 22 36 14-25h34" fill="none" stroke="#55788b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34 125h122M34 153h87" stroke="#d3dde2" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="151" cy="165" r="7" fill="#55788b"/>
+    <text x="95" y="243" text-anchor="middle" font-size="22" font-weight="700" fill="#182027">应用进程</text>
+  </g>
+
+  <!-- 持久数据 -->
+  <path d="M965 382h59" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+  <g transform="translate(1039 310)" filter="url(#soft)">
+    <ellipse cx="65" cy="25" rx="65" ry="25" fill="#edf3f6" stroke="#182027" stroke-width="3"/>
+    <path d="M0 25v118c0 14 29 25 65 25s65-11 65-25V25" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <path d="M0 79c0 14 29 25 65 25s65-11 65-25M0 124c0 14 29 25 65 25s65-11 65-25" fill="none" stroke="#55788b" stroke-width="2.5"/>
+    <text x="65" y="208" text-anchor="middle" font-size="22" font-weight="700" fill="#182027">数据库</text>
+  </g>
+
+  <path d="M54 646H1146" stroke="#e0e6e9" stroke-width="2"/>
+  <g font-size="17" fill="#74808a" text-anchor="middle">
+    <text x="137" y="686">发出请求</text><text x="590" y="686">验证域名并加密传输</text><text x="870" y="686">执行业务逻辑</text><text x="1104" y="686">保存长期数据</text>
+  </g>
+</svg>
+</main>
+</body>
+</html>

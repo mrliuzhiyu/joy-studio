@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>点线面测试</title>
+<style>*{box-sizing:border-box}html,body{margin:0;width:1200px;height:860px;overflow:hidden;background:#fff}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#172033}.wrap{width:1200px;height:860px;padding:62px 68px}.kicker{font:600 15px/1.2 Arial,sans-serif;letter-spacing:3px;color:#8a93a3}.title{margin-top:14px;font-size:38px;line-height:1.3;font-weight:720}.desc{margin-top:10px;font-size:18px;color:#6d7583}.diagram{margin-top:24px;width:1064px;height:630px}</style></head>
+<body><main class="wrap">
+  <div class="kicker">POINT · LINE · PLANE</div><div class="title">证据需要从局部因果，一直走到真实环境</div><div class="desc">点证明能力，线证明连续性，面证明产品结果。</div>
+  <svg class="diagram" viewBox="0 0 1064 630" role="img" aria-label="点线面三种测试在同一个环境中逐层扩大证据范围">
+    <defs><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#64748b" flood-opacity=".12"/></filter><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#6d7d9a"/></marker></defs>
+    <rect x="52" y="30" width="960" height="510" rx="48" fill="#f8fafc" stroke="#9ba7ba" stroke-width="3" stroke-dasharray="12 10"/>
+    <text x="88" y="76" font-size="28" font-weight="700" fill="#4e596b">面：真实环境</text><text x="88" y="108" font-size="18" fill="#768195">用户、平台、权限、网络与真实数据同时进入</text>
+    <g fill="#fff" stroke-width="2"><circle cx="126" cy="448" r="35" stroke="#d89773"/><circle cx="938" cy="126" r="35" stroke="#7995d5"/><circle cx="915" cy="460" r="35" stroke="#6cab8e"/><circle cx="143" cy="155" r="35" stroke="#a783cf"/></g>
+    <g font-size="17" font-weight="700" text-anchor="middle"><text x="126" y="454" fill="#8b4d31">用户</text><text x="938" y="132" fill="#3f5e9f">平台</text><text x="915" y="466" fill="#2f7255">网络</text><text x="143" y="161" fill="#6c4998">权限</text></g>
+    <path d="M214 313C285 190 374 190 432 313S586 436 648 313S805 192 861 313" fill="none" stroke="#dce3ef" stroke-width="34" stroke-linecap="round"/>
+    <path d="M214 313C285 190 374 190 432 313S586 436 648 313S805 192 861 313" fill="none" stroke="#6f83bf" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <text x="532" y="199" text-anchor="middle" font-size="28" font-weight="700" fill="#44557f">线：状态连续性</text><text x="532" y="230" text-anchor="middle" font-size="18" fill="#66728d">顺序正确 · 中断可恢复 · 旧状态不污染新结果</text>
+    <g filter="url(#shadow)"><circle cx="214" cy="313" r="52" fill="#fff1eb" stroke="#e18f69" stroke-width="3"/><circle cx="432" cy="313" r="52" fill="#eef3ff" stroke="#718fd4" stroke-width="3"/><circle cx="648" cy="313" r="52" fill="#edf8f3" stroke="#68ad8d" stroke-width="3"/><circle cx="861" cy="313" r="52" fill="#f6efff" stroke="#9b78ca" stroke-width="3"/></g>
+    <g font-size="23" font-weight="700" text-anchor="middle"><text x="214" y="321" fill="#994b2c">输入</text><text x="432" y="321" fill="#3d5eaa">处理</text><text x="648" y="321" fill="#2d7455">确认</text><text x="861" y="321" fill="#674493">结果</text></g>
+    <circle cx="432" cy="313" r="86" fill="none" stroke="#395cae" stroke-width="3" stroke-dasharray="8 8"/>
+    <path d="M432 399V439" stroke="#395cae" stroke-width="3" marker-end="url(#arrow)"/><text x="432" y="476" text-anchor="middle" font-size="25" font-weight="700" fill="#36579d">点：局部因果</text><text x="432" y="505" text-anchor="middle" font-size="17" fill="#68789b">给定输入，输出是否稳定</text>
+    <g transform="translate(180 572)"><circle cx="0" cy="0" r="8" fill="#395cae"/><text x="20" y="7" font-size="20" font-weight="700" fill="#4a566b">点：能力守约</text><path d="M220 0h54" stroke="#6f83bf" stroke-width="4"/><text x="294" y="7" font-size="20" font-weight="700" fill="#4a566b">线：状态可续</text><rect x="506" y="-12" width="30" height="24" rx="6" fill="none" stroke="#8794a8" stroke-width="2" stroke-dasharray="5 4"/><text x="551" y="7" font-size="20" font-weight="700" fill="#4a566b">面：结果成立</text></g>
+  </svg>
+</main></body></html>

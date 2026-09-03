@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>运行环境与数据生命周期</title>
+<style>*{box-sizing:border-box}html,body{margin:0;width:1200px;height:760px;overflow:hidden;background:#fdfdfb}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#191b1c}svg{display:block;width:1200px;height:760px}</style>
+</head><body>
+<svg viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="应用版本可以替换，关系数据库和对象存储跨版本保留">
+  <text x="92" y="79" font-size="15" font-weight="600" letter-spacing="2" fill="#777b7d">01 / 生命周期</text>
+  <text x="92" y="122" font-size="29" font-weight="700" fill="#191b1c">应用会被替换，数据不应该跟着消失</text>
+  <path d="M92 151H1108" stroke="#d7d9d8" stroke-width="1"/>
+
+  <text x="92" y="239" font-size="13" letter-spacing="2" fill="#8b8e90">运行层</text>
+  <path d="M185 234H1090" stroke="#d7d9d8" stroke-width="1" stroke-dasharray="3 7"/>
+
+  <g transform="translate(260 276)">
+    <path d="M0 0h134l23 23v126H0Z" fill="#fdfdfb" stroke="#aeb3b4" stroke-width="1.5"/>
+    <path d="M134 0v23h23" fill="none" stroke="#aeb3b4" stroke-width="1.5"/>
+    <text x="20" y="55" font-family="Arial,sans-serif" font-size="15" letter-spacing="2" fill="#8b8e90">RELEASE 01</text>
+    <path d="M20 82h82M20 102h61" stroke="#d2d4d3" stroke-width="5"/>
+    <path d="M13 137L145 12" stroke="#777b7d" stroke-width="2"/>
+  </g>
+  <path d="M456 350h89" stroke="#777b7d" stroke-width="1.5"/>
+  <path d="M537 344l9 6-9 6" fill="none" stroke="#777b7d" stroke-width="1.5"/>
+  <g transform="translate(590 254)">
+    <path d="M0 0h165l28 28v153H0Z" fill="#fdfdfb" stroke="#191b1c" stroke-width="2"/>
+    <path d="M165 0v28h28" fill="none" stroke="#191b1c" stroke-width="2"/>
+    <text x="24" y="65" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#191b1c">RELEASE 02</text>
+    <path d="M24 98h103M24 121h76" stroke="#b9bdbc" stroke-width="6"/>
+    <path d="M24 150h28l16-17 23 29 25-42 25 30h24" fill="none" stroke="#777b7d" stroke-width="2"/>
+  </g>
+  <text x="338" y="460" text-anchor="middle" font-size="17" fill="#777b7d">旧进程与本地目录</text>
+  <text x="686" y="460" text-anchor="middle" font-size="17" font-weight="600" fill="#191b1c">新应用版本</text>
+
+  <path d="M92 514H1108" stroke="#191b1c" stroke-width="1.5"/>
+  <text x="92" y="554" font-size="13" letter-spacing="2" fill="#777b7d">数据层</text>
+  <rect x="185" y="535" width="905" height="155" fill="#f3f2ee"/>
+  <path d="M686 435v8M686 474v61" stroke="#191b1c" stroke-width="1.5"/>
+
+  <g transform="translate(405 574)">
+    <ellipse cx="70" cy="14" rx="70" ry="14" fill="#fdfdfb" stroke="#191b1c" stroke-width="1.8"/>
+    <path d="M0 14v55c0 9 31 16 70 16s70-7 70-16V14" fill="#fdfdfb" stroke="#191b1c" stroke-width="1.8"/>
+    <path d="M0 42c0 9 31 16 70 16s70-7 70-16" fill="none" stroke="#aeb3b4" stroke-width="1.3"/>
+    <text x="70" y="111" text-anchor="middle" font-size="17" font-weight="600" fill="#191b1c">业务记录</text>
+  </g>
+  <path d="M545 617h83" stroke="#777b7d" stroke-width="1.4"/>
+  <g transform="translate(655 578)">
+    <path d="M0 11h42L55 0h86v79H0Z" fill="#fdfdfb" stroke="#191b1c" stroke-width="1.8"/>
+    <rect x="31" y="30" width="78" height="32" fill="#f3f2ee" stroke="#777b7d" stroke-width="1.2"/>
+    <path d="M38 56l17-17 15 13 11-9 20 13" fill="none" stroke="#777b7d" stroke-width="1.3"/>
+    <text x="70" y="111" text-anchor="middle" font-size="17" font-weight="600" fill="#191b1c">用户文件</text>
+  </g>
+  <text x="938" y="614" font-size="15" fill="#777b7d">跨发布保留</text>
+  <text x="938" y="642" font-size="15" fill="#777b7d">独立备份与恢复</text>
+</svg>
+</body></html>

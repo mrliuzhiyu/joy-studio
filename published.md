@@ -9,11 +9,12 @@
 | 005 | 折腾了两年的 AI 记忆系统，最后是一个 markdown 文件 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/005-agent-memory/notes.md) |
 | 006 | 同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/006-three-stages/notes.md) |
 | 007 | 你写的 Agent Harness，正在变成你的技术债 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/007-harness-tech-debt/notes.md) |
-| 008 | AI 让你效率翻倍，团队交付却一动没动 | 微信公众号 | _待发布_ | _待发布_ | — | — | — | [notes](issues/008-spdd/notes.md) |
-| 009 | OpenAI 把自己做的 AI 编程榜，停用了 | 微信公众号 | _待发布_ | _待发布_ | — | — | — | [notes](issues/009-benchmark-trust/notes.md) |
-| 010 | 向量数据库火了两年，大家又搬回了 Postgres | 微信公众号 | _待发布_ | _待发布_ | — | — | — | [notes](issues/010-just-use-postgres/notes.md) |
+| 008 | AI 让你效率翻倍，团队交付却一动没动 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/008-spdd/notes.md) |
+| 009 | OpenAI 把自己做的 AI 编程榜，停用了 | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/009-benchmark-trust/notes.md) |
+| 010 | 向量数据库火了两年，大家又搬回了 Postgres | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/010-just-use-postgres/notes.md) |
+| 012 | AI 时代的软件，到底是给人用，还是给 AI 用？ | 微信公众号 | _待补_ | _待补_ | — | — | — | [notes](issues/012-human-ui-or-agent-api/notes.md) |
 
-> 008 / 009 / 010 内容已完成（draft + 图 + wechat.html），标 _待发布_；正式推送后补发布日与链接。
+> 全部文章均已发布；缺失的发布日期与正式推送链接仍标记为 _待补_。
 
 ---
 

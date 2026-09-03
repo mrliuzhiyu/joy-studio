@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一天消耗超过 30 亿 Token，我是怎么让 AI 理解产品的？ · 公众号版</title>
+</head>
+<body style="margin:0;background:rgb(244,245,247);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei UI','Microsoft YaHei',Arial,sans-serif;">
+
+<button id="copy-btn" onclick="copyWxArticle()" style="position:fixed;top:20px;right:20px;padding:10px 20px;background:rgb(17,24,39);color:white;border:0;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15);z-index:999;">复制正文（无白边）</button>
+
+<article id="wx-body" style="box-sizing:border-box;width:100%;max-width:677px;margin:0 auto;background:white;padding:40px 24px 60px;">
+  <h1 style="margin:0 8px 14px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:25px;line-height:1.48;letter-spacing:0.2px;color:rgb(15,23,42);font-weight:700;">一天消耗超过 30 亿 Token，我是怎么让 AI 理解产品的？</h1>
+  <p style="margin:0 8px 42px;font-size:13px;line-height:1.75;letter-spacing:0.45px;color:rgb(155,162,174);"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;">2026 年 7 月 29 日 · AI 与产品认知 · 刘志宇 Joy</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">有一天，我的 AI 单日峰值用量达到 33.5 亿 Token。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">同一张面板上，最长一次任务持续了 11 小时 9 分。也就是说，单日消耗超过 30 亿 Token，单次任务超过 10 小时。</span></p>
+
+  <section style="margin:34px 0 42px;">
+    <img src="../assets/figure-00-token-activity.png" alt="数据截图 · 单日峰值 33.5 亿 Token，最长一次任务 11 小时 9 分" width="1077" height="769" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.4px;color:rgb(148,155,168);">数据截图 · 单日峰值 33.5 亿 Token，最长一次任务 11 小时 9 分</span></p>
+  </section>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">如果把 Token 理解成模型写了多少东西，这个数字很难解释。模型最终留下的代码和文档远没有那么多。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">我拆过当天一条可以复核的会话。它累计消耗 1.23 亿 Token，其中 99.68% 是输入，输出只占 0.32%。输入里面，又有 97.5% 是缓存命中。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">模型大部分时间不在写，而是在读。它反复读取规格、代码、测试和运行反馈，再根据这些材料临时建立一套对产品的理解。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这让我开始用另一种方式理解 Token。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">Token 不是代码产量，更接近模型重建认知时占用的带宽。</strong></span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">AI 能不能把产品做对，取决于它重建出来的认知是否完整。代码生成只是这套认知在某个局部上的一次输出。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-01-cognitive-bandwidth.png" alt="图 1 · 大量输入被压缩成临时产品认知，再产生少量代码输出" width="1200" height="780" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.4px;color:rgb(148,155,168);">图 1 · 大量输入被压缩成临时产品认知，再产生少量代码输出</span></p>
+  </section>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">01</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">上下文窗口不是记忆，而是一次临时重建</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">人长期参与一个产品，会逐渐形成很多没有写下来的理解。为什么当初这样设计，哪个状态最危险，哪条路径是主路径，某个看似多余的判断实际上在保护什么。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">AI 没有这种连续经验。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">每次新任务开始，它只能根据当前上下文重新推断产品是什么。规格文档告诉它意图，代码告诉它已经存在的结构，测试告诉它哪些行为被固定下来，运行反馈告诉它真实世界发生了什么。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这些材料不是记忆本身，只是重建记忆的原料。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">缓存命中可以让重复读取变便宜，但不会让上一次会话的理解自动成为下一次会话的理解。只要上下文重新组织，模型仍然要重新判断各部分之间的关系。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这也是为什么长时间使用 AI 做产品时，输入 Token 会远大于输出。每次实现、审查和测试，都在重新建立一份局部世界模型。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">真正影响质量的不是上下文有多长，而是它能不能让模型恢复出同一套因果关系。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">一份很长但互相矛盾的文档，只会让模型在几种解释之间摇摆。一份很短但写清目标、状态、不变量和验收证据的规格，反而更容易形成稳定认知。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">02</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">产品认知不是需求列表，而是一套因果模型</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">知道页面上有什么按钮，不等于理解产品。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">真正的产品认知至少要解释三种真相。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">意图真相</strong>回答产品为什么存在，用户最后发生什么变化，当前明确不解决什么。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">结构真相</strong>回答系统里有哪些实体和状态，职责怎样分布，信息和副作用沿什么路径传播。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">运行真相</strong>回答用户、平台、网络和真实数据进入以后，系统实际上发生了什么。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">很多 AI 生成的代码局部正确，却让产品变得更乱，原因就在这里。它只根据结构真相完成了眼前任务，没有同时对齐意图和运行结果。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">我现在会把这三种真相继续压缩成四层产品认知：目标、状态、边界和证据。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">目标固定产品最后要改变什么。状态描述变化怎样发生。边界限制变化能够传播多远。证据则定义什么观察结果可以证明当前理解是错的。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">最后一层尤其重要。没有反证条件的理解，只是一种解释。能够说明在什么情况下自己会失败，才开始接近可以工作的认知。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-02-three-truths.png" alt="图 2 · 意图、结构与运行三种真相共同约束产品认知" width="1200" height="850" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.4px;color:rgb(148,155,168);">图 2 · 意图、结构与运行三种真相共同约束产品认知</span></p>
+  </section>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">03</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">在写代码以前，先让 AI 暴露自己的理解</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">我以前常把任务直接写成实现某个功能。模型拿到任务以后会立刻寻找文件、修改代码、补测试，整个过程看起来很顺。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">问题是，顺利执行只能说明它找到了一个可实现的解释，不能说明这个解释和我想的是同一个产品。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">现在真正的实现任务开始以前，我会先让 AI 生成一张认知图。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">它需要说清这次修改要改变哪个用户结果，涉及哪些实体和状态，允许跨越哪些系统边界，哪些不变量不能被破坏，以及最后用什么证据判断实现失败。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这里最有价值的不是答案，而是冲突。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">如果它无法判断某个状态由谁拥有，说明边界还没有建立。如果同一个用户结果可以从两条互相矛盾的路径到达，说明状态模型还不完整。如果验收只能写成页面看起来正常，说明证据还没有落到可观察行为上。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这些问题在代码生成以前暴露，修改的是认知模型。代码生成以后再暴露，修改的往往已经是一串互相依赖的实现。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">深度理解也不是模型能复述多少文档，而是它能做反事实推理。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">如果绕过这个状态会发生什么？如果外部服务失败，故障会传播到哪里？如果删除这层边界，哪个模块会开始知道它不应该知道的事情？如果测试全部通过，还有什么真实结果没有被观察？</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">模型能稳定回答这些问题，才说明它理解的不只是当前代码，还有代码背后的约束。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">04</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">拆解不是切文件，而是切断因果传播</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">很多任务看起来已经拆得很细：一个页面、一个接口、一个数据库表分别交给不同的 AI。它们可以并行，却不一定解耦。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">如果几个任务同时修改同一份状态，或者一个模块必须知道另一个模块内部怎么实现，它们仍然属于同一个因果团块。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">真正可以独立交给 AI 的单点，需要形成一个闭合的因果单元。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">它接收明确输入，只拥有自己的状态，通过明确输出影响下一个点。失败以后留下可处理的结果，不把半完成状态偷偷交给后续流程。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">除了它知道什么，还要写清它不应该知道什么。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">界面不需要知道数据怎样持久化，本地业务不需要知道外部页面怎样变化，发布过程不应该回头修改已经确认的内容。知道得越少，变化能够传播的距离越短。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">不同变化速度的东西也应该被分开。用户界面、核心状态、外部平台和模型生成结果变化频率不同，把它们放进同一个边界，任何一处变化都会迫使整块认知重新建立。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">单点之间不直接共享内部状态，而是通过显式产物和状态迁移连接。产物可以被版本化、检查和重放，状态迁移可以被拒绝、恢复和审计。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这样拆解以后，AI 面对的就不再是完成整个产品，而是保持一个局部因果关系成立。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-03-causal-decomposition.png" alt="图 3 · 单点通过契约和显式状态连接，故障被限制在自己的边界内" width="1200" height="820" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.4px;color:rgb(148,155,168);">图 3 · 单点通过契约和显式状态连接，故障被限制在自己的边界内</span></p>
+  </section>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">05</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">审查的作用，是重新对齐三种真相</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">实现任务天然会维护自己的解释。模型刚刚根据某套理解写完代码，再让它检查自己，往往只会验证实现是否符合这套理解。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">独立审查需要重新建立认知，而且默认实现可能是错的。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">它先从规格恢复意图真相，再从代码恢复结构真相，最后从测试和真实运行恢复运行真相。审查的目标不是寻找写得不漂亮的代码，而是寻找三种真相没有重合的地方。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">文档说某个状态不能跳过，代码却保留了一条快捷路径，这是意图和结构不一致。代码正确校验了权限，静态资源却能被直接访问，这是结构和运行不一致。测试全部通过，真实用户仍然无法完成目标，则说明证据覆盖的是系统内部，不是产品结果。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这种审查会消耗大量 Token，因为模型要重新读取同一批材料，并主动推翻已有结论。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">但它也是认知真正变深的地方。实现证明一条路径可以成立，审查寻找哪些条件会让这条路径不成立。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">06</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">点、线、面，是三种不同尺度的证据</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">测试通常被当成代码写完以后的检查。在 AI 产品开发里，它更像外部认知的一部分。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">点测试</strong>观察局部因果关系。给定输入以后，单个能力是否产生稳定输出，状态和失败是否留在自己的边界内。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">线测试</strong>观察时间和顺序。一个状态能否合法进入下一个状态，中断以后能否恢复，旧版本是否会污染已经确认的产物。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);"><strong style="font-weight:700;color:rgb(16,24,40);">面测试</strong>观察系统与环境的关系。用户、平台、账号、权限、网络和真实数据一起进入以后，整个产品结果是否成立。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">三种测试不能互相替代。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">点全部正确，连起来仍然可能拿错状态。状态链全部通过，真实环境里仍然可能缺少登录、支付、权限或交付。面测试发现的问题，也未必是代码缺陷，可能是产品认知里从未出现过一条必要路径。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">所以测试全绿只能证明已经写下来的约束没有被破坏。它不能证明所有重要约束都已经被写下来。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-04-point-line-plane.png" alt="图 4 · 点、线、面分别观察局部因果、时间连续性和真实环境" width="1200" height="860" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.4px;color:rgb(148,155,168);">图 4 · 点、线、面分别观察局部因果、时间连续性和真实环境</span></p>
+  </section>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">07</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">真正减少 Token 的方式，是把认知留下来</span></strong></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">超过 30 亿 Token 的消耗里当然有浪费。多个任务会重复读取同一批文件，过长的上下文会让重要约束被无关信息稀释，失败日志里真正有用的可能只有最后几行。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">但只追求更短的提示词，并不能解决根本问题。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">只要产品认知仍然依赖某次对话，下一次任务就必须重新建立它。真正有效的压缩，是把已经验证的认知变成持久产物。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">稳定目标写进 Spec，状态关系写进模型和迁移规则，边界写进接口和进程结构，不变量写进测试，真实结果写进可观察的回执和运行记录。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">审查发现的新问题也必须回到这些地方。只在对话里得到一句已经修复，下一个会话仍然会从旧世界开始理解。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">好的外部记忆不需要记录每次思考过程。它只保存那些会改变后续判断的结论，以及证明这些结论仍然成立的证据。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">这时，模型每次仍然要读，但它读到的是一套经过压缩、互相一致、可以被验证的认知核心。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">一天消耗超过 30 亿 Token，并不表示一天写出了同等规模的成果。它更像是大量临时认知被建立、检查、推翻和重建的总量。</span></p>
+  <p style="margin:0 8px 26px;line-height:1.86;letter-spacing:0.45px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;color:rgb(42,47,57);">上下文关闭以后还能留下来的，才是系统真正拥有的认知。</span></p>
+
+  <p style="margin:52px 8px 24px;text-align:center;line-height:1.5;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,175,185);letter-spacing:2px;">— 完 —</span></p>
+  <p style="margin:0 8px 24px;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(156,163,175);letter-spacing:0.4px;">#AI编程　#产品认知　#软件架构　#独立开发</span></p>
+  <hr style="border:0;border-top:1px solid rgb(229,231,235);margin:48px 8px 24px;">
+  <p style="margin:0 8px;line-height:1.75;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.35px;color:rgb(145,151,162);">用量面板显示峰值 33.5 亿 Token，最长任务 11 小时 9 分。1.23 亿 Token 的输入、输出与缓存比例来自一条可复核的本地会话记录，仅用于说明认知重建的消耗结构。</span></p>
+</article>
+
+<section style="box-sizing:border-box;max-width:677px;margin:30px auto 24px;padding:28px 0 0;border-top:1px solid rgb(210,214,222);color:rgb(34,40,50);">
+  <p style="margin:0 0 6px;font-size:16px;font-weight:700;">本文配图</p>
+  <p style="margin:0 0 22px;font-size:12px;line-height:1.6;color:rgb(130,136,148);">点“复制图片”后到公众号编辑器粘贴；本地区域不会随正文一起复制。</p>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-data" src="../assets/figure-00-token-activity.png" alt="Token 用量数据截图" width="1077" height="769" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">数据截图 · 1077 × 769</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg(this,'material-data')" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><button type="button" onclick="downloadImg('material-data','figure-00-token-activity.png')" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;cursor:pointer;">下载 PNG</button></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-cover" src="../assets/cover-014.png" alt="头图" width="1200" height="626" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">头图 · 1200 × 626</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg(this,'material-cover')" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><button type="button" onclick="downloadImg('material-cover','cover-014.png')" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;cursor:pointer;">下载 PNG</button></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-1" src="../assets/figure-01-cognitive-bandwidth.png" alt="图 1 · 认知带宽" width="1200" height="780" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 1 · 认知带宽 · 1200 × 780</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg(this,'material-figure-1')" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><button type="button" onclick="downloadImg('material-figure-1','figure-01-cognitive-bandwidth.png')" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;cursor:pointer;">下载 PNG</button></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-2" src="../assets/figure-02-three-truths.png" alt="图 2 · 三种真相" width="1200" height="850" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 2 · 三种真相 · 1200 × 850</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg(this,'material-figure-2')" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><button type="button" onclick="downloadImg('material-figure-2','figure-02-three-truths.png')" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;cursor:pointer;">下载 PNG</button></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-3" src="../assets/figure-03-causal-decomposition.png" alt="图 3 · 因果拆解" width="1200" height="820" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 3 · 因果拆解 · 1200 × 820</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg(this,'material-figure-3')" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><button type="button" onclick="downloadImg('material-figure-3','figure-03-causal-decomposition.png')" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;cursor:pointer;">下载 PNG</button></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-4" src="../assets/figure-04-point-line-plane.png" alt="图 4 · 点、线、面证据" width="1200" height="860" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 4 · 点、线、面证据 · 1200 × 860</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg(this,'material-figure-4')" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><button type="button" onclick="downloadImg('material-figure-4','figure-04-point-line-plane.png')" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;cursor:pointer;">下载 PNG</button></span></div>
+  </div>
+</section>
+
+<div style="box-sizing:border-box;max-width:677px;margin:0 auto 32px;padding:14px 18px;background:white;border:1px solid rgb(225,228,234);font-size:13px;color:rgb(95,101,112);line-height:1.7;">
+  <p style="margin:0 0 6px;font-weight:700;color:rgb(30,35,45);">粘贴到公众号</p>
+  <p style="margin:0 0 4px;">① 点右上角“复制正文（无白边）”</p>
+  <p style="margin:0 0 4px;">② 到公众号图文编辑器粘贴</p>
+  <p style="margin:0 0 4px;">③ 如果本地图片没有随正文进入，用上方按钮逐张补入</p>
+  <p style="margin:0;">④ 最终效果请在手机微信中预览</p>
+</div>
+
+<script>
+function copyWxArticle(){
+  var target=document.getElementById('wx-body');if(!target)return;
+  var range=document.createRange();range.selectNodeContents(target);
+  var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+  var ok=false;try{ok=document.execCommand('copy');}catch(e){}sel.removeAllRanges();
+  var btn=document.getElementById('copy-btn');btn.textContent=ok?'已复制 ✓':'复制失败';btn.style.background=ok?'#10b981':'#dc2626';
+  setTimeout(function(){btn.textContent='复制正文（无白边）';btn.style.background='#111827';},2200);
+}
+function flash(btn,ok,failText){
+  var label=btn.getAttribute('data-label')||btn.textContent;btn.setAttribute('data-label',label);
+  btn.textContent=ok?'已复制 ✓':(failText||'失败，请下载');btn.style.background=ok?'#10b981':'#dc2626';
+  setTimeout(function(){btn.textContent=label;btn.style.background='#1f2937';},2400);
+}
+function copyImg(btn,imgId){
+  var img=document.getElementById(imgId);
+  if(!window.isSecureContext||!navigator.clipboard||!navigator.clipboard.write||!window.ClipboardItem){flash(btn,false,'本地打开请下载');return;}
+  try{var c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);c.toBlob(function(blob){if(!blob){flash(btn,false);return;}navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(function(){flash(btn,true);}).catch(function(){flash(btn,false);});},'image/png');}catch(e){flash(btn,false);}
+}
+function downloadImg(imgId,fileName){
+  var img=document.getElementById(imgId);var a=document.createElement('a');a.href=img.src;a.download=fileName;document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+</script>
+</body>
+</html>

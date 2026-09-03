@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 时代，详细的 PRD 还有必要吗？ · 公众号版</title>
+</head>
+<body style="margin:0;background:rgb(244,245,247);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei UI','Microsoft YaHei',Arial,sans-serif;">
+
+<button id="copy-btn" onclick="copyWxArticle()" style="position:fixed;top:20px;right:20px;padding:10px 20px;background:rgb(17,24,39);color:white;border:0;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15);z-index:999;">复制正文（无白边）</button>
+
+<article id="wx-body" style="box-sizing:border-box;width:100%;max-width:677px;margin:0 auto;background:white;padding:40px 24px 60px;">
+  <h1 style="margin:0 8px 14px;font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:25px;line-height:1.48;letter-spacing:0.2px;color:rgb(0,0,0);font-weight:700;">AI 时代，详细的 PRD 还有必要吗？</h1>
+  <p style="margin:0 8px 42px;font-size:13px;line-height:1.75;letter-spacing:0.578px;color:rgb(170,170,170);"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;letter-spacing:0.5px;">2026 年 8 月 8 日 · AI 编程与工程架构 · 刘志宇 Joy</span></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我经常同时开着四五个 AI 编程窗口，开发同一个已经在线运行的项目。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个窗口改会员系统，一个修编辑器，一个迁移后台任务，另一个专门检查前面几个窗口。它们会自己读代码、改前后端、补数据库迁移、跑测试。繁忙时，一天会消耗超过 10 亿 Token。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">这种速度最危险的地方，是每个窗口都能很快写出一份单独看起来正确的代码。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">有一次，新接口、队列和 worker 在仓库里都通过了测试。部署以后，所有请求却一直停在执行中，健康检查仍然全绿。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最后发现，部署脚本漏掉了新 worker 的镜像构建。仓库里的代码是新的，生产运行的却还是旧版本。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">再完整的功能 PRD，也很难提前写下这种故障。它发生在功能、进程和部署系统的接缝处。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这让我重新思考：AI 时代真正需要写详细的，到底是什么？</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">需求必须清楚，但不必用一份 PRD 预测产品终局。真正需要固定的，是工程边界、当前变化的验收标准，以及证明它已经安全进入生产的证据。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这不是一个坏了可以重写的演示。项目已经接近三千个文件，前后端横跨 TypeScript 和 Python，容器编排里有十多个服务，还有 116 个数据库迁移和 571 个测试文件。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">面对这样的项目和开发速度，我把原来的一份完整 PRD 拆成了两层：上层保存长期不变量，下层只描述眼前这一次变化。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">完整 PRD 管的是已经想清楚的需求，工程边界管的是还没来得及想清楚的变化会扩散多远。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">01</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">规格越重要，越不能把 PRD 当终局</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这并不意味着规格不重要。恰恰相反，AI 越能独立写代码，越需要清楚的意图、技术约束和验收条件。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">2025 年，GitHub 发布 Spec Kit，把开发拆成 Spec、Plan、Tasks、Implement 四个阶段。Kiro 也先生成需求、设计和任务，再让 Agent 实现。后来，Kiro 又增加了 Design-first 和 Bugfix Spec，因为既有项目里的工作不总是从新需求开始，有些从设计开始，有些从故障开始。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些变化共同指向一个事实：AI 不会替我们拥有产品意图。描述留白，它就会用最常见、也最像正确答案的方案补全。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">但规格重要，不等于一份覆盖终局的 PRD 会更可靠。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">传统 PRD 主要解决人的串行协作问题。产品、设计、前端、后端和测试逐层传递信息，即使文档不完整，团队还有时间在评审、联调和测试中补齐。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">AI 把这个过程压缩了。我还在确认一个交互，另一个窗口可能已经把数据库表、接口、前端状态和测试一起写完。等原来的假设被推翻，代码已经沿着它长出一整条路径。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">METR 在 2025 年的一项研究里，让 16 位熟悉各自开源仓库的开发者完成 246 个真实任务。开发者觉得 AI 让自己快了 20%，实际完成时间却增加了 19%。这项研究讨论的不是 PRD，却提醒我们：</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">生成代码时感受到的速度，和把变化安全交付到真实系统的速度，是两回事。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个功能在纸面上可以独立，接进真实系统后却会碰到登录状态、旧数据、队列重试、第三方失败和部署顺序。很多边缘情况会在两个功能真正接上以后才第一次出现，开工前无法枚举。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">比如，页面显示一笔订单已经成功，后台任务却还没完成发放。PRD 可以要求支付成功后增加权益，却很难提前列完重复回调、超时重试、前端轮询、退款和旧版本客户端同时出现时的全部状态组合。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">继续往 PRD 里补场景，只会把文档变成另一个需要长期同步的系统。代码、数据库和部署方式不断变化，只要有一处没有更新，AI 就会读到几种互相冲突的真相。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">多窗口开发更危险的是认知冲突，Git 冲突反而容易被发现。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">Git 冲突会让合并停下来。认知冲突却可能顺利进入主干，只是两个窗口对同一个状态做出了相反的决定。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以我没有停止写需求。我只是把稳定目标和当前变化分开记录，让长期不变量保持稳定，让每一次功能说明能够随真实反馈调整。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-01-prd-vs-boundary.png" alt="图 1 · 完整 PRD 与双层规格" width="1200" height="790" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 1 · 完整 PRD 与双层规格</span></p>
+  </section>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">02</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">我先固定技术栈，不固定产品终局</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">长期不变量的第一层，是一套足够普通的技术底盘。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我的几个项目大多从相似的结构起步：前端用 TypeScript，后端用 Python 和 FastAPI，数据放 PostgreSQL，需要队列和短期状态时再用 Redis，服务通过 Docker 管理。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些选择没有追求新奇。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它们的价值，是让不同窗口不用反复决定项目应该怎样启动、接口放在哪里、数据库怎样连接、日志从哪里看。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">技术栈统一以后，新的项目仍然可以演进，但决策空间先被压小了。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">真正固定得更死的，是状态和副作用的归属。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">用户身份只能从一个认证入口变化。会员权益只能从一个计算点得出。模型调用只能走一个路由层。数据库结构只能从一份全量快照和对应的增量迁移演进。生产只能通过一条自动部署路径进入。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些规则不是为了让架构图看起来整齐。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它们回答的是同一个问题：当一个窗口改错时，错误最多能传播到哪里。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">项目里有一个能执行用户代码的隔离服务。它能访问哪些内部服务、能不能碰数据库、能不能拿到生产存储凭证，不能靠每个开发窗口临时判断。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些访问关系直接写在网络拓扑和测试里。即使某个窗口完全误解了业务，它也拿不到边界之外的能力。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">可演进架构不是一开始画出终局。它是在系统暴露一个新的耦合点以后，把这个耦合点变成单一真源和自动门禁。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以项目的架构会越来越完整，却不是因为我在第一天已经想完。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它是从真实修改和真实事故里长出来的。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">03</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">Worktree 隔离的是代码，工程边界隔离的是后果</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">长期边界确定以后，每个功能进入自己的 Git worktree。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个 worktree 里包含这个功能需要的前端、后端、数据库变化和测试。任务完成以后，它作为一个完整变化接受检查，再决定是否回到主分支。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我不会把同一个功能拆成前端窗口、后端窗口和数据库窗口。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">那仍然是传统流水线的切法。三个窗口修改的是同一条因果链，只是文件没有重叠。它们很容易各自通过测试，合起来却对不上。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我更愿意让一个窗口负责一个纵向结果。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">比如，用户完成一次操作以后能看到确定状态，这个窗口就同时负责页面反馈、接口返回、状态落库和对应测试。另一个窗口可以处理完全不同的能力。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">两边只通过已经存在的接口和状态契约连接。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-02-worktree-contract.png" alt="图 2 · 功能 worktree 通过共享契约进入主干" width="1200" height="840" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 2 · 功能 worktree 通过共享契约进入主干</span></p>
+  </section>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这并不意味着建了 worktree 就完成了解耦。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">Worktree 只能防止两个窗口覆盖同一个文件，不能防止两个窗口对同一个状态做出相反决定。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果两个功能都要修改会员权益的计算方式，它们就不应该直接并行。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我会先把共享计算点收敛出来，让一个变化先进入主干。后面的功能只消费这个结果，不再各自计算一遍。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果两个窗口必须同时碰同一个核心文件，通常也说明任务切错了。它们并不是两个功能，只是同一个功能被按文件名拆开。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">工程边界要切断的是变化和故障的传播。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">一个功能应该有明确输入，拥有自己的状态，通过显式结果连接外部。失败时也要给出确定结果，不能靠别的模块猜它进行到哪一步。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这样拆开以后，多窗口才从多人同时改仓库，变成几条可以独立验证的变化。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">04</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">我不要求 AI 猜全边缘情况</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">每个 worktree 开始前，我会留一份很短的问题记录。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它不负责把功能写完整，而是记录用户现在遇到了什么、这次准备改变什么、哪些地方不能碰，以及什么结果可以证明它真的完成。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">项目里有一次后台任务迁移。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">原来在接口进程里执行的能力，被搬到了独立 worker。代码能启动，组件测试也通过，真实运行时却有五处能力同时消失：worker 连不到隔离服务，没有复用 HTTP 连接池，加载不到技能，长期记忆不再写入，密钥也不会定时刷新。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果继续补 PRD，可以在文档里加五条提醒。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但这五个问题来自同一个根因：两个进程各自手写了一份初始化流程。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最后没有继续补五个判断。所有进程级初始化被收进一个入口，接口进程和 worker 只调用它。测试再检查两个入口有没有绕过这份单一实现。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这份问题记录的验收标准也很具体。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">worker 必须能访问隔离服务，必须能看到正式技能，HTTP 连接池必须只初始化一次，还要通过真实后台任务生成一个文件。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些结果里没有体验正常，也没有功能完整。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">每一条都能通过命令、接口、数据库结果或真实产物观察。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong style="text-decoration:underline;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">我不要求 AI 在开工前猜全所有边缘情况。我要求它把自己声称完成的结果，变成别人可以推翻的证据。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">测试的作用也因此发生了变化。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">测试负责在每个边界上说明哪一种变化不允许发生，而不只是给代码盖章。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">局部测试看函数，契约测试看两个模块有没有说同一种语言，集成检查走跨进程路径，部署核验确认生产正在运行这次提交，运行指标继续观察真实结果。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-03-evidence-gates.png" alt="图 3 · 一个功能进入生产前经过的五层证据" width="1200" height="790" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 3 · 一个功能进入生产前经过的五层证据</span></p>
+  </section>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">05</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">生产级稳定发生在代码写完以后</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">很多 AI 开发流程停在测试全绿。但测试全绿只说明仓库里的代码满足已经写下来的条件，不说明生产环境正在运行这份代码。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">开头提到的旧 worker 事故，问题不在业务代码，也不在容器是否存活。构建服务的列表由部署脚本手工维护，新增 worker 出现在启动列表里，却没有进入构建列表。生产因此运行了一个健康但过期的进程。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">后来，构建哪些服务不再由部署脚本手写，而是直接从容器编排配置得出。每个关键镜像写入当前 Git 提交号，部署后逐个核对。健康检查之外，再跑一次真实 worker 任务。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这几道门解决的不是同一个问题。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">类型检查拦接口形状，数据库测试拦状态错误，服务边界测试拦越权连接，部署核验拦版本漂移，运行指标负责发现所有事先没写进测试的情况。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">如果把它们都压成一个测试通过，反而会失去每层证据的含义。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">我现在理解的生产级，不是代码里加满重试、回退和异常捕获。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它是从本地实现到真实运行之间，每一步都有清楚的失败信号，也没有任何一个窗口可以静默绕过这些信号。</span></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">06</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">每次事故最后都变成一条规则</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">多窗口并行以后，最先坏掉的是那些靠人记住的约定。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">数据库迁移以前使用递增编号。一个人开发时，下一个文件取当前最大编号加一，几乎不会出错。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">两个窗口同时创建迁移以后，它们都拿到了 095。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">提醒 AI 创建前再检查一次没有用。两个窗口仍然可能在同一秒读取到相同状态。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最后，迁移文件改用创建时刻的秒级时间戳。测试自动检查命名是否合法、有没有重复、回滚脚本有没有误放进自动执行目录。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">还有一次，服务拆分后出现五处初始化漂移。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">最后留下的是统一启动入口和进程一致性测试，不只是一篇复盘。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">旧 worker 镜像进入生产以后，留下的是镜像版本戳和跨进程冒烟检查。</span></p>
+
+  <section style="margin:42px 0 44px;">
+    <img src="../assets/figure-04-incident-to-invariant.png" alt="图 4 · 事故如何变成单一真源和自动门禁" width="1200" height="820" style="display:block;width:100%;height:auto;margin:0;border:0;background:rgb(255,255,255);">
+    <p style="margin:10px 8px 0;text-align:center;line-height:1.6;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;letter-spacing:0.5px;color:rgb(150,150,150);">图 4 · 事故如何变成单一真源和自动门禁</span></p>
+  </section>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这些规则看起来比 PRD 更低层。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但多窗口开发真正依赖的就是这些低层约束。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">PRD 会过期，聊天记录会关闭，负责某个功能的窗口也会消失。单一真源、接口契约、测试和部署门禁仍然留在仓库里，下一次任务开始时继续生效。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">这套方法没有让项目从此不出事故。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">它只是让同一类事故不再依赖我和 AI 共同记住一次教训。</span></strong></p>
+
+  <section style="padding:3px;display:inline-block;border-top:6px solid rgb(0,0,0);margin:40px 8px 8px;"><p style="margin:0;"><strong style="color:rgb(0,0,0);"><span style="font-size:36px;font-family:Futura-Medium,Futura,'Helvetica Neue',Arial,sans-serif;line-height:1.1;">07</span></strong></p></section>
+  <p style="margin:0 8px 32px;line-height:1.5;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:24px;letter-spacing:0.5px;color:rgb(0,0,0);">我的答案：要详细规格，不要终局 PRD</span></strong></p>
+
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">所以，AI 时代详细的 PRD 是必要的吗？</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我的答案无法简单归为需要或不需要。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">需求需要更清楚，规格需要更可验证，但文档不需要假装自己已经知道产品终局。</span></strong></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">完整 PRD 仍然有它擅长的场景。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">对外承诺的范围、付费规则、合规要求、跨团队职责和不可逆的数据迁移，都需要在动手以前写清楚。因为这些决定一旦进入现实，修改成本不只来自代码。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">但功能怎样与现有系统交互，不会因为文档写得长就自动变成已知。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">我的做法是保留少而稳定的产品目标，把系统级规则写进长期边界。每次功能变化只带一份增量说明和可执行验收，然后进入自己的 worktree。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">合并以后，自动门禁继续检查它有没有破坏共享契约。部署以后，版本和运行结果继续提供证据。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">繁忙的时候，多个 AI 窗口会在同一个项目里持续运行，一天消耗超过 10 亿 Token。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">没有哪个窗口掌握整个系统，也没有哪份文档提前写全了当天会遇到的所有情况。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(34,34,34);">它们能同时工作，是因为每个窗口只拥有一个变化。</span></p>
+  <p style="margin:0 8px 32px;line-height:1.75em;letter-spacing:0.578px;"><strong><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:16px;letter-spacing:0.5px;color:rgb(0,0,0);">项目本身，拥有边界。</span></strong></p>
+
+  <p style="margin:52px 8px 24px;text-align:center;line-height:1.5;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12px;color:rgb(170,170,170);letter-spacing:2px;">— 完 —</span></p>
+  <p style="margin:0 8px 24px;text-align:center;line-height:1.6;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13px;color:rgb(150,150,150);letter-spacing:0.5px;">#AI编程　#软件架构　#独立开发　#工程实践</span></p>
+  <hr style="border:0;border-top:1px solid rgb(220,220,220);margin:48px 8px 24px;">
+  <p style="margin:0 8px 12px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:13.5px;letter-spacing:0.5px;color:rgb(150,150,150);">仓库规模与提交数据核验于 2026 年 8 月 8 日；文中项目名、业务名和线上地址均已匿名。</span></p>
+  <p style="margin:0 8px;line-height:1.75em;letter-spacing:0.578px;"><span style="font-family:Optima-Regular,PingFangTC-light,'PingFang SC','Hiragino Sans GB',sans-serif;font-size:12.5px;letter-spacing:0.5px;color:rgb(160,160,160);">外部资料：METR《Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity》；GitHub《Spec-driven development with AI》；Kiro《New spec types: fix bugs and build on top of existing apps》。</span></p>
+</article>
+
+<section style="box-sizing:border-box;max-width:677px;margin:30px auto 24px;padding:28px 0 0;border-top:1px solid rgb(210,214,222);color:rgb(34,40,50);">
+  <p style="margin:0 0 6px;font-size:16px;font-weight:700;">本文配图</p>
+  <p style="margin:0 0 22px;font-size:12px;line-height:1.6;color:rgb(130,136,148);">点“复制图片”后到公众号编辑器粘贴；或下载后上传素材库。这一区在正文之外，不会随正文一起复制。</p>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-cover" src="../assets/cover-015.png" alt="头图" width="900" height="383" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">头图 · 900 × 383</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg('material-cover',this)" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><a href="../assets/cover-015.png" download="cover-015.png" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;text-decoration:none;">下载</a></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-1" src="../assets/figure-01-prd-vs-boundary.png" alt="图 1 · 完整 PRD 与双层规格" width="1200" height="790" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 1 · 完整 PRD 与双层规格</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg('material-figure-1',this)" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><a href="../assets/figure-01-prd-vs-boundary.png" download="figure-01-prd-vs-boundary.png" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;text-decoration:none;">下载</a></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-2" src="../assets/figure-02-worktree-contract.png" alt="图 2 · 功能 worktree 与共享契约" width="1200" height="840" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 2 · 功能 worktree 与共享契约</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg('material-figure-2',this)" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><a href="../assets/figure-02-worktree-contract.png" download="figure-02-worktree-contract.png" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;text-decoration:none;">下载</a></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-3" src="../assets/figure-03-evidence-gates.png" alt="图 3 · 五层证据" width="1200" height="790" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 3 · 五层证据</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg('material-figure-3',this)" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><a href="../assets/figure-03-evidence-gates.png" download="figure-03-evidence-gates.png" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;text-decoration:none;">下载</a></span></div>
+  </div>
+
+  <div style="margin:0 0 28px;">
+    <img id="material-figure-4" src="../assets/figure-04-incident-to-invariant.png" alt="图 4 · 事故到不变量" width="1200" height="820" style="display:block;width:100%;height:auto;margin:0 0 10px;background:white;border:1px solid rgb(229,232,238);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:rgb(90,96,108);">图 4 · 事故到不变量</span><span style="display:flex;gap:8px;"><button type="button" onclick="copyImg('material-figure-4',this)" style="padding:7px 12px;border:1px solid rgb(31,41,55);background:rgb(31,41,55);color:white;border-radius:6px;cursor:pointer;">复制图片</button><a href="../assets/figure-04-incident-to-invariant.png" download="figure-04-incident-to-invariant.png" style="padding:7px 12px;border:1px solid rgb(55,65,81);background:white;color:rgb(31,41,55);border-radius:6px;text-decoration:none;">下载</a></span></div>
+  </div>
+</section>
+
+<div style="box-sizing:border-box;max-width:677px;margin:0 auto 32px;padding:14px 18px;background:white;border:1px solid rgb(225,228,234);font-size:13px;color:rgb(95,101,112);line-height:1.7;">
+  <p style="margin:0 0 6px;font-weight:700;color:rgb(30,35,45);">粘贴到公众号</p>
+  <p style="margin:0 0 4px;">① 点右上角“复制正文（无白边）”</p>
+  <p style="margin:0 0 4px;">② 到公众号图文编辑器粘贴</p>
+  <p style="margin:0 0 4px;">③ 如果本地图片没有随正文进入，用上方按钮逐张补入</p>
+  <p style="margin:0;">④ 最终效果请在手机微信中预览</p>
+</div>
+
+<script>
+function copyWxArticle(){
+  var target=document.getElementById('wx-body');if(!target)return;
+  var range=document.createRange();range.selectNodeContents(target);
+  var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+  var ok=false;try{ok=document.execCommand('copy');}catch(e){}sel.removeAllRanges();
+  var btn=document.getElementById('copy-btn');btn.textContent=ok?'已复制 ✓':'复制失败';btn.style.background=ok?'#10b981':'#dc2626';
+  setTimeout(function(){btn.textContent='复制正文（无白边）';btn.style.background='#111827';},2200);
+}
+function flash(btn,ok,failText){
+  var label=btn.getAttribute('data-label')||btn.textContent;btn.setAttribute('data-label',label);
+  btn.textContent=ok?'已复制 ✓':(failText||'失败，请用“下载”');btn.style.background=ok?'#10b981':'#dc2626';
+  setTimeout(function(){btn.textContent=label;btn.style.background='#1f2937';},2400);
+}
+function copyImg(imgId,btn){
+  var img=document.getElementById(imgId);
+  if(!window.isSecureContext||!navigator.clipboard||!navigator.clipboard.write||!window.ClipboardItem){flash(btn,false,'本地打开请用“下载”');return;}
+  try{
+    var c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+    c.getContext('2d').drawImage(img,0,0);
+    c.toBlob(function(blob){if(!blob){flash(btn,false);return;}navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(function(){flash(btn,true);}).catch(function(){flash(btn,false);});},'image/png');
+  }catch(e){flash(btn,false);}
+}
+</script>
+</body>
+</html>

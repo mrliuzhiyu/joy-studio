@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 部署反馈闭环</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:780px;overflow:hidden;background:#fff}
+body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#182027}
+.figure{width:1200px;height:780px;background:linear-gradient(180deg,#fff 0%,#fff 74%,#f7f9fa 100%)}
+svg{display:block;width:1200px;height:780px}
+</style>
+</head>
+<body>
+<main class="figure">
+<svg viewBox="0 0 1200 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="人定义边界与验收，AI 修改，预发布，真实检查，成功进入生产，失败根据日志回滚并继续修改">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#55788b"/>
+    </marker>
+    <marker id="arrow-warm" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#9a7063"/>
+    </marker>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#9aa9b1" flood-opacity=".12"/>
+    </filter>
+  </defs>
+
+  <text x="600" y="70" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="1.6" fill="#74808a">一次发布不是直线，失败结果必须能够回到下一次修改</text>
+
+  <!-- 主路径 -->
+  <path d="M230 310h92M497 310h92M764 310h91" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- 人定义边界与验收 -->
+  <g transform="translate(55 207)" filter="url(#soft)">
+    <rect x="0" y="0" width="175" height="206" rx="16" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <circle cx="52" cy="60" r="26" fill="#edf3f6" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M24 129c8-31 49-31 57 0" fill="none" stroke="#55788b" stroke-width="3" stroke-linecap="round"/>
+    <rect x="103" y="38" width="46" height="68" rx="5" fill="#fff" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M113 56h26M113 72h26M113 88h18" stroke="#c7d2d7" stroke-width="4" stroke-linecap="round"/>
+    <path d="M37 159h101" stroke="#d3dde2" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <text x="142" y="454" text-anchor="middle" font-size="23" font-weight="700" fill="#182027">边界与验收</text>
+  <text x="142" y="487" text-anchor="middle" font-size="17" fill="#74808a">由人定义</text>
+
+  <!-- AI 修改 -->
+  <g transform="translate(322 207)" filter="url(#soft)">
+    <rect x="0" y="0" width="175" height="206" rx="16" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <path d="M0 43h175" stroke="#d6dfe3" stroke-width="2"/>
+    <circle cx="20" cy="21" r="5" fill="#718995"/><circle cx="39" cy="21" r="5" fill="#b8c6cc"/><circle cx="58" cy="21" r="5" fill="#dce4e7"/>
+    <path d="M27 80l17 15-17 15M59 110h45" fill="none" stroke="#55788b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="26" y="137" width="120" height="9" rx="4.5" fill="#dce7eb"/>
+    <rect x="26" y="159" width="82" height="8" rx="4" fill="#edf2f4"/>
+  </g>
+  <text x="409" y="454" text-anchor="middle" font-size="23" font-weight="700" fill="#182027">AI 修改</text>
+  <text x="409" y="487" text-anchor="middle" font-size="17" fill="#74808a">代码与部署配置</text>
+
+  <!-- 预发布环境 -->
+  <g transform="translate(589 207)" filter="url(#soft)">
+    <path d="M16 41h59l16-18h68c9 0 16 7 16 16v151c0 9-7 16-16 16H16c-9 0-16-7-16-16V57c0-9 7-16 16-16Z" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <rect x="26" y="72" width="123" height="67" rx="9" fill="#edf3f6" stroke="#55788b" stroke-width="2"/>
+    <path d="M41 110h18l10-18 18 31 13-21h34" fill="none" stroke="#55788b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="138" cy="167" r="7" fill="#55788b"/>
+  </g>
+  <text x="676" y="454" text-anchor="middle" font-size="23" font-weight="700" fill="#182027">预发布环境</text>
+  <text x="676" y="487" text-anchor="middle" font-size="17" fill="#74808a">隔离密钥与数据</text>
+
+  <!-- 真实路径检查 -->
+  <g transform="translate(855 207)" filter="url(#soft)">
+    <rect x="0" y="0" width="188" height="206" rx="16" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <rect x="28" y="29" width="132" height="104" rx="9" fill="#fbfcfc" stroke="#cbd7dc" stroke-width="2"/>
+    <path d="M28 54h132" stroke="#d9e1e5" stroke-width="2"/>
+    <rect x="47" y="75" width="60" height="8" rx="4" fill="#dce7eb"/>
+    <rect x="47" y="95" width="94" height="7" rx="3.5" fill="#edf2f4"/>
+    <circle cx="143" cy="158" r="23" fill="#edf3f6" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M133 158l7 7 14-17" fill="none" stroke="#55788b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="949" y="454" text-anchor="middle" font-size="23" font-weight="700" fill="#182027">真实路径检查</text>
+  <text x="949" y="487" text-anchor="middle" font-size="17" fill="#74808a">从域名走到最终结果</text>
+
+  <!-- 通过后进入生产 -->
+  <path d="M1043 310h75v207" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="1080" y="292" text-anchor="middle" font-size="17" font-weight="700" fill="#55788b">通过</text>
+  <g transform="translate(1022 535)" filter="url(#soft)">
+    <path d="M48 0l48 19v51c0 40-28 67-48 77C28 137 0 110 0 70V19Z" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <path d="M27 70l14 14 30-38" fill="none" stroke="#55788b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="1070" y="717" text-anchor="middle" font-size="23" font-weight="700" fill="#182027">生产版本</text>
+
+  <!-- 失败进入观察与回滚，再回到修改 -->
+  <path d="M949 413v169H680" fill="none" stroke="#9a7063" stroke-width="3" marker-end="url(#arrow-warm)"/>
+  <text x="970" y="550" font-size="17" font-weight="700" fill="#9a7063">失败</text>
+  <g transform="translate(475 555)" filter="url(#soft)">
+    <rect x="0" y="0" width="205" height="132" rx="15" fill="#fff" stroke="#9a7063" stroke-width="2.7"/>
+    <path d="M25 42h20l9-18 18 34 14-25h28" fill="none" stroke="#9a7063" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M26 83h153M26 105h104" stroke="#dfd5d1" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <text x="577" y="728" text-anchor="middle" font-size="23" font-weight="700" fill="#182027">日志 · 指标 · 错误</text>
+  <path d="M475 621H409V503" fill="none" stroke="#9a7063" stroke-width="3" marker-end="url(#arrow-warm)"/>
+  <text x="370" y="613" text-anchor="end" font-size="17" fill="#9a7063">回滚并继续修改</text>
+</svg>
+</main>
+</body>
+</html>

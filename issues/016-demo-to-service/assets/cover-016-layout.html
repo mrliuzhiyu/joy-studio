@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>016 cover</title>
+<script>if(location.hash==="#square")document.documentElement.classList.add("square")</script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:900px;height:383px;overflow:hidden;background:#fff}
+body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#15191d}
+.canvas{position:relative;width:900px;height:383px;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fff 58%,#f7f9fa 100%)}
+.heading{position:absolute;z-index:2;top:29px;left:258px;width:383px;text-align:center}
+.meta{font:600 11px/1.2 Arial,"PingFang SC",sans-serif;letter-spacing:1.8px;color:#74808a}
+.title{margin-top:16px;color:#14191d}
+.title-small{font-size:22px;line-height:1.25;font-weight:720;letter-spacing:.3px}
+.title-main{margin-top:5px;font-size:38px;line-height:1.18;font-weight:800;letter-spacing:-1.2px}
+.title-main span{display:block}
+.scene{position:absolute;left:0;right:0;bottom:0;height:174px}
+.scene svg{display:block;width:900px;height:174px}
+html.square,html.square body{width:383px}
+html.square .canvas{transform:translateX(-258px)}
+</style>
+</head>
+<body>
+<main class="canvas">
+  <section class="heading" aria-label="AI 写的项目：从自己能用，到别人敢用">
+    <div class="meta">AI 时代的基建 · 016</div>
+    <div class="title">
+      <div class="title-small">AI 写的项目</div>
+      <div class="title-main"><span>从自己能用</span><span>到别人敢用</span></div>
+    </div>
+  </section>
+
+  <div class="scene" aria-hidden="true">
+    <svg viewBox="0 0 900 174" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fade-line" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#d9e1e5" stop-opacity="0"/>
+          <stop offset=".18" stop-color="#d9e1e5"/>
+          <stop offset=".82" stop-color="#d9e1e5"/>
+          <stop offset="1" stop-color="#d9e1e5" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+
+      <!-- 一条从本地延伸到公共服务的路径，宽图中自然展开 -->
+      <path d="M26 128H173c34 0 37-30 72-30h43" fill="none" stroke="url(#fade-line)" stroke-width="1.2"/>
+      <path d="M612 98h43c35 0 38 30 72 30h147" fill="none" stroke="url(#fade-line)" stroke-width="1.2"/>
+      <g fill="#fff" stroke="#cfd9de" stroke-width="1.2">
+        <circle cx="91" cy="128" r="3.5"/><circle cx="148" cy="128" r="3.5"/>
+        <circle cx="751" cy="128" r="3.5"/><circle cx="809" cy="128" r="3.5"/>
+      </g>
+      <g fill="none" stroke="#dde4e8" stroke-width="1">
+        <path d="M91 128v24M148 128v14M751 128v14M809 128v24"/>
+      </g>
+
+      <!-- localhost：浏览器里已经能点、能跑 -->
+      <g transform="translate(280 70)">
+        <rect x="0" y="0" width="74" height="56" rx="5" fill="#fff" stroke="#1a2024" stroke-width="1.7"/>
+        <path d="M0 14h74" fill="none" stroke="#1a2024" stroke-width="1.7"/>
+        <circle cx="9" cy="7" r="1.4" fill="#738995"/><circle cx="15" cy="7" r="1.4" fill="#738995"/><circle cx="21" cy="7" r="1.4" fill="#738995"/>
+        <rect x="11" y="25" width="29" height="5" rx="2.5" fill="#dfe8ec"/>
+        <rect x="11" y="36" width="48" height="4" rx="2" fill="#edf2f4"/>
+        <rect x="11" y="45" width="36" height="4" rx="2" fill="#edf2f4"/>
+      </g>
+
+      <!-- 域名、HTTPS 与统一入口 -->
+      <g transform="translate(396 73)">
+        <circle cx="27" cy="27" r="27" fill="#edf3f6" stroke="#4f7185" stroke-width="1.7"/>
+        <path d="M0 27h54M27 0c8 8 12 17 12 27S35 46 27 54M27 0c-8 8-12 17-12 27s4 19 12 27M5 16h44M5 38h44" fill="none" stroke="#4f7185" stroke-width="1.35"/>
+        <circle cx="27" cy="27" r="4.2" fill="#4f7185"/>
+      </g>
+
+      <!-- 稳定运行的应用服务 -->
+      <g transform="translate(501 64)">
+        <rect x="0" y="0" width="69" height="70" rx="7" fill="#fff" stroke="#1a2024" stroke-width="1.7"/>
+        <rect x="12" y="13" width="45" height="22" rx="4" fill="#edf3f6" stroke="#4f7185" stroke-width="1.3"/>
+        <path d="M18 26h7l4-8 7 13 5-7h10" fill="none" stroke="#4f7185" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13 47h43M13 56h30" fill="none" stroke="#d3dde2" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="58" cy="56" r="2.4" fill="#4f7185"/>
+      </g>
+
+      <!-- 数据被可靠保存 -->
+      <g transform="translate(586 80)">
+        <ellipse cx="25" cy="8" rx="25" ry="8" fill="#edf3f6" stroke="#1a2024" stroke-width="1.6"/>
+        <path d="M0 8v39c0 4.5 11 8 25 8s25-3.5 25-8V8" fill="#fff" stroke="#1a2024" stroke-width="1.6"/>
+        <path d="M0 27c0 4.5 11 8 25 8s25-3.5 25-8" fill="none" stroke="#4f7185" stroke-width="1.35"/>
+        <path d="M0 42c0 4.5 11 8 25 8s25-3.5 25-8" fill="none" stroke="#d3dde2" stroke-width="1.2"/>
+      </g>
+
+      <!-- 组件之间真正的连接关系 -->
+      <g fill="none" stroke="#4f7185" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M354 98h42"/><path d="M450 98h51"/><path d="M570 98h16"/>
+        <path d="M387 94l9 4-9 4M492 94l9 4-9 4M577 94l9 4-9 4"/>
+      </g>
+    </svg>
+  </div>
+</main>
+</body>
+</html>

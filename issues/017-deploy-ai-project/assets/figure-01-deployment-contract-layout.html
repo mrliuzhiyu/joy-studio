@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>运行合同</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:750px;overflow:hidden;background:#fff}
+body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#182027}
+.figure{width:1200px;height:750px;background:linear-gradient(180deg,#fff 0%,#fff 74%,#f7f9fa 100%)}
+svg{display:block;width:1200px;height:750px}
+</style>
+</head>
+<body>
+<main class="figure">
+<svg viewBox="0 0 1200 750" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI 和部署平台共同读取仓库里的运行合同">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#55788b"/>
+    </marker>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#9aa9b1" flood-opacity=".12"/>
+    </filter>
+  </defs>
+
+  <text x="600" y="70" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="1.6" fill="#74808a">同一份仓库，成为 AI 与部署环境共同读取的事实</text>
+
+  <!-- AI 工作端 -->
+  <g transform="translate(55 255)" filter="url(#soft)">
+    <rect x="0" y="0" width="235" height="175" rx="16" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <path d="M0 42h235" stroke="#d6dfe3" stroke-width="2"/>
+    <circle cx="21" cy="21" r="5" fill="#718995"/><circle cx="40" cy="21" r="5" fill="#b8c6cc"/><circle cx="59" cy="21" r="5" fill="#dce4e7"/>
+    <path d="M28 76l18 16-18 16M60 108h48" fill="none" stroke="#55788b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="28" y="129" width="148" height="9" rx="4.5" fill="#dce7eb"/>
+    <rect x="28" y="148" width="102" height="8" rx="4" fill="#edf2f4"/>
+  </g>
+  <text x="172" y="473" text-anchor="middle" font-size="24" font-weight="700" fill="#182027">AI 开发窗口</text>
+  <text x="172" y="506" text-anchor="middle" font-size="17" fill="#74808a">读取条件 · 修改配置 · 执行检查</text>
+
+  <!-- 仓库与运行合同 -->
+  <g transform="translate(430 214)" filter="url(#soft)">
+    <path d="M23 58h117l25 28h202c13 0 23 10 23 23v236c0 13-10 23-23 23H23c-13 0-23-10-23-23V81c0-13 10-23 23-23Z" fill="#edf3f6" stroke="#182027" stroke-width="3"/>
+    <rect x="76" y="0" width="238" height="286" rx="12" fill="#fff" stroke="#55788b" stroke-width="2.5"/>
+    <path d="M105 53h180M105 83h144" stroke="#d3dde2" stroke-width="10" stroke-linecap="round"/>
+    <rect x="105" y="122" width="180" height="46" rx="8" fill="#edf3f6"/>
+    <text x="195" y="152" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#55788b">DEPLOYMENT</text>
+    <g fill="none" stroke="#55788b" stroke-width="2.5" stroke-linecap="round">
+      <path d="M112 206h21l8 8 15-21 18 30 14-17h94"/>
+    </g>
+    <path d="M105 246h138" stroke="#d3dde2" stroke-width="9" stroke-linecap="round"/>
+    <text x="195" y="335" text-anchor="middle" font-size="26" font-weight="700" fill="#182027">仓库中的运行合同</text>
+  </g>
+
+  <!-- 运行合同由四类可执行事实组成 -->
+  <g transform="translate(345 130)">
+    <rect x="0" y="0" width="184" height="82" rx="10" fill="#fff" stroke="#b8c7ce" stroke-width="2"/>
+    <path d="M25 22h28v37H25Z M32 14h28v37" fill="#edf3f6" stroke="#55788b" stroke-width="2"/>
+    <text x="76" y="34" font-size="18" font-weight="700" fill="#182027">版本与依赖</text>
+    <text x="76" y="60" font-size="15" fill="#74808a">锁定文件</text>
+  </g>
+  <g transform="translate(670 130)">
+    <rect x="0" y="0" width="184" height="82" rx="10" fill="#fff" stroke="#b8c7ce" stroke-width="2"/>
+    <circle cx="40" cy="41" r="19" fill="#edf3f6" stroke="#55788b" stroke-width="2"/>
+    <path d="M40 30v22M29 41h22" stroke="#55788b" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="75" y="34" font-size="18" font-weight="700" fill="#182027">配置与密钥名</text>
+    <text x="75" y="60" font-family="Arial,sans-serif" font-size="15" fill="#74808a">.env.example</text>
+  </g>
+  <g transform="translate(345 598)">
+    <rect x="0" y="0" width="184" height="82" rx="10" fill="#fff" stroke="#b8c7ce" stroke-width="2"/>
+    <ellipse cx="39" cy="28" rx="20" ry="8" fill="#edf3f6" stroke="#55788b" stroke-width="2"/>
+    <path d="M19 28v28c0 5 9 8 20 8s20-3 20-8V28M19 43c0 5 9 8 20 8s20-3 20-8" fill="none" stroke="#55788b" stroke-width="2"/>
+    <text x="73" y="34" font-size="18" font-weight="700" fill="#182027">迁移与数据</text>
+    <text x="73" y="60" font-size="15" fill="#74808a">持久位置</text>
+  </g>
+  <g transform="translate(670 598)">
+    <rect x="0" y="0" width="184" height="82" rx="10" fill="#fff" stroke="#b8c7ce" stroke-width="2"/>
+    <path d="M20 44h10l7-16 11 28 8-12h13" fill="none" stroke="#55788b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="78" y="34" font-size="18" font-weight="700" fill="#182027">健康与回滚</text>
+    <text x="78" y="60" font-size="15" fill="#74808a">验收命令</text>
+  </g>
+
+  <g fill="none" stroke="#9babb3" stroke-width="2" stroke-dasharray="7 8">
+    <path d="M500 212l42 47M700 212l-42 47M500 598l42-44M700 598l-42-44"/>
+  </g>
+  <path d="M290 343h120" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- 构建与线上环境读取同一真源 -->
+  <path d="M820 343h88" fill="none" stroke="#55788b" stroke-width="3" marker-end="url(#arrow)"/>
+  <g transform="translate(928 237)" filter="url(#soft)">
+    <rect x="0" y="0" width="218" height="212" rx="18" fill="#fff" stroke="#182027" stroke-width="3"/>
+    <rect x="31" y="31" width="156" height="67" rx="9" fill="#edf3f6" stroke="#55788b" stroke-width="2"/>
+    <path d="M48 68h23l12-21 20 35 15-24h49" fill="none" stroke="#55788b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M37 130h144M37 160h96" stroke="#d3dde2" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="177" cy="177" r="7" fill="#55788b"/>
+  </g>
+  <text x="1037" y="493" text-anchor="middle" font-size="24" font-weight="700" fill="#182027">构建与部署环境</text>
+  <text x="1037" y="526" text-anchor="middle" font-size="17" fill="#74808a">按照同一组条件运行</text>
+</svg>
+</main>
+</body>
+</html>

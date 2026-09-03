@@ -23,7 +23,7 @@
 
 不强制以哪期为基准。002 是 Joy 认可的一篇，可以参照，但每期重新评估——如果本期题材适合不同语调（比如 005 想试更对话、更轻），不必硬套上期形状。
 
-加载相关 memory：`feedback_writing_voice.md`、`feedback_wechat_publication_v3.md`、`feedback_no_lecture_voice.md`、`feedback_text_architecture_diagrams.md`、`feedback_minimize_english.md`、`feedback_long_form_writing.md`。
+加载相关 memory：`feedback_writing_voice.md`、`feedback_wechat_text_emphasis.md`、`feedback_wechat_publication_v3.md`、`feedback_no_lecture_voice.md`、`feedback_text_architecture_diagrams.md`、`feedback_minimize_english.md`、`feedback_long_form_writing.md`。
 
 ---
 

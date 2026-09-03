@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完整 PRD 与双层规格</title>
+<style>
+:root{--ink:#172033;--muted:#61717f;--line:#d8e1e8;--blue:#316ea6;--blue-soft:#edf5fc;--teal:#147d72;--teal-soft:#eaf7f4;--amber:#c57819;--amber-soft:#fff7e9}*{box-sizing:border-box}html,body{margin:0;width:1200px;height:790px;overflow:hidden;background:#fbfcfd}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:var(--ink)}.wrap{width:1200px;height:790px;padding:56px 64px}.kicker{font:700 14px/1.2 Arial,sans-serif;letter-spacing:3px;color:var(--blue)}.title{margin-top:14px;font-size:38px;line-height:1.25;font-weight:750}.desc{margin-top:10px;font-size:18px;color:var(--muted)}.cols{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:34px}.card{height:514px;border:1px solid var(--line);padding:28px 30px;background:#fff}.card.right{border:2px solid #9fc4e5;padding:27px 29px;background:var(--blue-soft)}.head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px}.name{font-size:25px;font-weight:750}.tag{font-size:13px;color:var(--muted);letter-spacing:1px}.scroll{position:relative;margin:27px auto 18px;width:260px;height:255px;border:1px solid #b7c4ce;background:#f8fafb;padding:21px 22px;box-shadow:10px 10px 0 #edf1f4}.line{height:8px;background:#cad4dc;margin:0 0 13px;border-radius:4px}.line.dark{background:#72869a}.drift{margin:20px auto 0;width:360px;border-top:1px dashed #d8ab65;padding-top:15px;text-align:center;font-size:16px;color:#795b34}.layers{margin-top:25px}.layer{border:1px solid #8db7dd;padding:18px 20px;margin-bottom:16px;background:#fff}.layer.light{border-color:#88c9bd;background:var(--teal-soft)}.layer-title{font-size:20px;font-weight:750}.layer-copy{margin-top:7px;font-size:15px;line-height:1.6;color:var(--muted)}.arrow{text-align:center;font-size:24px;color:var(--teal);line-height:1;margin:-4px 0 10px}.result{margin-top:6px;background:var(--teal);color:#fff;padding:16px 18px;text-align:center;font-size:17px;font-weight:700}.caption{position:absolute;left:64px;bottom:30px;width:1072px;border-top:1px solid var(--line);padding-top:12px;text-align:center;font-size:14px;color:#7b8994}
+</style></head>
+<body><main class="wrap">
+  <div class="kicker">DOCUMENT VS BOUNDARY</div>
+  <div class="title">一份文档预测整个未来，两层规格约束每次变化</div>
+  <div class="desc">长期不变量保持稳定；功能说明只覆盖眼前这次增量。</div>
+  <section class="cols">
+    <article class="card">
+      <div class="head"><div class="name">完整 PRD</div><div class="tag">终局预测</div></div>
+      <div class="scroll">
+        <div class="line dark" style="width:72%"></div><div class="line" style="width:100%"></div><div class="line" style="width:91%"></div><div class="line" style="width:96%"></div><div class="line" style="width:78%"></div><div class="line dark" style="width:64%"></div><div class="line" style="width:94%"></div><div class="line" style="width:87%"></div><div class="line" style="width:70%"></div><div class="line" style="width:98%"></div>
+      </div>
+      <div class="drift">代码、状态与部署持续变化<br>文档靠人肉同步，越完整越容易产生假确定</div>
+    </article>
+    <article class="card right">
+      <div class="head"><div class="name">双层规格</div><div class="tag">增量约束</div></div>
+      <div class="layers">
+        <div class="layer"><div class="layer-title">长期工程边界</div><div class="layer-copy">技术底盘 · 状态所有者 · 单一真源<br>安全边界 · 数据规则 · 唯一部署路径</div></div>
+        <div class="arrow">↓</div>
+        <div class="layer light"><div class="layer-title">本次功能合同</div><div class="layer-copy">用户结果 · 修改范围 · 明确不做<br>验收标准 · 检查命令 · 失败证据</div></div>
+        <div class="result">未来可以变化，但变化不能越界</div>
+      </div>
+    </article>
+  </section>
+  <div class="caption">图 1 · 完整 PRD 与双层规格 · 作者根据个人项目实践整理</div>
+</main></body></html>

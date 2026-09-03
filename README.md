@@ -4,7 +4,7 @@
 
 Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、调研、写作、事实核查，到配图、评审和公众号排版，所有过程都沉淀在同一个仓库里。
 
-它不是一套空白模板，而是一个持续更新的内容档案。截至目前，仓库已经完成 10 期长文，主题集中在 AI 编程、Agent 工程、软件开发方式和技术基础设施。
+它不是一套空白模板，而是一个持续更新的内容档案。截至目前，仓库已经完成并发布 11 期长文，主题集中在 AI 编程、Agent 工程、软件开发方式和技术基础设施。
 
 ## 这个仓库有什么
 
@@ -17,13 +17,13 @@ Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、
 
 ## 最新一期
 
-### 010 · 为什么 AI 时代的数据库都选 Postgres？
+### 012 · AI 时代的软件，到底是给人用，还是给 AI 用？
 
-前几年，做 AI 应用的第一步往往是挑一个专门的向量数据库。现在默认答案正在反过来：先用已有的 Postgres 加 pgvector，直到真正撞上可量化的性能边界。
+过去的软件把能力做成页面、菜单和按钮，因为操作者一直是人。当 AI 开始替人操作软件，产品需要同时提供可组合的机器能力、可信的人类界面，以及独立于模型的权限边界。
 
-这篇文章讨论这个转向为什么发生、为什么偏偏是 Postgres，以及什么情况下才真的需要 Pinecone、Weaviate、Qdrant 这类专用向量数据库。
+这篇文章讨论 AI 成为任务入口后，软件应该如何拆分领域能力、机器契约、AI 编排、人类控制面与安全控制面。
 
-[阅读 Markdown 源稿](issues/010-just-use-postgres/draft.md) · [查看公众号排版](issues/010-just-use-postgres/platforms/wechat.html) · [查看研究笔记](issues/010-just-use-postgres/notes.md)
+[阅读 Markdown 源稿](issues/012-human-ui-or-agent-api/draft.md) · [查看公众号排版](issues/012-human-ui-or-agent-api/platforms/wechat.html) · [查看研究笔记](issues/012-human-ui-or-agent-api/notes.md)
 
 ## 文章目录
 
@@ -36,9 +36,10 @@ Joy Studio 是一套真实使用中的多平台内容生产系统：从选题、
 | 005 | [折腾了两年的 AI 记忆系统，最后是一个 markdown 文件](issues/005-agent-memory/draft.md) | 已发布 |
 | 006 | [同一个 AI，有人聊天，有人派活，有人合上电脑让它自己跑](issues/006-three-stages/draft.md) | 已发布 |
 | 007 | [你写的 Agent Harness，正在变成你的技术债](issues/007-harness-tech-debt/draft.md) | 已发布 |
-| 008 | [AI 让你效率翻倍，团队交付却一动没动](issues/008-spdd/draft.md) | 待发布 |
-| 009 | [OpenAI 把自己做的 AI 编程榜，停用了](issues/009-benchmark-trust/draft.md) | 待发布 |
-| 010 | [为什么 AI 时代的数据库都选 Postgres？](issues/010-just-use-postgres/draft.md) | 待发布 |
+| 008 | [AI 让你效率翻倍，团队交付却一动没动](issues/008-spdd/draft.md) | 已发布 |
+| 009 | [OpenAI 把自己做的 AI 编程榜，停用了](issues/009-benchmark-trust/draft.md) | 已发布 |
+| 010 | [为什么 AI 时代的数据库都选 Postgres？](issues/010-just-use-postgres/draft.md) | 已发布 |
+| 012 | [AI 时代的软件，到底是给人用，还是给 AI 用？](issues/012-human-ui-or-agent-api/draft.md) | 已发布 |
 
 正式推送链接与发布数据见 [published.md](published.md)。
 

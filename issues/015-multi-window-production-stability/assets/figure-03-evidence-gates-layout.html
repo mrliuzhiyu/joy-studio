@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>五层证据门</title>
+<style>
+:root{--ink:#172033;--muted:#61717f;--line:#d8e1e8;--blue:#316ea6;--blue-soft:#edf5fc;--teal:#147d72;--teal-soft:#eaf7f4}*{box-sizing:border-box}html,body{margin:0;width:1200px;height:790px;overflow:hidden;background:#fbfcfd}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:var(--ink)}.wrap{width:1200px;height:790px;padding:56px 64px}.kicker{font:700 14px/1.2 Arial,sans-serif;letter-spacing:3px;color:var(--blue)}.title{margin-top:14px;font-size:38px;line-height:1.25;font-weight:750}.desc{margin-top:10px;font-size:18px;color:var(--muted)}.flow{margin-top:52px;display:grid;grid-template-columns:150px 46px 150px 46px 150px 46px 150px 46px 150px 46px 150px;align-items:center}.node{height:245px;border:1px solid #b7cfe4;background:var(--blue-soft);padding:22px 15px;text-align:center}.node:nth-of-type(4),.node:nth-of-type(5){border-color:#9acdc4;background:#f0faf8}.node.dark{border:2px solid #58a99b;background:var(--teal-soft)}.num{font:750 29px/1 Arial,sans-serif;color:#6c9ac1}.node.dark .num{color:var(--teal)}.icon{width:66px;height:66px;border:1px solid #79a8ce;border-radius:50%;margin:22px auto 18px;display:flex;align-items:center;justify-content:center;background:#fff;color:var(--blue);font-size:22px;font-weight:700}.node:nth-of-type(4) .icon,.node:nth-of-type(5) .icon,.node.dark .icon{border-color:#72b8ac;color:var(--teal)}.node-title{font-size:19px;font-weight:750}.node-copy{margin-top:10px;font-size:14px;line-height:1.55;color:var(--muted)}.arrow{text-align:center;font-size:30px;color:#72a79f}.why{margin-top:38px;border-top:1px solid var(--line);padding-top:25px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}.why div{font-size:15px;line-height:1.65;color:var(--muted)}.why strong{display:block;color:var(--ink);font-size:17px;margin-bottom:5px}.caption{position:absolute;left:64px;bottom:30px;width:1072px;border-top:1px solid var(--line);padding-top:12px;text-align:center;font-size:14px;color:#7b8994}
+</style></head>
+<body><main class="wrap">
+  <div class="kicker">EVIDENCE GATES</div>
+  <div class="title">测试全绿，只是进入生产前的其中一道门</div>
+  <div class="desc">不同证据观察不同失败；任何一层都不能替代后面的真实运行。</div>
+  <section class="flow">
+    <article class="node"><div class="num">01</div><div class="icon">测</div><div class="node-title">局部测试</div><div class="node-copy">函数和状态<br>是否按预期变化</div></article><div class="arrow">→</div>
+    <article class="node"><div class="num">02</div><div class="icon">约</div><div class="node-title">契约测试</div><div class="node-copy">两个模块<br>是否说同一种语言</div></article><div class="arrow">→</div>
+    <article class="node"><div class="num">03</div><div class="icon">联</div><div class="node-title">集成检查</div><div class="node-copy">跨进程路径<br>是否真实连通</div></article><div class="arrow">→</div>
+    <article class="node"><div class="num">04</div><div class="icon">版</div><div class="node-title">版本核验</div><div class="node-copy">生产是否运行<br>本次提交</div></article><div class="arrow">→</div>
+    <article class="node"><div class="num">05</div><div class="icon">观</div><div class="node-title">运行观测</div><div class="node-copy">真实用户和依赖<br>带来了什么结果</div></article><div class="arrow">→</div>
+    <article class="node dark"><div class="num">✓</div><div class="icon">产</div><div class="node-title">生产结果</div><div class="node-copy">可观察<br>可追溯<br>可回退</div></article>
+  </section>
+  <section class="why"><div><strong>代码正确</strong>不等于容器里运行的是这份代码。</div><div><strong>服务存活</strong>不等于跨进程的用户路径能够完成。</div><div><strong>指标正常</strong>不等于未写进指标的结果也正常。</div></section>
+  <div class="caption">图 3 · 功能进入生产前的五层证据 · 作者根据个人项目实践整理</div>
+</main></body></html>

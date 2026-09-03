@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>认知带宽</title>
+<style>*{box-sizing:border-box}html,body{margin:0;width:1200px;height:780px;overflow:hidden;background:#fff}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:#172033}.wrap{width:1200px;height:780px;padding:62px 68px 50px}.kicker{font:600 15px/1.2 Arial,sans-serif;letter-spacing:3px;color:#8a93a3}.title{margin-top:14px;font-size:38px;line-height:1.3;font-weight:720}.desc{margin-top:10px;font-size:18px;color:#6d7583}.diagram{margin-top:30px;width:1064px;height:500px}</style>
+</head>
+<body><main class="wrap">
+  <div class="kicker">COGNITIVE BANDWIDTH</div>
+  <div class="title">绝大多数 Token，不在输出，而在重建理解</div>
+  <div class="desc">规格、代码、测试与运行反馈，被压缩成一份临时世界模型。</div>
+  <svg class="diagram" viewBox="0 0 1064 500" role="img" aria-label="大量输入汇聚为临时认知模型，再形成少量代码输出">
+    <defs>
+      <linearGradient id="core" x1="0" x2="1"><stop offset="0" stop-color="#eef1ff"/><stop offset="1" stop-color="#e8f5ff"/></linearGradient>
+      <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="11" flood-color="#64748b" flood-opacity=".13"/></filter>
+      <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#7d8aaa"/></marker>
+    </defs>
+    <path d="M166 68 C320 68 315 170 466 190" fill="none" stroke="#ec9977" stroke-width="62" stroke-linecap="round" opacity=".58"/>
+    <path d="M166 173 C322 173 334 211 466 222" fill="none" stroke="#7d9fe5" stroke-width="62" stroke-linecap="round" opacity=".58"/>
+    <path d="M166 278 C320 278 337 249 466 250" fill="none" stroke="#70b798" stroke-width="62" stroke-linecap="round" opacity=".58"/>
+    <path d="M166 383 C312 383 320 289 466 281" fill="none" stroke="#ae8bd7" stroke-width="62" stroke-linecap="round" opacity=".58"/>
+    <g>
+      <circle cx="112" cy="68" r="38" fill="#fff4ef" stroke="#ec9977" stroke-width="2"/><path d="M96 61h32M96 71h25M96 81h19" stroke="#c76543" stroke-width="3" stroke-linecap="round"/><text x="112" y="124" text-anchor="middle" font-size="24" font-weight="700" fill="#7f4330">规格</text>
+      <circle cx="112" cy="173" r="38" fill="#eff4ff" stroke="#7d9fe5" stroke-width="2"/><path d="M104 160l-11 13 11 13M120 160l11 13-11 13" fill="none" stroke="#456dbb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="112" y="229" text-anchor="middle" font-size="24" font-weight="700" fill="#365a9d">代码</text>
+      <circle cx="112" cy="278" r="38" fill="#effaf5" stroke="#70b798" stroke-width="2"/><path d="M95 278l10 10 22-24" fill="none" stroke="#388162" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text x="112" y="334" text-anchor="middle" font-size="24" font-weight="700" fill="#276a50">测试</text>
+      <circle cx="112" cy="383" r="38" fill="#f8f2ff" stroke="#ae8bd7" stroke-width="2"/><path d="M94 391l12-14 10 8 14-22" fill="none" stroke="#7952a9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="112" y="439" text-anchor="middle" font-size="24" font-weight="700" fill="#64428f">反馈</text>
+    </g>
+    <g filter="url(#shadow)"><path d="M466 158 Q466 124 500 124 H680 Q716 124 716 160 V310 Q716 346 680 346 H500 Q466 346 466 312Z" fill="url(#core)" stroke="#6075c8" stroke-width="3"/></g>
+    <circle cx="591" cy="235" r="75" fill="#fff" stroke="#b9c4ee" stroke-width="2"/>
+    <path d="M545 235c26-46 68-46 94 0M545 235c26 46 68 46 94 0M591 160v150M516 235h150" fill="none" stroke="#8e9dd6" stroke-width="2" opacity=".75"/>
+    <text x="591" y="228" text-anchor="middle" font-size="19" fill="#667085">临时重建</text><text x="591" y="263" text-anchor="middle" font-size="29" font-weight="700" fill="#263455">产品认知</text>
+    <path d="M716 235 C786 235 819 235 879 235" fill="none" stroke="#7d8aaa" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <g filter="url(#shadow)"><circle cx="956" cy="235" r="69" fill="#fff7dd" stroke="#d6ad35" stroke-width="3"/></g>
+    <path d="M931 218h50M931 233h38M931 248h45" stroke="#9b771b" stroke-width="4" stroke-linecap="round"/><text x="956" y="329" text-anchor="middle" font-size="25" font-weight="700" fill="#795b12">代码输出</text>
+    <text x="112" y="484" text-anchor="middle" font-size="19" font-weight="700" fill="#586174">输入 99.68%</text>
+    <line x1="232" y1="477" x2="812" y2="477" stroke="#dde2ec" stroke-width="12" stroke-linecap="round"/><line x1="232" y1="477" x2="810" y2="477" stroke="#7388da" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="816" cy="477" r="7" fill="#e3b23c"/><text x="956" y="484" text-anchor="middle" font-size="19" font-weight="700" fill="#586174">输出 0.32%</text>
+  </svg>
+</main></body></html>

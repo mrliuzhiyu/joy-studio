@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>功能 worktree 与共享契约</title>
+<style>
+:root{--ink:#172033;--muted:#61717f;--line:#d8e1e8;--blue:#316ea6;--blue-soft:#edf5fc;--teal:#147d72;--teal-soft:#eaf7f4;--amber:#b86b13;--amber-soft:#fff7e9}*{box-sizing:border-box}html,body{margin:0;width:1200px;height:840px;overflow:hidden;background:#fbfcfd}body{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;color:var(--ink)}.wrap{width:1200px;height:840px;padding:56px 64px}.kicker{font:700 14px/1.2 Arial,sans-serif;letter-spacing:3px;color:var(--blue)}.title{margin-top:14px;font-size:38px;line-height:1.25;font-weight:750}.desc{margin-top:10px;font-size:18px;color:var(--muted)}.trees{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.tree{height:265px;border:1px solid #a8c7e2;padding:22px 22px 20px;background:var(--blue-soft)}.tree.gray{border-color:#91c9be;background:var(--teal-soft)}.tree-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(83,105,122,.18);padding-bottom:14px}.tree-name{font-size:22px;font-weight:750}.branch{font:700 12px/1.2 Arial,sans-serif;color:var(--blue);letter-spacing:1px}.tree.gray .branch{color:var(--teal)}.result{margin-top:17px;font-size:17px;font-weight:700}.stack{margin-top:15px;display:grid;grid-template-columns:1fr 1fr;gap:8px}.chip{padding:10px 8px;text-align:center;background:rgba(255,255,255,.78);border:1px solid rgba(100,125,145,.1);font-size:14px;color:#4e6170}.down{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;height:57px}.down div{text-align:center;font-size:40px;line-height:57px;color:#6b99bd}.rail{border:1px solid #85c5b9;background:var(--teal-soft);padding:19px 25px;display:grid;grid-template-columns:220px 1fr 170px;align-items:center}.rail-title{font-size:21px;font-weight:750;color:#105f58}.rail-items{font-size:15px;color:#496b68;text-align:center;letter-spacing:.3px}.rail-gate{background:var(--teal);color:#fff;padding:12px 14px;text-align:center;font-size:15px;font-weight:700}.trunk{margin:35px auto 0;width:610px;border-top:4px solid #6fa79e;text-align:center;padding-top:19px;font-size:24px;font-weight:750}.trunk small{display:block;margin-top:8px;font-size:15px;font-weight:400;color:var(--muted)}.caption{position:absolute;left:64px;bottom:30px;width:1072px;border-top:1px solid var(--line);padding-top:12px;text-align:center;font-size:14px;color:#7b8994}
+</style></head>
+<body><main class="wrap">
+  <div class="kicker">ONE FEATURE · ONE WORKTREE</div>
+  <div class="title">按用户结果纵向切功能，不按前端后端横向切文件</div>
+  <div class="desc">每个 worktree 自带完整变化；共享状态只从一个契约出口进入。</div>
+  <section class="trees">
+    <article class="tree"><div class="tree-head"><div class="tree-name">功能 A</div><div class="branch">WORKTREE</div></div><div class="result">用户完成一次操作</div><div class="stack"><div class="chip">界面</div><div class="chip">接口</div><div class="chip">状态</div><div class="chip">测试</div></div></article>
+    <article class="tree"><div class="tree-head"><div class="tree-name">功能 B</div><div class="branch">WORKTREE</div></div><div class="result">后台完成一次处理</div><div class="stack"><div class="chip">任务</div><div class="chip">接口</div><div class="chip">状态</div><div class="chip">测试</div></div></article>
+    <article class="tree gray"><div class="tree-head"><div class="tree-name">独立审查</div><div class="branch">WORKTREE</div></div><div class="result">只恢复事实，不替实现自证</div><div class="stack"><div class="chip">意图</div><div class="chip">差异</div><div class="chip">运行</div><div class="chip">风险</div></div></article>
+  </section>
+  <div class="down"><div>↓</div><div>↓</div><div>↓</div></div>
+  <section class="rail"><div class="rail-title">共享工程契约</div><div class="rail-items">状态所有者　·　接口形状　·　数据库规则　·　权限边界</div><div class="rail-gate">越界即失败</div></section>
+  <div class="trunk">生产主干<small>只有完整、可验证的变化进入</small></div>
+  <div class="caption">图 2 · 功能 worktree 与共享契约 · 作者根据个人项目实践整理</div>
+</main></body></html>

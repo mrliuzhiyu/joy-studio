@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  *{box-sizing:border-box}html,body{width:1200px;height:800px;margin:0;overflow:hidden;background:#fff}body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:#111}.canvas{position:relative;width:1200px;height:800px;padding:48px 54px;background:#fff}.eyebrow{font-size:17px;font-weight:750;letter-spacing:4px;color:#8b8b8b}.title{margin:16px 0 8px;font-size:46px;line-height:1.2;letter-spacing:-1px}.subtitle{margin:0;color:#777;font-size:21px}.system{position:absolute;left:54px;top:238px;width:270px;height:348px;border:2px solid #111;padding:25px 24px}.system h2{margin:0 0 20px;font-size:23px}.stat{padding:13px 0;border-top:1px solid #ddd}.stat:first-of-type{border-top:0}.stat b{display:block;font-size:25px}.stat span{display:block;margin-top:4px;font-size:14px;color:#777}.journey{position:absolute;left:370px;right:54px;top:245px}.nodes{display:flex;align-items:center}.node{width:125px;padding:17px 8px;border:2px solid #111;text-align:center;font-size:20px;font-weight:800;background:#fff}.line{position:relative;width:42px;height:2px;background:#111}.line.broken{background:linear-gradient(to right,#111 0 37%,transparent 37% 63%,#111 63%)}.line.broken:after{content:"×";position:absolute;left:13px;top:-18px;font-size:25px;font-weight:900;background:#fff}.failures{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:54px}.failure{min-height:124px;padding:18px 16px;border:1px solid #cfcfcf;background:#f7f7f7}.failure b{display:block;font-size:15px;letter-spacing:1px}.failure span{display:block;margin-top:9px;font-size:18px;line-height:1.45;font-weight:700}.verdict{position:absolute;left:370px;right:54px;bottom:64px;padding-top:24px;border-top:2px solid #111}.verdict b{display:block;font-size:27px}.verdict span{display:block;margin-top:8px;font-size:18px;color:#666}
+</style>
+</head>
+<body>
+<main class="canvas">
+  <div class="eyebrow">02 · 产品路径</div>
+  <h1 class="title">局部工程完成度，不等于用户路径完成度</h1>
+  <p class="subtitle">系统内部每一处都很完整，连起来仍然可能不好用</p>
+  <aside class="system">
+    <h2>一个被打磨完整的模块</h2>
+    <div class="stat"><b>24 个文件</b><span>一次下载系统改造</span></div>
+    <div class="stat"><b>+2,237 / −590 行</b><span>新增与删除代码</span></div>
+    <div class="stat"><b>1,628 + 157 项</b><span>后端与前端测试</span></div>
+  </aside>
+  <section class="journey">
+    <div class="nodes">
+      <div class="node">官网</div><div class="line broken"></div>
+      <div class="node">下载</div><div class="line broken"></div>
+      <div class="node">安装</div><div class="line"></div>
+      <div class="node">充值</div><div class="line broken"></div>
+      <div class="node">开始使用</div>
+    </div>
+    <div class="failures">
+      <div class="failure"><b>下载断点</b><span>手机用户拿到 dmg 安装包</span></div>
+      <div class="failure"><b>安装断点</b><span>Mac 直接判断应用已经损坏</span></div>
+      <div class="failure"><b>付费断点</b><span>支付成功后仍引导继续充值</span></div>
+    </div>
+  </section>
+  <div class="verdict"><b>用户不会感知模块有多完整，只会感知那条路径有没有走通。</b><span>断点续传做得再漂亮，也不能替代一次真实的端到端使用。</span></div>
+</main>
+</body>
+</html>
