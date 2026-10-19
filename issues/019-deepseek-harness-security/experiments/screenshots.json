@@ -1,0 +1,93 @@
+[
+  {
+    "name": "01-official",
+    "url": "https://www.deepseek.com/harness/",
+    "title": "DeepSeek Harness｜共探智能上限",
+    "file": "assets/01-official.png",
+    "capturedAt": "2026-10-19T13:56:30.057Z"
+  },
+  {
+    "name": "02-config",
+    "url": "https://github.com/zzszmyf/dsh-security-pocs/blob/main/WRITEUP.md",
+    "title": "dsh-security-pocs/WRITEUP.md at main · zzszmyf/dsh-security-pocs · GitHub",
+    "file": "assets/02-config.png",
+    "capturedAt": "2026-10-19T13:56:35.956Z"
+  },
+  {
+    "name": "03-readonly",
+    "url": "https://github.com/zzszmyf/dsh-security-pocs/blob/main/WRITEUP.md",
+    "title": "dsh-security-pocs/WRITEUP.md at main · zzszmyf/dsh-security-pocs · GitHub",
+    "file": "assets/03-readonly.png",
+    "capturedAt": "2026-10-19T13:56:36.740Z"
+  },
+  {
+    "name": "04-vm",
+    "url": "https://github.com/zzszmyf/dsh-security-pocs/blob/main/WRITEUP.md",
+    "title": "dsh-security-pocs/WRITEUP.md at main · zzszmyf/dsh-security-pocs · GitHub",
+    "file": "assets/04-vm.png",
+    "capturedAt": "2026-10-19T13:56:37.531Z"
+  },
+  {
+    "name": "05-process",
+    "url": "https://github.com/zzszmyf/dsh-security-pocs/blob/main/WRITEUP.md",
+    "title": "dsh-security-pocs/WRITEUP.md at main · zzszmyf/dsh-security-pocs · GitHub",
+    "file": "assets/05-process.png",
+    "capturedAt": "2026-10-19T13:56:38.393Z"
+  },
+  {
+    "name": "06-chain",
+    "url": "https://github.com/zzszmyf/dsh-security-pocs/blob/main/WRITEUP.md",
+    "title": "dsh-security-pocs/WRITEUP.md at main · zzszmyf/dsh-security-pocs · GitHub",
+    "file": "assets/06-chain.png",
+    "capturedAt": "2026-10-19T13:56:39.292Z"
+  },
+  {
+    "name": "07-rpc",
+    "url": "https://github.com/ChaoMixian/dsh2shell",
+    "title": "GitHub - ChaoMixian/dsh2shell: Unauthenticated RCE PoC for exposed DeepSeek Harness (dsh) web instances. · GitHub",
+    "file": "assets/07-rpc.png",
+    "capturedAt": "2026-10-19T13:56:45.180Z"
+  },
+  {
+    "name": "08-assessment",
+    "url": "https://matrix.tencent.com/zh/2026/08/20/deepseek-harness-agent-injection-risk",
+    "title": "A.I.G 红队实测 DeepSeek Harness：14,560 次运行揭示 Agent 提示注入风险 · 腾讯朱雀实验室",
+    "file": "assets/08-assessment.png",
+    "capturedAt": "2026-10-19T13:56:49.945Z"
+  },
+  {
+    "name": "09-overall",
+    "url": "https://matrix.tencent.com/zh/2026/08/20/deepseek-harness-agent-injection-risk",
+    "title": "A.I.G 红队实测 DeepSeek Harness：14,560 次运行揭示 Agent 提示注入风险 · 腾讯朱雀实验室",
+    "file": "assets/09-overall.png",
+    "capturedAt": "2026-10-19T13:56:50.375Z"
+  },
+  {
+    "name": "10-channels",
+    "url": "https://matrix.tencent.com/zh/2026/08/20/deepseek-harness-agent-injection-risk",
+    "title": "A.I.G 红队实测 DeepSeek Harness：14,560 次运行揭示 Agent 提示注入风险 · 腾讯朱雀实验室",
+    "file": "assets/10-channels.png",
+    "capturedAt": "2026-10-19T13:56:50.807Z"
+  },
+  {
+    "name": "11-output-actions",
+    "url": "https://matrix.tencent.com/zh/2026/08/20/deepseek-harness-agent-injection-risk",
+    "title": "A.I.G 红队实测 DeepSeek Harness：14,560 次运行揭示 Agent 提示注入风险 · 腾讯朱雀实验室",
+    "file": "assets/11-output-actions.png",
+    "capturedAt": "2026-10-19T13:56:51.199Z"
+  },
+  {
+    "name": "12-safety",
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/SAFETY.zh.md",
+    "title": "deepseek-harness/SAFETY.zh.md at master · deepseek-ai/deepseek-harness · GitHub",
+    "file": "assets/12-safety.png",
+    "capturedAt": "2026-10-19T13:56:56.893Z"
+  },
+  {
+    "name": "13-paper",
+    "url": "https://arxiv.org/html/2608.16393v1",
+    "title": "Evaluating DeepSeek Harness with A.I.G: A Security Assessment of Indirect Prompt Injection",
+    "file": "assets/13-paper.png",
+    "capturedAt": "2026-10-19T13:57:01.839Z"
+  }
+]

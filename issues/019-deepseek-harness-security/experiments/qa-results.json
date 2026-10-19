@@ -1,0 +1,165 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "width": 390,
+      "title": "DeepSeek Harness 有多危险？拆解五个漏洞和一条完整攻击链",
+      "sections": 12,
+      "images": [
+        {
+          "alt": "图 1 · DeepSeek Harness 官方页面，介绍本地工具与插件化能力",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 2 · 原始研究对配置表达式执行的分析及标记文件验证",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 3 · 工作区外的模拟凭据读取成功，同一模式下写入被拒绝",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 4 · 动态插件的执行参数暴露主程序上下文，验证程序读取到测试服务内容",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 5 · 插件直接使用底层进程服务，主机进程成功写入标记文件",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 6 · 原始研究列出的外部内容到主机执行的完整路线",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 7 · dsh2shell 公开项目对管理接口及模拟模型服务利用过程的说明",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 8 · 腾讯朱雀实验室公开的评测文章及测试背景",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 9 · 全部运行的完全成功、部分受影响与工具调用统计",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 10 · 隐藏 Unicode、Skill、网页和文档等通道的分组结果",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 11 · 输出型任务与需要敏感工具调用的任务，成功率分别统计",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 12 · 评测论文全文，包含实验设计、统计表和方法说明",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 13 · DeepSeek Harness 官方中文安全说明",
+          "ok": true,
+          "embedded": true
+        }
+      ],
+      "sources": 13,
+      "horizontalOverflow": false,
+      "styleTags": 0,
+      "outsideTools": true,
+      "paragraphCount": 240,
+      "ending": true,
+      "copyButtonText": "正文已复制",
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "title": "DeepSeek Harness 有多危险？拆解五个漏洞和一条完整攻击链",
+      "sections": 12,
+      "images": [
+        {
+          "alt": "图 1 · DeepSeek Harness 官方页面，介绍本地工具与插件化能力",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 2 · 原始研究对配置表达式执行的分析及标记文件验证",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 3 · 工作区外的模拟凭据读取成功，同一模式下写入被拒绝",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 4 · 动态插件的执行参数暴露主程序上下文，验证程序读取到测试服务内容",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 5 · 插件直接使用底层进程服务，主机进程成功写入标记文件",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 6 · 原始研究列出的外部内容到主机执行的完整路线",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 7 · dsh2shell 公开项目对管理接口及模拟模型服务利用过程的说明",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 8 · 腾讯朱雀实验室公开的评测文章及测试背景",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 9 · 全部运行的完全成功、部分受影响与工具调用统计",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 10 · 隐藏 Unicode、Skill、网页和文档等通道的分组结果",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 11 · 输出型任务与需要敏感工具调用的任务，成功率分别统计",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 12 · 评测论文全文，包含实验设计、统计表和方法说明",
+          "ok": true,
+          "embedded": true
+        },
+        {
+          "alt": "图 13 · DeepSeek Harness 官方中文安全说明",
+          "ok": true,
+          "embedded": true
+        }
+      ],
+      "sources": 13,
+      "horizontalOverflow": false,
+      "styleTags": 0,
+      "outsideTools": true,
+      "paragraphCount": 240,
+      "ending": true,
+      "copyButtonText": "正文已复制",
+      "errors": []
+    }
+  ]
+}
